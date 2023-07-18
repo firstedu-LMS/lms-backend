@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('fee');
             $table->string('status');
             $table->boolean('available');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->nullOnDelete();
             $table->timestamps();
         });
     }
