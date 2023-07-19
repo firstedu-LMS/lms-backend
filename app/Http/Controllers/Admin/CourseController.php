@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\CourseRequest;
+use App\Http\Resources\CourseResource;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends BaseController
@@ -19,7 +21,7 @@ class CourseController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -27,17 +29,29 @@ class CourseController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        //
+        $course = new Course();
+        $course->name = $request->name;
+        $course->category_id = $request->category_id;
+        $course->description = $request->description;
+        $course->fee = $request->fee;
+        $course->status = $request->status;
+        $course->available = $request->available;
+        $course->save();
+        return $this->success(new CourseResource($course),201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $course = Course::where('id',$id)->first();
+        if(!$course) {
+            return $this->error([],"course not found",404);
+        }
+        return $this->success(new CourseResource($course));
     }
 
     /**
@@ -51,9 +65,19 @@ class CourseController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CourseRequest $request, string $id)
     {
-        //
+        $course = Course::where('id',$id)->first();
+        if(!$course) {
+            return $this->error([],"course not found",404);
+        }
+        $course->name = $request->name;
+        $course->description = $request->description;
+        $course->fee = $request->fee;
+        $course->status = $request->status;
+        $course->available = $request->available;
+        $course->update();
+        return $this->success(new CourseResource($course));
     }
 
     /**
@@ -61,6 +85,11 @@ class CourseController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $course = Course::where('id',$id)->first();
+        if(!$course) {
+            return $this->error([],"course not found",404);
+        }
+        $course->delete();
+        $this->success([$course,"message" => "successfully deleted"]);
     }
 }
