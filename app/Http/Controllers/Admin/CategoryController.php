@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Controllers\BaseController;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 
 class CategoryController extends BaseController
 {
@@ -19,7 +22,7 @@ class CategoryController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CategoryRequest $request)
     {
         //
     }
@@ -27,17 +30,24 @@ class CategoryController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $category = new Category();
+        $category->name = $request->name;
+        $category->save();
+        return $this->success(new CategoryResource($category),201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $category = Category::where('id',$id)->first();
+        if(!$category) {
+            return $this->error([],"category not found",404);
+        }
+        return $this->success(new CategoryResource($category));
     }
 
     /**
@@ -51,16 +61,27 @@ class CategoryController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request,$id)
     {
-        //
+        $category = Category::where('id',$id)->first();
+        if(!$category) {
+            return $this->error([],"category not found",404);
+        }
+        $category->name = $request->name;
+        $category->update();
+        return $this->success(new CategoryResource($category),201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $category = Category::where('id',$id)->first();
+        if(!$category) {
+            return $this->error([],'category not found',404);
+        }
+        $category->delete();
+        $this->success("success");
     }
 }
