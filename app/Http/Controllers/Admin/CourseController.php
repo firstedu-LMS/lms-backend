@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\CourseCreated;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 
 class CourseController extends BaseController
 {
@@ -16,15 +19,16 @@ class CourseController extends BaseController
      */
     public function index()
     {
-        //
+        Event::dispatch(new CourseCreated());
+
+        $course = cache('courses',function (){
+            return  Course::latest()->take(4)->get();
+        });
+
+        return $this->success(CourseResource::collection($course));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -70,27 +74,27 @@ class CourseController extends BaseController
      */
     public function update(CourseRequest $request, string $id)
     {
-        $course = Course::where('id',$id)->first();
+        // $course = Course::where('id',$id)->first();
         
-        if(!$course) {
-            return $this->error([],"course not found",config('err_code.Not_Found'));
-        }
+        // if(!$course) {
+        //     return $this->error([],"course not found",config('err_code.Not_Found'));
+        // }
 
-        if($request->file('image')){
-            $course->image->delete();
-            Storage::delete($course->image->image);
-            $filename = time() . "_" . $request->file('image')->getClientOriginalName();
-            request()->file('image')->storeAs('course_image', $filename);
-            $course->image()->create(['image' => $filename]);
-        }
+        // if($request->file('image')){
+        //     $course->image->delete();
+        //     Storage::delete($course->image->image);
+        //     $filename = time() . "_" . $request->file('image')->getClientOriginalName();
+        //     request()->file('image')->storeAs('course_image', $filename);
+        //     $course->image()->create(['image' => $filename]);
+        // }
 
-        $course->name = $request->name;
-        $course->description = $request->description;
-        $course->fee = $request->fee;
-        $course->status = $request->status;
-        $course->available = json_decode($request->available);
-        $course->update();
-        return $this->success(new CourseResource($course));
+        // $course->name = $request->name;
+        // $course->description = $request->description;
+        // $course->fee = $request->fee;
+        // $course->status = $request->status;
+        // $course->available = json_decode($request->available);
+        // $course->update();
+        // return $this->success(new CourseResource($course));
     }
 
     /**
