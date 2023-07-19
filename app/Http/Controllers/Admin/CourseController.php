@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends BaseController
@@ -19,9 +20,8 @@ class CourseController extends BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
     }
 
     /**
@@ -29,7 +29,18 @@ class CourseController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $filename = time() . "_" . $request->file('image')->getClientOriginalName();
+        request()->file('image')->storeAs('course_image', $filename);
+        $course = new Course();
+        $course->name =  $request->name;
+        $course->category_id =  $request->category_id;
+        $course->description =  $request->description ;
+        $course->fee =  $request->fee;
+        $course->status =   $request->status ;
+        $course->available = json_decode($request->available);
+        $course->save(); 
+        $course->image()->create(['image' => $filename]);
+        return $this->success($course , 200);
     }
 
     /**
