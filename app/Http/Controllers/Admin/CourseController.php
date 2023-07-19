@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class CourseController extends BaseController
@@ -41,7 +42,7 @@ class CourseController extends BaseController
         $course->available = json_decode($request->available);
         $course->save(); 
         $course->image()->create(['image' => $filename]);
-        return $this->success($course , 200);
+        return $this->success($course , config('err_code.OK'));
     }
 
     /**
@@ -51,7 +52,7 @@ class CourseController extends BaseController
     {
         $course = Course::where('id',$id)->first();
         if(!$course) {
-            return $this->error([],"course not found",404);
+            return $this->error([],"course not found",config('err_code.Not_Found'));
         }
         return $this->success(new CourseResource($course));
     }
@@ -70,14 +71,24 @@ class CourseController extends BaseController
     public function update(CourseRequest $request, string $id)
     {
         $course = Course::where('id',$id)->first();
+        
         if(!$course) {
-            return $this->error([],"course not found",404);
+            return $this->error([],"course not found",config('err_code.Not_Found'));
         }
+
+        if($request->file('image')){
+            $course->image->delete();
+            Storage::delete($course->image->image);
+            $filename = time() . "_" . $request->file('image')->getClientOriginalName();
+            request()->file('image')->storeAs('course_image', $filename);
+            $course->image()->create(['image' => $filename]);
+        }
+
         $course->name = $request->name;
         $course->description = $request->description;
         $course->fee = $request->fee;
         $course->status = $request->status;
-        $course->available = $request->available;
+        $course->available = json_decode($request->available);
         $course->update();
         return $this->success(new CourseResource($course));
     }
@@ -89,8 +100,10 @@ class CourseController extends BaseController
     {
         $course = Course::where('id',$id)->first();
         if(!$course) {
-            return $this->error([],"course not found",404);
+            return $this->error([],"course not found",config('err_code.Not_Found'));
         }
+        $course->image->delete();
+        Storage::delete('course_image/'.$course->image->image);
         $course->delete();
         $this->success([$course,"message" => "successfully deleted"]);
     }

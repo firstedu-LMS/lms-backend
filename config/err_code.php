@@ -4,13 +4,13 @@ return [
 
         'OK' => 200,
         'Created' => 201,
-        'No Content' => 204,
-        'Bad Request' => 400,
+        'No_Content' => 204,
+        'Bad_Request' => 400,
         'Unauthorized' => 401,
         'Forbidden' => 403,
-        'Not Found' => 404,
-        'Method Not Allowed' => 405,
-        'Internal Server Error' => 500,
-        'Service Unavailable' => 503,
+        'Not_Found' => 404,
+        'Method_Not_Allowed' => 405,
+        'Internal_Server_Error' => 500,
+        'Service_Unavailable' => 503,
         
     ];

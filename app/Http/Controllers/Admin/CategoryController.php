@@ -11,75 +11,49 @@ use App\Models\Category;
 
 class CategoryController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
+ 
     public function index()
     {
-        //
+        $category = Category::all();
+        return $this->success(CategoryResource::collection($category),config('err_code.OK'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(CategoryRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(CategoryRequest $request)
     {
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return $this->success(new CategoryResource($category),201);
+        return $this->success(new CategoryResource($category),config('err_code.Created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id)
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],"category not found",404);
+            return $this->error([],"category not found",config('err_code.Not_Found'));
         }
         return $this->success(new CategoryResource($category));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+  
     public function update(CategoryRequest $request,$id)
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],"category not found",404);
+            return $this->error([],"category not found",config('err_code.Not_Found'));
         }
         $category->name = $request->name;
         $category->update();
-        return $this->success(new CategoryResource($category),201);
+        return $this->success(new CategoryResource($category),config('err_code.OK'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],'category not found',404);
+            return $this->error([],'category not found',config('err_code.Not_Found'));
         }
         $category->delete();
         $this->success("success");
