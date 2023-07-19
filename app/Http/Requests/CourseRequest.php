@@ -29,7 +29,7 @@ class CourseRequest extends FormRequest
            "description" => ["required","min:4"],
            "fee" => ["required","numeric"],
            "status" => ["required","min:4"],
-           "available" => ["required","boolean"]
+           "available" => ["required"]
         ];
     }
     public function messages(): array
