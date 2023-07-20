@@ -19,14 +19,7 @@ class CourseController extends BaseController
      */
     public function index()
     {
-        Event::dispatch(new CourseCreated());
-
-        $course = cache('courses',function (){
-            return  Course::latest()->take(4)->get();
-        });
-
-        return $this->success(CourseResource::collection($course));
-
+        return CourseResource::collection(Course::with('image')->get());
     }
 
 
