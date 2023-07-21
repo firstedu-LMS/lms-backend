@@ -23,7 +23,7 @@ class CourseCacheListener
     public function handle(object $event): void
     {
         Cache::forget('courses');
-        $course = Course::latest()->take(4)->get();
+        $course = Course::latest()->take(4)->with('image')->get();
         Cache::forever('courses',$course);
     }
 }

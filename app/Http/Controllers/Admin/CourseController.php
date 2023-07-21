@@ -19,7 +19,7 @@ class CourseController extends BaseController
      */
     public function index()
     {
-        return CourseResource::collection(Course::with('image')->get());
+        return $this->success(CourseResource::collection(Course::with('image')->get()),'All courses');
     }
 
 
@@ -28,18 +28,16 @@ class CourseController extends BaseController
      */
     public function store(CourseRequest $request)
     {
-        $filename = time() . "_" . $request->file('image')->getClientOriginalName();
-        request()->file('image')->storeAs('course_image', $filename);
         $course = new Course();
         $course->name =  $request->name;
         $course->category_id =  $request->category_id;
         $course->description =  $request->description ;
         $course->fee =  $request->fee;
         $course->status =   $request->status ;
+        $course->image_id = $request->image_id;
         $course->available = json_decode($request->available);
-        $course->save(); 
-        $course->image()->create(['image' => $filename]);
-        return $this->success($course , config('err_code.OK'));
+        $course->save();
+        return $this->success(new CourseResource($course), 'Created',config('http_status_code.created'));
     }
 
     /**
@@ -49,9 +47,9 @@ class CourseController extends BaseController
     {
         $course = Course::where('id',$id)->first();
         if(!$course) {
-            return $this->error([],"course not found",config('err_code.Not_Found'));
+            return $this->error([],"course not found",config('http_status_code.not_found'));
         }
-        return $this->success(new CourseResource($course));
+        return $this->success(new CourseResource($course),'Details of course');
     }
 
     /**
@@ -67,27 +65,19 @@ class CourseController extends BaseController
      */
     public function update(CourseRequest $request, string $id)
     {
-        // $course = Course::where('id',$id)->first();
-        
-        // if(!$course) {
-        //     return $this->error([],"course not found",config('err_code.Not_Found'));
-        // }
-
-        // if($request->file('image')){
-        //     $course->image->delete();
-        //     Storage::delete($course->image->image);
-        //     $filename = time() . "_" . $request->file('image')->getClientOriginalName();
-        //     request()->file('image')->storeAs('course_image', $filename);
-        //     $course->image()->create(['image' => $filename]);
-        // }
-
-        // $course->name = $request->name;
-        // $course->description = $request->description;
-        // $course->fee = $request->fee;
-        // $course->status = $request->status;
-        // $course->available = json_decode($request->available);
-        // $course->update();
-        // return $this->success(new CourseResource($course));
+        $course = Course::where('id',$id)->first();
+        if(!$course) {
+            return $this->error([],"course not found",config('http_status_code.not_found'));
+        }
+        $course->name =  $request->name;
+        $course->category_id =  $request->category_id;
+        $course->description =  $request->description ;
+        $course->fee =  $request->fee;
+        $course->status =   $request->status ;
+        $course->image_id = $request->image_id;
+        $course->available = json_decode($request->available);
+        $course->update(); 
+        return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 
     /**
@@ -97,11 +87,9 @@ class CourseController extends BaseController
     {
         $course = Course::where('id',$id)->first();
         if(!$course) {
-            return $this->error([],"course not found",config('err_code.Not_Found'));
+            return $this->error([],"course not found",config('http_status_code.not_found'));
         }
-        $course->image->delete();
-        Storage::delete('course_image/'.$course->image->image);
         $course->delete();
-        $this->success([$course,"message" => "successfully deleted"]);
+        return $this->success([],'deleted',config('http_status_code.no_content'));
     }
 }

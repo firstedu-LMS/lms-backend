@@ -13,6 +13,7 @@ class Course extends Model
             'category_id',
             'name',
             'description',
+            'image_id',
             'fee',
             'status',
             'available'
@@ -23,7 +24,13 @@ class Course extends Model
         'created' => CourseCreated::class
     ];
 
-    public function image(){
-        return $this->morphOne(Image::class,'imageable');
+    /**
+     * Get the user that owns the Course
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
     }
 }
