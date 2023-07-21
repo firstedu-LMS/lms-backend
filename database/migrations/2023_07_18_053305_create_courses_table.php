@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->text('description');
+            $table->integer('image_id');
             $table->integer('fee');
             $table->string('status');
             $table->boolean('available');

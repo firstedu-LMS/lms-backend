@@ -15,7 +15,7 @@ class CategoryController extends BaseController
     public function index()
     {
         $category = Category::all();
-        return $this->success(CategoryResource::collection($category),config('err_code.OK'));
+        return $this->success(CategoryResource::collection($category),'All categories');
     }
 
    
@@ -24,7 +24,7 @@ class CategoryController extends BaseController
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return $this->success(new CategoryResource($category),config('err_code.Created'));
+        return $this->success(new CategoryResource($category),'Created',config('http_status_code.created'));
     }
 
 
@@ -32,9 +32,9 @@ class CategoryController extends BaseController
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],"category not found",config('err_code.Not_Found'));
+            return $this->error([],"category not found",config('http_status_code.not_found'));
         }
-        return $this->success(new CategoryResource($category));
+        return $this->success(new CategoryResource($category),'Details of category');
     }
 
   
@@ -42,20 +42,20 @@ class CategoryController extends BaseController
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],"category not found",config('err_code.Not_Found'));
+            return $this->error([],"category not found",config('http_status_code.not_found'));
         }
         $category->name = $request->name;
         $category->update();
-        return $this->success(new CategoryResource($category),config('err_code.OK'));
+        return $this->success(new CategoryResource($category),'Category updated');
     }
 
     public function destroy($id)
     {
         $category = Category::where('id',$id)->first();
         if(!$category) {
-            return $this->error([],'category not found',config('err_code.Not_Found'));
+            return $this->error([],'category not found',config('http_status_code.not_found'));
         }
         $category->delete();
-        $this->success("success");
+        return $this->success([],"success",config('http_status_code.no_content'));
     }
 }
