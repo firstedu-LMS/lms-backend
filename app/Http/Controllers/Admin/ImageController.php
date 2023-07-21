@@ -20,9 +20,9 @@ class ImageController extends BaseController
 
     protected function handleImageStorage (string $imageIdentifier,$request){
         $filename = time() . "_" . $request->file($imageIdentifier)->getClientOriginalName();
-        request()->file($imageIdentifier)->storeAs($imageIdentifier, $filename);
+        $file = request()->file($imageIdentifier)->storeAs($imageIdentifier, $filename);
         $image =  Image::create([
-            'image'=> $filename
+            'image'=> $file
         ]);
         return $image;
     }
