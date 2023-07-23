@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('image_id');
             $table->integer('fee');
+            $table->string('age');
             $table->string('status');
             $table->boolean('available');
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();

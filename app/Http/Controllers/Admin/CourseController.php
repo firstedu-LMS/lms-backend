@@ -33,6 +33,7 @@ class CourseController extends BaseController
         $course->category_id =  $request->category_id;
         $course->description =  $request->description ;
         $course->fee =  $request->fee;
+        $course->age = $request->age;
         $course->status =   $request->status ;
         $course->image_id = $request->image_id;
         $course->available = json_decode($request->available);
@@ -73,6 +74,7 @@ class CourseController extends BaseController
         $course->category_id =  $request->category_id;
         $course->description =  $request->description ;
         $course->fee =  $request->fee;
+        $course->age = $request->age;
         $course->status =   $request->status ;
         $course->image_id = $request->image_id;
         $course->available = json_decode($request->available);
