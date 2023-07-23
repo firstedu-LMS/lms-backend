@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CareerRequest;
+use App\Http\Resources\CareerResource;
 use App\Models\Career;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class CareerController extends BaseController
     public function index()
     {
         $careers = Career::all();
-        return $this->success($careers,'all careers');
+        return $this->success(CareerResource::collection($careers),'all careers');
     }
 
 
@@ -37,7 +38,7 @@ class CareerController extends BaseController
         $career->salary_period= $request->salary_period;
         $career->employment_status= $request->employment_status;
         $career->save();
-        return $this->success($career,'created',config('http_status_code.created'));
+        return $this->success(new CareerResource($career),'created',config('http_status_code.created'));
     }
 
     /**
@@ -49,7 +50,7 @@ class CareerController extends BaseController
         if (!$career) {
             return $this->error([],'There is no career with this id!!',config('http_status_code.not_found'));
         }
-        return $this->success($career,'Career show for this id');
+        return $this->success(new CareerResource($career),'Career show for this id');
     }
 
     /**
@@ -80,7 +81,7 @@ class CareerController extends BaseController
         $career->salary_period= $request->salary_period;
         $career->employment_status= $request->employment_status;
         $career->update();
-        return $this->success($career,'updated');
+        return $this->success(new CareerResource($career),'updated');
     }
 
     /**
