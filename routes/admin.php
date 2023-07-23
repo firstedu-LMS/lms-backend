@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('courses',CourseController::class);
 Route::apiResource('applications',ApplicationController::class);
 Route::apiResource('careers',CareerController::class);
+Route::apiResource('applicatons',ApplicationController::class);
 Route::post('images',[ImageController::class,'store']);
 
 

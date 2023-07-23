@@ -27,7 +27,7 @@ class CreateRoles extends Command
     public function handle()
     {
         Role::create(['name' => 'admin']);
-        Role::create(['name' => 'client']);
-        Role::create(['name' => 'customer']);
+        Role::create(['name' => 'user']);
+        Role::create(['name' => 'instructor']);
     }
 }
