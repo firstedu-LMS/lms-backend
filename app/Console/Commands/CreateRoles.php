@@ -19,7 +19,7 @@ class CreateRoles extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Role create';
 
     /**
      * Execute the console command.
