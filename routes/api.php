@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::get('getlatestfourcourses',[ClientController::class,'getLatestFourCources']);
+Route::get('courses',[ClientController::class,'getLatestFourCources']);

@@ -17,7 +17,7 @@ class ClientController extends BaseController
         Event::dispatch(new CourseCreated());
 
         $course = cache('courses',function (){
-            return  Course::latest()->take(4)->with('image')->get();
+            return   Course::with('image')->get();
         });
 
         //If the frontend team want one the required fields ,use the GetLatestForCourseResource
