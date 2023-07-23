@@ -28,6 +28,7 @@ class CourseRequest extends FormRequest
            "name" => ["required","min:4"],
            "description" => ["required","min:4"],
            "fee" => ["required","numeric"],
+           "age" => ["required"],
            "status" => ["required","min:4"],
            "available" => ["required"]
         ];
