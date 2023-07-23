@@ -24,7 +24,6 @@ class CourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-           "category_id" => ["required"],
            "name" => ["required","min:4"],
            "description" => ["required","min:4"],
            "fee" => ["required","numeric"],
@@ -36,7 +35,7 @@ class CourseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'required' => 'please fill course :attribute',
+            'required' => 'please fill :attribute',
         ];
     }
     protected function failedValidation(Validator $validator)

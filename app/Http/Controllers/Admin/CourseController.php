@@ -30,7 +30,6 @@ class CourseController extends BaseController
     {
         $course = new Course();
         $course->name =  $request->name;
-        $course->category_id =  $request->category_id;
         $course->description =  $request->description ;
         $course->fee =  $request->fee;
         $course->age = $request->age;
@@ -71,14 +70,13 @@ class CourseController extends BaseController
             return $this->error([],"course not found",config('http_status_code.not_found'));
         }
         $course->name =  $request->name;
-        $course->category_id =  $request->category_id;
         $course->description =  $request->description ;
         $course->fee =  $request->fee;
         $course->age = $request->age;
         $course->status =   $request->status ;
         $course->image_id = $request->image_id;
         $course->available = json_decode($request->available);
-        $course->update(); 
+        $course->update();
         return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 
