@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Event;
 
 class ClientController extends BaseController
 {
-    public function getLatestFourCources(){
+    public function courses(){
         Event::dispatch(new CourseCreated());
 
         $course = cache('courses',function (){
