@@ -10,9 +10,13 @@ class Career extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+
     protected $dispatchesEvent =
     [
         'created' => CareerCreated::class
     ];
+
+    
 
 }
