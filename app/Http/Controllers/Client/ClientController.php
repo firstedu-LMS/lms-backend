@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Event;
 
 class ClientController extends BaseController
 {
+
+    public function courseShow($id){
+        $course =  Course::where('id',$id)->first();
+        return $this->success(new CourseResource($course),'course show');
+    }
+
+    public function careerShow($id){
+        $career =  Career::where('id',$id)->first();
+        return $this->success(new CareerResource($career),'career show');
+    }
+
+
     public function courses(){
 
         Event::dispatch(new CourseCreated());
