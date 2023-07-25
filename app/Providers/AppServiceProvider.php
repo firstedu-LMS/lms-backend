@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Career;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\CareerObserver;
+use App\Models\Course;
+use App\Observers\CourseObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Career::observe(CareerObserver::class);
+        Course::observe(CourseObserver::class);
     }
 }
