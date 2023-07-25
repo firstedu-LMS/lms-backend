@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\CareerCreated;
 use App\Events\CourseCreated;
+use App\Listeners\CareerCacheListener;
 use App\Listeners\CourseCacheListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CourseCreated::class =>[
             CourseCacheListener::class,
+        ],
+        CareerCreated::class =>[
+            CareerCacheListener::class,
         ]
     ];
 
