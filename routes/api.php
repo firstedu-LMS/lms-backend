@@ -27,7 +27,7 @@ Route::get('courses',[ClientController::class,'courses']);
 Route::get('careers',[ClientController::class,'careers']);
 Route::get('courses/{id}',[ClientController::class,'courseShow']);
 Route::get('careers/{id}',[ClientController::class,'careerShow']);
-Route::post('applicatons',[ApplicationController::class,'store']);
+Route::post('applications',[ApplicationController::class,'store']);
 Route::post('register',[AuthController::class,'register'])->name('register');
 Route::post('login',[AuthController::class,'login']);
 Route::post('logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
