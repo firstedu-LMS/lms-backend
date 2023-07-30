@@ -21,7 +21,7 @@ class ApplicationController extends BaseController
     public function store(ApplicationRequest $request)
     {
         $application = new Application();
-        $application->gender = $request->gender;
+        $application->career = $request->career;
         $application->email = $request->email;
         $application->cv_id = $request->cv_id;
         $application->save();

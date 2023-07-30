@@ -19,6 +19,5 @@ class CvFormController extends BaseController
         $CvForm->cv = $file;
         $CvForm->save();
         return $this->success(new CvFormResource($CvForm),'created',config('http_status_code.created'));
-    }
-
+    }    
 }
