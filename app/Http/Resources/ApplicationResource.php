@@ -18,9 +18,9 @@ class ApplicationResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'gender' => $this->gender,
-            'cv' => $this->cv,
-            'created_at' => $this->created_at->format('d-m-y'),
-            'updated_at' => $this->updated_at->format('d-m-y'),
+            'cv_id' => $this->cv_id,
+            'created_at' => $this->created_at->format('d-m-Y'),
+            'updated_at' => $this->updated_at->format('d-m-Y'),
         ];
     }
 }

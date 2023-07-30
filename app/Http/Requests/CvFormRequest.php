@@ -24,9 +24,8 @@ class CvFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => ["required"],
-            "file_id" => ["required"]
-        ];
+            'cv' => 'required'
+       ];
     }
     protected function failedValidation(Validator $validator)
     {

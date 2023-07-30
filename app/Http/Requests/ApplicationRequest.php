@@ -25,7 +25,7 @@ class ApplicationRequest extends FormRequest
     {
         return [
             "email" => ["required","email"],
-            "cv" => ["required","mimes:pdf"],
+            "cv_id" => ["required"],
             "gender" => ["required"]
         ];
     }

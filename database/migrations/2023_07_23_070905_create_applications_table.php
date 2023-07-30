@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("gender");
             $table->string("email");
-            $table->string("cv");
+            $table->string("cv_id");
             $table->timestamps();
         });
     }
