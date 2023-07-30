@@ -17,10 +17,10 @@ class ApplicationResource extends JsonResource
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'gender' => $this->gender,
+            'career' => $this->career,
             'cv_id' => $this->cv_id,
-            'created_at' => $this->created_at->format('d-m-Y'),
-            'updated_at' => $this->updated_at->format('d-m-Y'),
+            'created_at' => $this->created_at->format('j-m-Y'),
+            'updated_at' => $this->updated_at->format('j-m-Y'),
         ];
     }
 }
