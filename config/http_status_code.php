@@ -14,4 +14,4 @@ return [
         'service_unavailable' => 503,
         'true' => true,
         'false' => false
-    ];
+];
