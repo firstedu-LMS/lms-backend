@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Client\ApplicationController;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +26,6 @@ Route::get('courses',[ClientController::class,'courses']);
 Route::get('careers',[ClientController::class,'careers']);
 Route::get('courses/{id}',[ClientController::class,'courseShow']);
 Route::get('careers/{id}',[ClientController::class,'careerShow']);
-Route::post('applications',[ApplicationController::class,'store']);
 Route::post('register',[AuthController::class,'register'])->name('register');
 Route::post('login',[AuthController::class,'login']);
 Route::post('logout',[AuthController::class,'logout'])->middleware('auth:sanctum');

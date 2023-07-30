@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('cv_forms', function (Blueprint $table) {
             $table->id();
-            $table->string('file_id');
-            $table->integer('user_id');
+            $table->string('cv');
             $table->timestamps();
         });
     }
