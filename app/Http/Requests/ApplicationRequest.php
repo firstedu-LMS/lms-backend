@@ -26,7 +26,7 @@ class ApplicationRequest extends FormRequest
         return [
             "email" => ["required","email"],
             "cv_id" => ["required"],
-            "gender" => ["required"]
+            "career" => ["required"]
         ];
     }
     public function messages()
