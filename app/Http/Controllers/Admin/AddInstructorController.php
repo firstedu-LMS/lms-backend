@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Instructor;
@@ -22,6 +23,11 @@ class AddInstructorController extends BaseController
         return $instructorId;
     }
 
+    public function removedApplication($email){
+        $application = Application::where('email',$email)->first();
+        $application->delete();
+    }
+
     public function store(Request $request){
         $user = new User();
         $user->name = $request->name;
@@ -35,6 +41,7 @@ class AddInstructorController extends BaseController
         $instructor->phone = $request->phone;
         $instructor->address = $request->address;
         $instructor->save();
+        $this->removedApplication($user->email);
         return $this->success($instructor,'Created',config('http_status_code.created'));
    }
 }
