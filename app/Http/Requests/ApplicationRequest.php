@@ -24,9 +24,9 @@ class ApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "email" => ["required","email"],
-            "cv_id" => ["required"],
-            "career" => ["required"]
+            "email" => "required|email",
+            "cv_id" => "required",
+            "career" => "required"
         ];
     }
     public function messages()

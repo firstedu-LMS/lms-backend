@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class CategoryRequest extends FormRequest
+class AddInstructorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,19 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:4']
-        ];
-    }
-    public function messages(): array
-    {
-        return [
-            'required' => 'please fill category :attribute',
+            "name" => "required",
+            "email" => "required|unique:users,email|email",
+            "password" => "required",
+            "cv_id" => "required",
+            "phone" => "required",
+            "address" => "required"
         ];
     }
     protected function failedValidation(Validator $validator)
     {
-        throw new ValidationException($validator , response()->json([
-            'errors' => $validator->errors(),
-            'message' => 'Validation Errors'
+        throw new ValidationException($validator,response()->json([
+            "errors" => $validator->errors(),
+            "messages" => "Validation Errors",
         ],422));
     }
 }

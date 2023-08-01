@@ -8,25 +8,25 @@ use Illuminate\Validation\ValidationException;
 
 class AuthRequest extends FormRequest
 {
-    
+
     public function authorize()
     {
         return true;
     }
 
-    
+
     public function rules()
     {
         if (request()->route()->getName() == 'register') {
             return [
-                'name' => ['required' , 'min:4' , 'max:24'],
-                'email' => ['required' , 'email' , 'unique:users,email'],
-                'password' => ['required' , 'min:6' , 'confirmed']
+                'name' => "required|min:4|max:24",
+                'email' => "required|email|unique:users,email",
+                'password' => "required|min:6|confirmed"
             ];
         } else {
             return [
-                'email' => ['required' , 'email'],
-                'password' => ['required' , 'min:6']
+                'email' => "required|email",
+                'password' => "required|min:6"
             ];
         }
 
@@ -40,7 +40,7 @@ class AuthRequest extends FormRequest
             'confirmed' => 'You need to confirm the :attribute'
         ];
     }
-    
+
     public function attributes()
     {
         return [
