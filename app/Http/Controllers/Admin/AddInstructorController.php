@@ -16,7 +16,7 @@ class AddInstructorController extends BaseController
             ->orderByDesc('instructor_id')
             ->value('instructor_id');
         if($latestId){
-            $instructorId = str_pad((string)$latestId + 1 ,4,"0",STR_PAD_LEFT);
+            $instructorId = str_pad((string)$latestId + 1,4,"0",STR_PAD_LEFT);
         }else{
             $instructorId = config('instructorid.id');
         }
