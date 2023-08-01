@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\AddInstructorRequest;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -28,7 +29,7 @@ class AddInstructorController extends BaseController
         $application->delete();
     }
 
-    public function store(Request $request){
+    public function store(AddInstructorRequest $request){
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;

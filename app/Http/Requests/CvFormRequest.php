@@ -24,7 +24,7 @@ class CvFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cv' => 'required'
+            'cv' => 'required|mimes:pdf'
        ];
     }
     protected function failedValidation(Validator $validator)

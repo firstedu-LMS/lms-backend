@@ -24,13 +24,13 @@ class CourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-           "name" => ["required","min:4"],
-           "description" => ["required","min:4"],
-           "fee" => ["required","numeric"],
-           "age" => ["required"],
-           "status" => ["required","min:4"],
-           "available" => ["required"],
-           "image_id" => ["required"]
+           "name" => "required|min:4",
+           "description" => "required|min:4",
+           "fee" => "required|numeric",
+           "age" => "required",
+           "status" => "required","min:4",
+           "available" => "required",
+           "image_id" => "required"
         ];
     }
     public function messages(): array
