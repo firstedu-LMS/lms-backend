@@ -18,7 +18,5 @@ Route::apiResource('cv-forms',CvFormController::class);
 Route::post('images',[ImageController::class,'store']);
 Route::post('files',[FileController::class,'store']);
 Route::post('instructors',[AddInstructorController::class,'store']);
-
-
-
+Route::apiResource('instructors',AddInstructorController::class);
 ?>
