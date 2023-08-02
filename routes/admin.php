@@ -1,13 +1,20 @@
 <?php
 
-use App\Http\Controllers\Admin\ApplicationController;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\FileController;
+use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CvFormController;
-use App\Http\Controllers\Admin\FileController;
-use App\Http\Controllers\Admin\ImageController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\AddInstructorController;
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    $user = $request->user();
+    return User::where('id' , $user->id)->with(['roles','image'])->first();
+});
 
 Route::apiResource('courses',CourseController::class);
 Route::apiResource('applications',ApplicationController::class);
