@@ -9,4 +9,9 @@ class Instructor extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function cv()
+    {
+        return $this->belongsTo(CvForm::class);
+    }
 }
