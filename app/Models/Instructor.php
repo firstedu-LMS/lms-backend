@@ -14,4 +14,8 @@ class Instructor extends Model
     {
         return $this->belongsTo(CvForm::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

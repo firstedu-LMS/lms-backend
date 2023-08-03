@@ -25,10 +25,10 @@ class AddInstructorController extends BaseController
         return $instructorId;
     }
 
-    public function removedApplication($email){
-        $application = Application::where('email',$email)->first();
-        $application->delete();
-    }
+    // public function removedApplication($email){
+    //     $application = Application::where('email',$email)->first();
+    //     $application->delete();
+    // }
 
     public function store(AddInstructorRequest $request){
         $user = new User();
@@ -43,7 +43,7 @@ class AddInstructorController extends BaseController
         $instructor->phone = $request->phone;
         $instructor->address = $request->address;
         $instructor->save();
-        $this->removedApplication($user->email);
+        // $this->removedApplication($user->email);
         return $this->success($instructor,'Created',config('http_status_code.created'));
    }
    public function index()
