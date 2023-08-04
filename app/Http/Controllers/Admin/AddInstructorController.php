@@ -14,15 +14,16 @@ use App\Http\Requests\AddInstructorRequest;
 class AddInstructorController extends BaseController
 {
     public function createInstructorId(){
-        $latestId = Instructor::select('instructor_id')
+        $instructor = Instructor::select('instructor_id')
             ->orderByDesc('instructor_id')
             ->value('instructor_id');
-        if($latestId){
-            $instructorId = str_pad((string)$latestId + 1,4,"0",STR_PAD_LEFT);
+            $instructorIdOnly = substr($instructor,2);
+        if($instructorIdOnly){
+            $instructorId = str_pad((int)$instructorIdOnly +1 ,4,"0",STR_PAD_LEFT);
         }else{
             $instructorId = config('instructorid.id');
         }
-        return $instructorId;
+        return "I-".$instructorId;
     }
 
     public function removedApplication($email){
@@ -37,7 +38,7 @@ class AddInstructorController extends BaseController
         $user->password = $request->password;
         $user->save();
         $instructor = new Instructor();
-        $instructor->instructor_id = $this->createInstructorId();
+        $instructor->instructor_id =$this->createInstructorId();
         $instructor->user_id = $user->id;
         $instructor->cv_id = $request->cv_id;
         $instructor->phone = $request->phone;
