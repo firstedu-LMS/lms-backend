@@ -11,9 +11,16 @@ use App\Http\Resources\InstructorResource;
 class InstructorController extends BaseController
 {
     public function index()
-   {
-    return $this->success(InstructorResource::collection(Instructor::with('cv')->get()),'All Instructor');
-   }
+    {
+         $instructors = Instructor::with('cv')->paginate(1);
+         $paginationData = [
+             'current_page' => $instructors->currentPage(),
+             'last_page' => $instructors->lastPage(),
+             'per_page' => $instructors->perPage(),
+             'total' => $instructors->total(),
+         ];
+     return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
+    }
    public function show($id)
    {
         $instructor = Instructor::where('id',$id)->with('cv')->first();
