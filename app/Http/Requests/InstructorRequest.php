@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class AddInstructorRequest extends FormRequest
+class InstructorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,6 @@ class AddInstructorRequest extends FormRequest
             "email" => "required|unique:users,email|email",
             "password" => "required",
             "cv_id" => "required",
-            "phone" => "required",
-            "address" => "required"
         ];
     }
     protected function failedValidation(Validator $validator)
