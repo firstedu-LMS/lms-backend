@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $numberOfInstructors = 5;
     for ($i=0; $i < $numberOfInstructors; $i++) { 
-        $latestId = Instructor::select('id')
-        ->orderByDesc('id')
-        ->value('id');
-        if ($latestId) {
-            $newId =  (int)$latestId + 1;
-            $instructorId =  str_pad((string)$newId, 4, '0', STR_PAD_LEFT);
-        } else {
-            $instructorId =  config('instructorid.id');
+        $instructor = Instructor::select('instructor_id')
+        ->orderByDesc('instructor_id')
+        ->value('instructor_id');
+        $instructorIdOnly = substr($instructor,2);
+        if($instructorIdOnly){
+            "I-". $instructorId = str_pad((int)$instructorIdOnly +1 ,4,"0",STR_PAD_LEFT);
+        }else{
+            "I-".$instructorId = config('instructorid.id');
         }
             $user = new User();
             $user->name = fake()->name();

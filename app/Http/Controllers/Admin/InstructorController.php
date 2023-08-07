@@ -19,8 +19,9 @@ class InstructorController extends BaseController
              'per_page' => $instructors->perPage(),
              'total' => $instructors->total(),
          ];
-     return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
+        return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
     }
+
    public function show($id)
    {
         $instructor = Instructor::where('id',$id)->with('cv')->first();

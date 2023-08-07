@@ -18,6 +18,7 @@ class ApplicationController extends BaseController
     {
         return $this->success(ApplicationResource::collection(Application::with('cv_form')->get()),'All applications');
     }
+
     public function store(ApplicationRequest $request)
     {
         $application = new Application();
@@ -66,8 +67,6 @@ class ApplicationController extends BaseController
         $instructor->instructor_id =$this->createInstructorId();
         $instructor->user_id = $user->id;
         $instructor->cv_id = $request->cv_id;
-        $instructor->phone = $request->phone;
-        $instructor->address = $request->address;
         $instructor->save();
         $this->removedApplication($user->email);
         return $this->success($instructor,'Created',config('http_status_code.created'));
