@@ -33,7 +33,11 @@ class InstructorController extends BaseController
 
    public function destroy(Instructor $instructor)
    {
-       $instructor->delete();
+        /*
+        * Use this commented code for deleting a collection data of instrucor
+        */
+        // Instructor::whereIn('id', [1, 2, 3])->delete();
+        $instructor->delete();
        return $this->success([],'deleted',config('http_status_code.no_content'));
    }
 }
