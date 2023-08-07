@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Events\CareerCreated;
-use App\Events\CourseCreated;
 use App\Http\Controllers\BaseController;
 use App\Http\Resources\CareerResource;
 use App\Http\Resources\CourseResource;
 use App\Models\Career;
 use App\Models\Course;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
 
 class ClientController extends BaseController
 {
@@ -48,8 +45,7 @@ class ClientController extends BaseController
                 return  Career::all();
             });
         }
-       
-        //If the frontend team want one the required fields ,use the GetLatestForCourseResource
+
         return $this->success(CareerResource::collection($careers),'careers');
     }
 }
