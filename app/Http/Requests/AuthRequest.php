@@ -53,6 +53,6 @@ class AuthRequest extends FormRequest
     {
         throw new ValidationException($validator , response()->json([
             'errors' => $validator->errors()
-        ],422));
+        ],config('http_status_code.unprocessable_content')));
     }
 }

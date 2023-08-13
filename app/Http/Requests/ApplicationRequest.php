@@ -40,6 +40,6 @@ class ApplicationRequest extends FormRequest
         throw new ValidationException($validator,response()->json([
             "errors" => $validator->errors(),
             "messages" => "Validation Errors",
-        ],422));
+        ],config('http_status_code.unprocessable_content')));
     }
 }

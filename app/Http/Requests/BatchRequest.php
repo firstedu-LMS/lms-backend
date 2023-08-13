@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class CareerRequest extends FormRequest
+class BatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,24 +25,21 @@ class CareerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'vacancy' => 'required',
-            'age' => 'required',
-            'job_description' => 'required',
-            'job_requirement' => 'required',
-            'deadline' => "required",
-            'position' => 'required',
-            'salary' => 'required',
-            'salary_period' => 'required',
-            'employment_status' => 'required'
+            'course_id' => 'required',
+            'instructor_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'status' => 'required',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-        throw new ValidationException($validator, response()->json([
-            'errors' => $validator->errors(),
-            'message' => 'Validation Errors'
+        throw new ValidationException($validator,response()->json([
+            "errors" => $validator->errors(),
+            "messages" => "Validation Errors",
         ],config('http_status_code.unprocessable_content')));
     }
 }
- 

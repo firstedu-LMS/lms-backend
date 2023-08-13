@@ -19,8 +19,9 @@ class InstructorController extends BaseController
              'per_page' => $instructors->perPage(),
              'total' => $instructors->total(),
          ];
-     return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
+        return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
     }
+
    public function show($id)
    {
         $instructor = Instructor::where('id',$id)->with('cv')->first();
@@ -32,7 +33,11 @@ class InstructorController extends BaseController
 
    public function destroy(Instructor $instructor)
    {
-       $instructor->delete();
+        /*
+        * Use this commented code for deleting a collection data of instrucor
+        */
+        // Instructor::whereIn('id', [1, 2, 3])->delete();
+        $instructor->delete();
        return $this->success([],'deleted',config('http_status_code.no_content'));
    }
 }
