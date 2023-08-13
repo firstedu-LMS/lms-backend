@@ -10,4 +10,13 @@ class Batch extends Model
 {
     use HasFactory,SoftDeletes;
     protected $guarded =[];
+    public function instructor()
+    {
+        return $this->belongsTo(Instructor::class);
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+    
 }
