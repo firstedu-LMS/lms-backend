@@ -24,7 +24,6 @@ class BatchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
             'course_id' => 'required',
             'instructor_id' => 'required',
             'start_date' => 'required',

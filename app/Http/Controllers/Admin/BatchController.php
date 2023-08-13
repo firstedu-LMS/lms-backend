@@ -1,16 +1,18 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BatchRequest;
 use App\Http\Resources\BatchResource;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use App\Models\Batch;
+use Illuminate\Support\Facades\Validator;
 
 class BatchController extends BaseController
 {
     public function index()
     {
-        $batches = Batch::all();
+        $batches = Batch::withTrashed()->get();
         return $this->success(BatchResource::collection($batches),'all batches');
     }
 
@@ -18,9 +20,9 @@ class BatchController extends BaseController
         $batch = Batch::select('name')
             ->orderByDesc('name')
             ->value('name');
-            $batchId = substr($batch,2);
+            $batchId = substr($batch,6);
         if($batchId){
-            $batchName = 'Batch-'. $batchId + 1;
+            $batchName = 'Batch-'.(int)$batchId + 1;
         }else{
             $batchName = config('batch.name');
         }
@@ -53,8 +55,21 @@ class BatchController extends BaseController
     }
 
   
-    public function update(BatchRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'instructor_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'status' => 'required',
+        ]);
+ 
+        if ($validator->fails()) {
+            return $this->error($validator->errors(),[],config('http_status_code.unprocessable_content'));
+        }
+
         $batch = Batch::where('id',$id)->first();
         if(!$batch) {
             return $this->error([],"batch not found",config('http_status_code.not_found'));
