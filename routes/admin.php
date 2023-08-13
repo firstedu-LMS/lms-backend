@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\WeekController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,6 @@ Route::post('images',[ImageController::class,'store']);
 Route::post('files',[FileController::class,'store']);
 Route::post('applications/add-instructor',[ApplicationController::class,'addInstructor']);
 Route::apiResource('instructors',InstructorController::class);
+Route::apiResource('weeks',WeekController::class);
 Route::apiResource('batches',BatchController::class);
 ?>
