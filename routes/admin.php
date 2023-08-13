@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CvFormController;
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\BatchController;
+use App\Http\Controllers\Admin\LessonController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user = $request->user();
@@ -28,4 +29,5 @@ Route::post('applications/add-instructor',[ApplicationController::class,'addInst
 Route::apiResource('instructors',InstructorController::class);
 Route::apiResource('weeks',WeekController::class);
 Route::apiResource('batches',BatchController::class);
+Route::apiResource('lessons',LessonController::class);
 ?>
