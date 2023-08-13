@@ -6,7 +6,7 @@ return [
         'created' => 201,
         'no_content' => 204,
         'bad_request' => 400,
-        'unprocessable_content' => 400,
+        'unprocessable_content' => 422,
         'unauthorized' => 401,
         'forbidden' => 403,
         'not_found' => 404,
