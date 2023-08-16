@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-//This route will generate 5 
+//This route will generate 5
 Route::get('/', function () {
     $numberOfInstructors = 5;
     for ($i = 0; $i < $numberOfInstructors; $i++) {
@@ -54,8 +54,8 @@ Route::get('/sql', function () {
         $data = json_decode($instructor, true);
         $tableName = "instructors";
         $columns = "`" . implode("`, `", array_keys($data)) . "`";
-        $values = []; 
-        foreach ($data as $value) { 
+        $values = [];
+        foreach ($data as $value) {
             if ($value === null) {
                 $values[] = "NULL";
             } else {

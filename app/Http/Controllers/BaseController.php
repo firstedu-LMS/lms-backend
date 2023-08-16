@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -24,7 +23,7 @@ class BaseController extends Controller
             [],
             $err,
             $message,
-            $code , 
+            $code ,
             config('http_status_code.false')
         );
     }
