@@ -14,6 +14,13 @@ class WeekResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'course_id' => $this->course_id,
+            'batch_id' => $this->batch_id,
+            'course' => $this->course,
+            'batch' => $this->batch,
+            'week_number' => $this->week_number
+        ];
     }
 }

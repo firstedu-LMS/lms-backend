@@ -17,19 +17,21 @@ use App\Http\Controllers\Admin\VideoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user = $request->user();
-    return User::where('id' , $user->id)->with(['roles','image'])->first();
+    return User::where('id', $user->id)->with(['roles','image'])->first();
 });
 
-Route::apiResource('courses',CourseController::class);
-Route::apiResource('applications',ApplicationController::class);
-Route::apiResource('careers',CareerController::class);
-Route::apiResource('cv-forms',CvFormController::class);
-Route::post('images',[ImageController::class,'store']);
-Route::post('files',[FileController::class,'store']);
-Route::post('videos',[VideoController::class,'store']);
-Route::post('applications/add-instructor',[ApplicationController::class,'addInstructor']);
-Route::apiResource('instructors',InstructorController::class);
-Route::apiResource('weeks',WeekController::class);
-Route::apiResource('batches',BatchController::class);
-Route::apiResource('lessons',LessonController::class);
-?>
+Route::apiResource('courses', CourseController::class);
+Route::apiResource('applications', ApplicationController::class);
+Route::apiResource('careers', CareerController::class);
+Route::apiResource('cv-forms', CvFormController::class);
+Route::post('images', [ImageController::class,'store']);
+Route::post('files', [FileController::class,'store']);
+Route::post('videos', [VideoController::class,'store']);
+Route::post('applications/add-instructor', [ApplicationController::class,'addInstructor']);
+Route::apiResource('instructors', InstructorController::class);
+Route::apiResource('weeks', WeekController::class)->except(['index']);
+Route::apiResource('batches', BatchController::class)->except(['index']);
+Route::apiResource('lessons', LessonController::class)->except(['index']);
+Route::get('batches/{course_id}', [BatchController::class,'index']);
+Route::get('weeks/{batch_id}', [WeekController::class,'index']);
+Route::get('lessons/{week_id}', [LessonController::class,'index']);

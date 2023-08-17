@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use App\Models\Week;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
@@ -12,10 +13,11 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($week_id)
     {
-        $lesson = Lesson::with("video")->with("week")->with("course")->get();
-        return $lesson;
+        $week = Week::where('id', $week_id)->first();
+        $lessons = Lesson::where('week_id', $week->id)->with(['video','week','course','batch'])->get();
+        return $this->success(LessonResource::collection($lessons), 'all lessons');
     }
 
 
@@ -41,11 +43,11 @@ class LessonController extends Controller
      */
     public function show(string $id)
     {
-        $lesson =  Lesson::where('id',$id)->first();
-        if(!$lesson) {
-            return $this->error([],"lesson not found",config('http_status_code.not_found'));
+        $lesson =  Lesson::where('id', $id)->first();
+        if (!$lesson) {
+            return $this->error([], "lesson not found", config('http_status_code.not_found'));
         }
-        return $this->success(new LessonResource($lesson),'Details of lesson');
+        return $this->success(new LessonResource($lesson), 'Details of lesson');
     }
 
     /**
@@ -61,9 +63,9 @@ class LessonController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $lesson = Lesson::where('id',$id)->first();
-        if(!$lesson) {
-            return $this->error([],"lesson not found",config('http_status_code.not_found'));
+        $lesson = Lesson::where('id', $id)->first();
+        if (!$lesson) {
+            return $this->error([], "lesson not found", config('http_status_code.not_found'));
         }
         $lesson = new Lesson();
         $lesson->name = $request->name;
@@ -73,7 +75,7 @@ class LessonController extends Controller
         $lesson->course_id = $request->course_id;
         $lesson->batch_id = $request->batch_id;
         $lesson->update();
-        return $this->success(new LessonResource($lesson),'lesson show');
+        return $this->success(new LessonResource($lesson), 'lesson show');
     }
 
     /**
@@ -81,8 +83,8 @@ class LessonController extends Controller
      */
     public function destroy(string $id)
     {
-        $lesson = Lesson::where('id',$id)->first();
+        $lesson = Lesson::where('id', $id)->first();
         $lesson->delete();
-        return $this->success([],'deleted',config('http_status_code.no_content'));
+        return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 }
