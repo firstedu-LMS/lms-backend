@@ -16,7 +16,7 @@ class BatchResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' =>$this->name,
+            'name' => $this->name,
             'course_id' => $this->course_id,
             'instructor_id' => $this->instructor_id,
             'start_date' => $this->start_date,
@@ -27,6 +27,8 @@ class BatchResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
+            'instructor' => $this->instructor,
+            'course' => $this->course
         ];
     }
 }

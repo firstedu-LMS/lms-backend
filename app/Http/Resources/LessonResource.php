@@ -22,6 +22,10 @@ class LessonResource extends JsonResource
             'week_id' => $this->week_id,
             'course_id' => $this->course_id,
             'batch_id' => $this->batch_id,
+            'week' => $this->week,
+            'course' => $this->course,
+            'video' => $this->video,
+            'batch' => $this->batch
         ];
     }
 }
