@@ -7,50 +7,54 @@ use Illuminate\Support\Str;
 
 class Backup extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'backup {dbName}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'model name to backup as .sql file';
+
+    protected function filterNull($data)
+    {
+        $values = [];
+        foreach ($data as $value) {
+            if ($value === null) {
+                $values[] = "NULL";
+            } else {
+                $values[] = "'" . $value . "'";
+            }
+        }
+        return $values;
+    }
+
+    protected function createDir($path): void
+    {
+        mkdir($path, 0777, true);
+    }
+
 
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
+        //This code is to resolve import model issue
         $modelName = 'App\\Models\\' . Str::studly($this->argument('dbName'));
+        $filePath =  base_path('app') . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . Str::studly($this->argument('dbName')) . "Backup.sql";
+        $dirPath =  base_path('app') . DIRECTORY_SEPARATOR . "backup";
+        $tableName = Str::snake($this->argument('dbName')) . "s";
         $collection = $modelName::all();
+
+        //This $i is used to track the index of $collection
         $i = 0;
         $arryLength = count($collection);
+
         foreach ($collection as $index => $object) {
             $i = $index;
             $data = json_decode($object, true);
-            $tableName = Str::snake($this->argument('dbName')) . "s";
             $columns = "`" . implode("`, `", array_keys($data)) . "`";
-            $values = [];
 
-            foreach ($data as $value) {
-                if ($value === null) {
-                    $values[] = "NULL";
-                } else {
-                    $values[] = "'" . $value . "'";
-                }
-            }
+            $valuesString = implode(", ", $this->filterNull($data));
 
-            $valuesString = implode(", ", $values);
-            $filePath =  base_path('app') . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . Str::studly($this->argument('dbName')) . "Backup.sql";
-            $dir =  base_path('app') . DIRECTORY_SEPARATOR . "backup";
-
-            if (!is_dir($dir)) {
-                mkdir($dir, 0777, true);
+            if (!is_dir($dirPath)) {
+                $this->createDir($dirPath);
             }
 
             if (!file_exists($filePath)) {
