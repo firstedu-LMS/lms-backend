@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
+    public function video()
+    {
+        return $this->belongsTo(Video::class);
+    }
     use HasFactory;
     protected $guarded = [];
     /**

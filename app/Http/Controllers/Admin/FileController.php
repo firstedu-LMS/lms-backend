@@ -10,7 +10,7 @@ class FileController extends BaseController
 {
     public function store(Request $request){
         $filename = time() . "_" . $request->file('file')->getclientoriginalname();
-        $filestore = request()->file('file')->storeas('cvform', $filename);
+        $fileStore = request()->file('file')->storeas('cvform', $filename);
         $file =  File::create([
             'file'=> $fileStore
         ]);

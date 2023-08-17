@@ -12,9 +12,10 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($week)
+    public function index()
     {
-        
+        $lesson = Lesson::with("video")->with("week")->with("course")->get();
+        return $lesson;
     }
 
 

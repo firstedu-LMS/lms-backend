@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\BatchController;
 use App\Http\Controllers\Admin\LessonController;
+use App\Http\Controllers\Admin\VideoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user = $request->user();
@@ -25,6 +26,7 @@ Route::apiResource('careers',CareerController::class);
 Route::apiResource('cv-forms',CvFormController::class);
 Route::post('images',[ImageController::class,'store']);
 Route::post('files',[FileController::class,'store']);
+Route::post('videos',[VideoController::class,'store']);
 Route::post('applications/add-instructor',[ApplicationController::class,'addInstructor']);
 Route::apiResource('instructors',InstructorController::class);
 Route::apiResource('weeks',WeekController::class);

@@ -11,7 +11,6 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\ApplicationRequest;
 use App\Http\Requests\InstructorRequest;
 use App\Http\Resources\ApplicationResource;
-use App\Models\Week;
 
 class ApplicationController extends BaseController
 {
@@ -38,18 +37,6 @@ class ApplicationController extends BaseController
         }
         $application->delete();
         return $this->success([],'deleted',config('http_status_code.no_content'));
-    }
-    public function createBatchName(){
-        $week = Week::select('name')
-            ->orderByDesc('name')
-            ->value('name');
-            $weekId = substr($week,5);
-        if($weekId){
-            $weekName = 'week-'. $weekId + 1;
-        }else{
-            $weekName = config('week.name');
-        }
-        return 'week-'.$weekName;
     }
 
     public function createInstructorId(){
