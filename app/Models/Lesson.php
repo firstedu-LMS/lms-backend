@@ -32,4 +32,8 @@ class Lesson extends Model
     {
         return $this->belongsTo(Batch::class);
     }
+     public function video()
+    {
+        return $this->belongsTo(Video::class);
+    }
 }
