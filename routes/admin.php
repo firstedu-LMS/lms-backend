@@ -10,9 +10,11 @@ use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\CvFormController;
 use App\Http\Controllers\Admin\ApplicationController;
+use App\Http\Controllers\Admin\AssignmentController;
 use App\Http\Controllers\Admin\InstructorController;
 use App\Http\Controllers\Admin\BatchController;
 use App\Http\Controllers\Admin\LessonController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\VideoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -32,6 +34,8 @@ Route::apiResource('instructors', InstructorController::class);
 Route::apiResource('weeks', WeekController::class)->except(['index']);
 Route::apiResource('batches', BatchController::class)->except(['index']);
 Route::apiResource('lessons', LessonController::class)->except(['index']);
+Route::apiResource('questions', QuestionController::class);
+Route::apiResource('assignments', AssignmentController::class);
 Route::get('batches/all/{course_id}', [BatchController::class,'index']);
 Route::get('weeks/all/{batch_id}', [WeekController::class,'index']);
 Route::get('lessons/all/{week_id}', [LessonController::class,'index']);
