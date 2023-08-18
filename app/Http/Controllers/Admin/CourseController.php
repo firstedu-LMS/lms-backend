@@ -19,7 +19,7 @@ class CourseController extends BaseController
      */
     public function index()
     {
-        return $this->success(CourseResource::collection(Course::with('image')->withTrashed()->get()),'All courses');
+        return $this->success(CourseResource::collection(Course::with('image')->get()),'All courses');
     }
 
 
