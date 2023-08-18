@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Models\Week;
 use Illuminate\Http\Request;
 
-class LessonController extends Controller
+class LessonController extends BaseController
 {
     /**
      * Display a listing of the resource.
