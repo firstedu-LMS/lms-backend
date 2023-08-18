@@ -15,7 +15,7 @@ class BatchController extends BaseController
     public function index($course_id)
     {
         $course = Course::where('id', $course_id)->first();
-        $batches = Batch::where('course_id', $course->id)->with(['course','instructor'])->withTrashed()->get();
+        $batches = Batch::where('course_id', $course->id)->with(['course','instructor.user'])->withTrashed()->get();
         return $this->success(BatchResource::collection($batches), 'all batches');
     }
 
