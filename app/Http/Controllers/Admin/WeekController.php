@@ -15,7 +15,7 @@ class WeekController extends BaseController
     public function index($batch_id)
     {
         $batch = Batch::where('id', $batch_id)->first();
-        $weeks = Week::where('batch_id', $batch_id->id)with(['course','batch'])->get();
+        $weeks = Week::where('batch_id', $batch_id->id)->with(['course','batch'])->get();
         return $this->success(WeekResource::collection($weeks), 'all weeks');
     }
 
