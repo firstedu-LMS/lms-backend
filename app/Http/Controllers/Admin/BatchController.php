@@ -51,7 +51,7 @@ class BatchController extends BaseController
 
     public function show($id)
     {
-        $batch = Batch::where('id', $id)->first();
+        $batch = Batch::withTrashed()->where('id', $id)->first();
         if (!$batch) {
             return $this->error([], "batch not found", config('http_status_code.not_found'));
         }
@@ -74,7 +74,7 @@ class BatchController extends BaseController
             return $this->error($validator->errors(), [], config('http_status_code.unprocessable_content'));
         }
 
-        $batch = Batch::where('id', $id)->first();
+        $batch = Batch::withTrashed()->where('id', $id)->first();
         if (!$batch) {
             return $this->error([], "batch not found", config('http_status_code.not_found'));
         }
@@ -87,7 +87,9 @@ class BatchController extends BaseController
         $batch->end_time = $request->end_time;
         $batch->status = $request->status;
         $batch->update();
-        if ($batch->status == true) {
+        if ($batch->status == true || $batch->status == 1) {
+            $batch->restore();
+        } else {
             $batch->delete();
         }
         return $this->success(new BatchResource($batch), 'updated');
