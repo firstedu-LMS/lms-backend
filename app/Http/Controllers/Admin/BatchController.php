@@ -15,7 +15,7 @@ class BatchController extends BaseController
     public function index($course_id)
     {
         $course = Course::where('id', $course_id)->first();
-        $batches = Batch::where('course_id', $course->id)->with(['course','instructor'])->withTrashed()->get();
+        $batches = Batch::where('course_id', $course->id)->withTrashed()->with(['course','instructor'])->get();
         return $this->success(BatchResource::collection($batches), 'all batches');
     }
 
@@ -87,12 +87,17 @@ class BatchController extends BaseController
         $batch->end_time = $request->end_time;
         $batch->status = $request->status;
         $batch->update();
+        if ($batch->status == true) {
+            $batch->delete();
+        }
         return $this->success(new BatchResource($batch), 'updated');
     }
 
     public function destroy($id)
     {
         $batch = Batch::where('id', $id)->first();
+        $batch->status = false;
+        $batch->update();
         $batch->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
