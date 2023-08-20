@@ -25,7 +25,7 @@ Route::get('/', function () {
             ->value('instructor_id');
         $instructorIdOnly = substr($instructor, 2);
         if ($instructorIdOnly) {
-             $instructorId = str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
+             $instructorId = "I-".str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
         } else {
             $instructorId = config('instructorid.id');
         }
@@ -36,7 +36,7 @@ Route::get('/', function () {
         $user->save();
         $instructor = new Instructor();
         $instructor->user_id = $user->id;
-        $instructor->instructor_id ="I-" . $instructorId;
+        $instructor->instructor_id = $instructorId;
         $instructor->cv_id = 1;
         $instructor->save();
     }
