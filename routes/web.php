@@ -25,9 +25,9 @@ Route::get('/', function () {
             ->value('instructor_id');
         $instructorIdOnly = substr($instructor, 2);
         if ($instructorIdOnly) {
-            "I-" . $instructorId = str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
+             $instructorId = "I-".str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
         } else {
-            "I-" . $instructorId = config('instructorid.id');
+            $instructorId = "I". config('instructorid.id');
         }
         $user = new User();
         $user->name = fake()->name();
