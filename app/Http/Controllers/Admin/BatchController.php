@@ -87,12 +87,17 @@ class BatchController extends BaseController
         $batch->end_time = $request->end_time;
         $batch->status = $request->status;
         $batch->update();
+        if ($batch->status == true) {
+            $batch->delete();
+        }
         return $this->success(new BatchResource($batch), 'updated');
     }
 
     public function destroy($id)
     {
         $batch = Batch::where('id', $id)->first();
+        $batch->status = false;
+        $batch->update();
         $batch->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
