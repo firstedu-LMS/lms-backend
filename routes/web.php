@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\AdminLoginVertifyMail;
 use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\User;
@@ -25,9 +26,9 @@ Route::get('/', function () {
             ->value('instructor_id');
         $instructorIdOnly = substr($instructor, 2);
         if ($instructorIdOnly) {
-             $instructorId = "I-".str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
+             $instructorId = "I-" . str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
         } else {
-            $instructorId = "I". config('instructorid.id');
+            $instructorId = "I" . config('instructorid.id');
         }
         $user = new User();
         $user->name = fake()->name();
@@ -43,13 +44,17 @@ Route::get('/', function () {
     return "Finish";
 });
 
+Route::get('/mail', function () {
+    Mail::to('myatkyawt974@gmail.com')->send(new AdminLoginVertifyMail());
+    echo "mail sended";
+});
 
 Route::get('/sql', function () {
     $instructors =  Instructor::all();
     echo  $instructors;
     $i = 0;
     $arryLength = count($instructors);
-    foreach ($instructors as $index=>$instructor) {
+    foreach ($instructors as $index => $instructor) {
         $i = $index;
         $data = json_decode($instructor, true);
         $tableName = "instructors";
@@ -63,20 +68,20 @@ Route::get('/sql', function () {
             }
         }
         $valuesString = implode(", ", $values);
-        $filePath =  base_path('app') . DIRECTORY_SEPARATOR ."backup". DIRECTORY_SEPARATOR."backup.sql";
-        $dir =  base_path('app') . DIRECTORY_SEPARATOR ."backup";
+        $filePath =  base_path('app') . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . "backup.sql";
+        $dir =  base_path('app') . DIRECTORY_SEPARATOR . "backup";
         if (!is_dir($dir)) {
-            mkdir($dir, 0777,true);
+            mkdir($dir, 0777, true);
         }
-        if (!file_exists($filePath) ) {
+        if (!file_exists($filePath)) {
             $header  = "INSERT INTO `$tableName` ($columns) VALUES\n";
-             file_put_contents($filePath, $header ,FILE_APPEND);
+             file_put_contents($filePath, $header, FILE_APPEND);
         }
         if ($i == $arryLength - 1) {
-            $sql = "  ($valuesString);"."\n";
-        }else{
-            $sql = "  ($valuesString),"."\n";
+            $sql = "  ($valuesString);" . "\n";
+        } else {
+            $sql = "  ($valuesString)," . "\n";
         }
-        file_put_contents($filePath, $sql ,FILE_APPEND);
+        file_put_contents($filePath, $sql, FILE_APPEND);
     }
 });
