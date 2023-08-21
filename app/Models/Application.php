@@ -10,7 +10,7 @@ class Application extends Model
     protected $guarded = [];
     use HasFactory;
 
-    public function cv_form(){
-         return $this->belongsTo(CvForm::class);
+    public function cv(){
+         return $this->belongsTo(CvForm::class,'cv_id');
     }
 }

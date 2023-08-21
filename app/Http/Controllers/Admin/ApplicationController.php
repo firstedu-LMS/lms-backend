@@ -16,7 +16,7 @@ class ApplicationController extends BaseController
 {
     public function index()
     {
-        return $this->success(ApplicationResource::collection(Application::with('cv_form')->get()),'All applications');
+        return $this->success(ApplicationResource::collection(Application::with('cv')->get()),'All applications');
     }
 
     public function store(ApplicationRequest $request)
