@@ -19,9 +19,9 @@ class WeekController extends BaseController
         return $this->success(WeekResource::collection($weeks), 'all weeks');
     }
 
-    public function createWeekNumber()
+    public function createWeekNumber($batch_id)
     {
-        $week = Week::select('week_number')
+        $week = Week::where('batch_id', $batch_id)->select('week_number')
             ->orderByDesc('week_number')
             ->value('week_number');
             $weekId = substr($week, 5);
@@ -32,15 +32,17 @@ class WeekController extends BaseController
         }
         return 'week-' . $weekName;
     }
+
     public function store(WeekRequest $request)
     {
         $week = new Week();
         $week->course_id = $request->course_id;
         $week->batch_id = $request->batch_id;
-        $week->week_number = $this->createWeekNumber();
+        $week->week_number = $this->createWeekNumber($request->batch_id);
         $week->save();
         return $this->success(new WeekResource($week), 'Created', config('http_status_code.created'));
     }
+
     public function show($id)
     {
          $week = Week::where('id', $id)->first();
@@ -49,6 +51,7 @@ class WeekController extends BaseController
         }
          return $this->success(new WeekResource($week), 'Week show for this id');
     }
+
     public function destroy(Week $week)
     {
         $week->delete();

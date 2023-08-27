@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\AuthRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Yaf\Registry;
 
 class AuthController extends BaseController
 {
-
-
     public function register(AuthRequest $request)
     {
         $user = new User();
@@ -32,6 +32,7 @@ class AuthController extends BaseController
         $user = User::where('email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
+                event(new Registered($user));
                 $token = $user->createToken("first-lms")->plainTextToken;
                 if ($user->image_id !== null) {
                     $user = User::where('email', $request->email)->with(['image', 'roles'])->first();
