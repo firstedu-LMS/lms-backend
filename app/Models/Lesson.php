@@ -30,6 +30,6 @@ class Lesson extends Model
     }
      public function video()
     {
-        return $this->belongsTo(Video::class);
+        return $this->belongsTo(Video::class,'video_id');
     }
 }
