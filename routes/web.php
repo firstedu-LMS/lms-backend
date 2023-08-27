@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Mail\AdminLoginVertifyMail;
 use App\Models\Course;
 use App\Models\Instructor;
@@ -85,3 +86,13 @@ Route::get('/sql', function () {
         file_put_contents($filePath, $sql, FILE_APPEND);
     }
 });
+
+
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return response()->json([
+        'data' => 'oki'
+    ]);
+})->middleware(['auth', 'signed'])->name('verification.verify');

@@ -11,7 +11,7 @@ class Backup extends Command
 
     protected $description = 'model name to backup as .sql file';
 
-    protected function filterNull($data)
+    protected function filterNull(array $data): array
     {
         $values = [];
         foreach ($data as $value) {
@@ -44,6 +44,7 @@ class Backup extends Command
 
         //This $i is used to track the index of $collection
         $i = 0;
+
         $arryLength = count($collection);
 
         foreach ($collection as $index => $object) {
