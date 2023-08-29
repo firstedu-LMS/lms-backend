@@ -24,7 +24,7 @@ class LessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required=',
+            'name' => 'required',
             'description' => 'required',
             'video_id' => 'required',
             'week_id' => 'required',
