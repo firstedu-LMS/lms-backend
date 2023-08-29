@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Models\Week;
+use App\Http\Requests\LessonRequest;
 use Illuminate\Http\Request;
 
 class LessonController extends BaseController
@@ -26,7 +27,7 @@ class LessonController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LessonRequest $request)
     {
         $lesson = new Lesson();
         $lesson->name = $request->name;
@@ -62,7 +63,7 @@ class LessonController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(LessonRequest $request, string $id)
     {
         $lesson = Lesson::where('id', $id)->first();
         if (!$lesson) {
