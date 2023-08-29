@@ -19,25 +19,21 @@ class InstructorController extends BaseController
              'per_page' => $instructors->perPage(),
              'total' => $instructors->total(),
          ];
-        return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' =>$paginationData] , 'instructors' , 200);
+         return $this->success(['instructors' => InstructorResource::collection($instructors) , 'pagination' => $paginationData], 'instructors', 200);
     }
 
-   public function show($id)
-   {
-        $instructor = Instructor::where('id',$id)->with('cv')->first();
-        if(!$instructor) {
-            return $this->error([],'there is no instructor',config('http_status_code.not_found'));
+    public function show($id)
+    {
+        $instructor = Instructor::where('id', $id)->with('cv')->first();
+        if (!$instructor) {
+            return $this->error([], 'there is no instructor', config('http_status_code.not_found'));
         }
-        return $this->success(new InstructorResource($instructor),'Instructor show for this id');
-   }
+        return $this->success(new InstructorResource($instructor), 'Instructor show for this id');
+    }
 
-   public function destroy(Instructor $instructor)
-   {
-        /*
-        * Use this commented code for deleting a collection data of instrucor
-        */
-        // Instructor::whereIn('id', [1, 2, 3])->delete();
+    public function destroy(Instructor $instructor)
+    {
         $instructor->delete();
-       return $this->success([],'deleted',config('http_status_code.no_content'));
-   }
+        return $this->success([], 'deleted', config('http_status_code.no_content'));
+    }
 }

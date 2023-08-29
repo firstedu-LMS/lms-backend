@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\CareerCreated;
 use App\Events\CourseCreated;
+use App\Events\CourseDeleteResignCache;
 use App\Listeners\CareerCacheListener;
+use App\Listeners\CourseDeleteResignCacheListener;
 use App\Listeners\CourseCacheListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,11 +24,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        CourseCreated::class =>[
+        CourseCreated::class => [
             CourseCacheListener::class,
         ],
-        CareerCreated::class =>[
+        CareerCreated::class => [
             CareerCacheListener::class,
+        ],
+        CourseDeleteResignCache::class => [
+            CourseDeleteResignCacheListener::class
         ]
     ];
 
