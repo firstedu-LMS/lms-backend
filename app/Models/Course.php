@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
+
     protected $fillable = [
             'name',
             'description',
@@ -21,6 +22,7 @@ class Course extends Model
     protected $dispatchesEvent =
     [
         'created' => CourseCreated::class
+
     ];
 
     /**
