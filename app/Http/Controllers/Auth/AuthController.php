@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
-use App\Http\Controllers\BaseController;
-use App\Http\Requests\AuthRequest;
-use App\Models\Student;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\BaseController;
 
 class AuthController extends BaseController
 {
