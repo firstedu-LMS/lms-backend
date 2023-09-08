@@ -21,7 +21,7 @@ class BatchController extends BaseController
 
     public function createBatchName()
     {
-        $batch = Batch::select('name')
+        $batch = Batch::withTrashed()->select('name')
             ->orderByDesc('name')
             ->value('name');
             $batchId = substr($batch, 6);

@@ -12,7 +12,7 @@ class InstructorController extends BaseController
 {
     public function index()
     {
-         $instructors = Instructor::with('cv')->paginate(1);
+         $instructors = Instructor::with('cv')->paginate(5);
          $paginationData = [
              'current_page' => $instructors->currentPage(),
              'last_page' => $instructors->lastPage(),
