@@ -74,7 +74,7 @@ class ApplicationController extends BaseController
         $instructor->user_id = $user->id;
         $instructor->cv_id = $request->cv_id;
         $instructor->save();
-        Mail::to($user->email)->send(new InformInstructorMail($request->email, $request->password));
+        //Mail::to($user->email)->send(new InformInstructorMail($request->email, $request->password));
         $this->removedApplication($user->email);
         return $this->success($instructor, 'Created', config('http_status_code.created'));
     }
