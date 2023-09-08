@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Yaf\Registry;
 
 class AuthController extends BaseController
 {
@@ -22,7 +21,14 @@ class AuthController extends BaseController
             $user->image_id = $request->image_id;
         }
         $user->save();
-        $user->assignRole('user');
+        if($request->role == "admin") {
+            $user->assignRole('admin');
+        }else if($request->role == "instructor") {
+            $user->assignRole('instructor');
+        }
+        $user->assignRole('student');
+        $student = new Student();
+        $student->user_id = $user->id;
         $token = $user->createToken("first-lms")->plainTextToken;
         $user = User::where('id', $user->id)->with('image')->first();
         return $this->success(["user" => $user, "token" => $token], "Created", config('http_status_code.created'));
