@@ -22,6 +22,7 @@ class AuthController extends BaseController
             $user->image_id = $request->image_id;
         }
         $user->save();
+        $user->assignRole('user');
         $token = $user->createToken("first-lms")->plainTextToken;
         $user = User::where('id', $user->id)->with('image')->first();
         return $this->success(["user" => $user, "token" => $token], "Created", config('http_status_code.created'));

@@ -53,4 +53,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Image::class, 'image_id');
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }
