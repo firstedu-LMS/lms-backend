@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\AuthRequest;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -21,22 +22,23 @@ class AuthController extends BaseController
             $user->image_id = $request->image_id;
         }
         $user->save();
-        if($request->role == "admin") {
-            $user->assignRole('admin');
-        }else if($request->role == "instructor") {
-            $user->assignRole('instructor');
+        if ($request->role) {
+            $user->assignRole($request->role);
+        } else {
+            $user->assignRole('student');
+            $student = new Student();
+            $student->user_id = $user->id;
+            $student->save();
         }
-        $user->assignRole('student');
-        $student = new Student();
-        $student->user_id = $user->id;
-        $token = $user->createToken("first-lms")->plainTextToken;
         $user = User::where('id', $user->id)->with('image')->first();
+        $token = $user->createToken("first-lms")->plainTextToken;
+
         return $this->success(["user" => $user, "token" => $token], "Created", config('http_status_code.created'));
     }
 
     public function login(AuthRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('roles')->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 event(new Registered($user));
