@@ -1,7 +1,11 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\CareerController;
+//use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
-Route::get('courses', [ClientController::class,'courses']);
-Route::get('careers', [ClientController::class,'careers']);
-Route::get('courses/{id}', [ClientController::class,'courseShow']);
-Route::get('careers/{id}', [ClientController::class,'careerShow']);
+Route::get('courses', [CourseController::class,'index']);
+Route::get('careers', [CareerController::class,'index']);
+Route::get('courses/{id}', [CourseController::class,'show']);
+Route::get('careers/{id}', [CareerController::class,'show']);
 Route::post('register', [AuthController::class,'register'])->name('register');
 Route::post('login', [AuthController::class,'login']);
 Route::post('logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
