@@ -11,6 +11,20 @@ use App\Http\Controllers\BaseController;
 
 class AuthController extends BaseController
 {
+    public function createStudentId()
+    {
+        $student = Student::select('student_id')
+            ->orderByDesc('student_id')
+            ->value('student_id');
+            $studentIdOnly = substr($student, 2);
+        if ($studentIdOnly) {
+            $studentId = str_pad((int)$studentIdOnly + 1, 4, "0", STR_PAD_LEFT);
+        } else {
+            $studentId = config('student.id');
+        }
+        return "S-" . $studentId;
+    }
+
     public function register(AuthRequest $request)
     {
         $user = new User();
@@ -26,6 +40,7 @@ class AuthController extends BaseController
         } else {
             $user->assignRole('student');
             $student = new Student();
+            $student->student_id = $this->createStudentId();
             $student->user_id = $user->id;
             $student->save();
         }
