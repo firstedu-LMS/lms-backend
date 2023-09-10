@@ -13,7 +13,7 @@ class StudentController extends BaseController
     public function profile(Request $request)
     {
         $user = $request->user();
-        $student = Student::where('id', $user->id)->with(['user' => function ($query) {
+        $student = Student::where('user_id', $user->id)->with(['user' => function ($query) {
             $query->with(['image','roles']);
         }])->first();
         return $this->success($student, 'student info');
