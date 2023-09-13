@@ -6,7 +6,9 @@ use App\Http\Controllers\BaseController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Enrollment;
 use App\Models\Student;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends BaseController
 {
@@ -27,5 +29,18 @@ class StudentController extends BaseController
         }
         $student->update();
         return $this->success($student, "student info updated");
+    }
+    public function enrollment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'course_id' => 'required',
+            'student_id' => 'required'
+        ]);
+        if($validator->failed()) {
+            return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
+        }
+        $enrollment =new Enrollment($request->all());
+        $enrollment->save();
+        return $this->success($enrollment,"successfully created",config('http_status_code.created'));
     }
 }
