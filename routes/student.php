@@ -11,4 +11,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/enrollments',[StudentController::class, 'enrollment']);
     Route::get('/course-per-students/{student_id}', [StudentController::class,'course_per_students']);
 });
-
