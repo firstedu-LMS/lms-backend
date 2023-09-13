@@ -11,10 +11,10 @@ class Enrollment extends Model
     protected $guarded = [];
     public function student()
     {
-        return $this->belongsTo(Student::class,'student');
+        return $this->belongsTo(Student::class,'student_id');
     }
     public function course()
     {
-        return $this->belongsTo(Course::class,'course');
+        return $this->belongsTo(Course::class,'course_id');
     }
 }

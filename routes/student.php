@@ -5,9 +5,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [StudentController::class, 'profile']);
+    Route::patch('/profile/{student}', [StudentController::class, 'update']);
+    Route::post('/enrollments',[StudentController::class, 'enrollment']);
+    Route::get('/course-per-students/{student_id}', [StudentController::class,'course_per_students']);
+});
 
-// });
-Route::get('/profile', [StudentController::class, 'profile']);
-Route::patch('/profile/{student}', [StudentController::class, 'update']);
-Route::post('/enrollment',[StudentController::class, 'enrollment']);
