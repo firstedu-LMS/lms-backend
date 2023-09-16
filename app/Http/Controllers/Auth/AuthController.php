@@ -32,7 +32,6 @@ class AuthController extends BaseController
         $user = User::where('email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                event(new Registered($user));
                 $token = $user->createToken("first-lms")->plainTextToken;
                 if ($user->image_id !== null) {
                     $user = User::where('email', $request->email)->with(['image', 'roles'])->first();
