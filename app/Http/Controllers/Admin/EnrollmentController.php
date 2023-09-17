@@ -13,10 +13,16 @@ use App\Http\Controllers\BaseController;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
 use App\Models\WeekCompletion;
+use CheckToDeleteService;
 use Illuminate\Support\Facades\Validator;
 
 class EnrollmentController extends BaseController
 {
+    public function index()
+    {
+        return $this->success(Enrollment::with(['course','student'])->get(),"All enrollments");
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -24,9 +30,11 @@ class EnrollmentController extends BaseController
         "student_id" => "required",
         "batch_id" => "required"
         ]);
+
         if($validator->fails()) {
             return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
         }
+        
         $coursePerStudent = new CoursePerStudent();
         $coursePerStudent->course_id = $request->course_id;
         $coursePerStudent->batch_id = $request->batch_id;
@@ -53,11 +61,10 @@ class EnrollmentController extends BaseController
         }
         return $this->success($coursePerStudent,"Successfully created");
     }
-    public function index()
+    public function destroy(Enrollment $enrollment)
     {
-        return $this->success(Enrollment::with(['course','student' => function ($query) {
-            $query->with('user');
-        }])->get(),"All enrollments");
+        $enrollment->delete();
+        return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
     // public function destroy(Enrollment $enrollment)
     // {

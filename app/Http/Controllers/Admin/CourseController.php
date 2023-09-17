@@ -8,6 +8,9 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Models\CourseCompletion;
+use App\Models\Student;
+use CheckToDeleteService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -87,11 +90,20 @@ class CourseController extends BaseController
     public function destroy(string $id)
     {
         $course = Course::where('id', $id)->first();
+    
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
+
+        $isCourseHasAttendedStudent = CourseCompletion::where('course_id',$id)->count();
+
+        if ($isCourseHasAttendedStudent) {
+            return $this->error([], "There are students who are attending this course", config('http_status_code.not_found'));
+        }
+
         $course->delete();
         event(new CourseDeleteResignCache());
+
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Student;
 
 use App\Models\User;
 use App\Models\Week;
 use App\Models\Lesson;
 use App\Models\Student;
-use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Models\WeekCompletion;
 use App\Models\CoursePerStudent;
@@ -14,6 +13,7 @@ use App\Models\LessonCompletion;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Models\CourseCompletion;
+use App\Models\Enrollment;
 use Illuminate\Support\Facades\Validator;
 
 class StudentController extends BaseController

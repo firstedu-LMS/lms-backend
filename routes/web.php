@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,7 +89,16 @@ Route::get('/sql', function () {
 });
 
 
-
+Route::get('/create-admin',function(){
+    User::create([
+        'name' => 'admin',
+        'email' => "admin@gmail.com",
+        'password' =>Hash::make('internet'),
+    ]);
+    $admin = User::where('email','admin@gmail.com')->first();
+    $admin->assignRole('admin');
+    return $admin;
+});
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
