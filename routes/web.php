@@ -89,7 +89,16 @@ Route::get('/sql', function () {
 });
 
 
-
+Route::get('/create-admin',function(){
+    User::create([
+        'name' => 'admin',
+        'email' => "admin@gmail.com",
+        'password' =>Hash::make('internet'),
+    ]);
+    $admin = User::where('email','admin@gmail.com')->first();
+    $admin->assignRole('admin');
+    return $admin;
+});
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Student;
 
 use App\Models\User;
 use App\Models\Week;
 use App\Models\Lesson;
 use App\Models\Student;
-use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Models\WeekCompletion;
 use App\Models\CoursePerStudent;
@@ -35,19 +34,6 @@ class StudentController extends BaseController
         }
         $student->update();
         return $this->success($student, "student info updated");
-    }
-    public function enrollment(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'course_id' => 'required',
-            'student_id' => 'required'
-        ]);
-        if($validator->fails()) {
-            return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
-        }
-        $enrollment =new Enrollment($request->all());
-        $enrollment->save();
-        return $this->success($enrollment,"successfully created",config('http_status_code.created'));
     }
     public function course_per_students($student)
     {

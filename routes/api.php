@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Client\CareerController;
 use App\Http\Controllers\Client\CourseController;
+use App\Http\Controllers\Client\EnrollmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,4 @@ Route::post('register', [AuthController::class,'register'])->name('register');
 Route::post('login', [AuthController::class,'login']);
 Route::post('logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
 Route::post('register/profile', [ImageController::class,'store']);
+Route::post('enrollments', [EnrollmentController::class,'store']);
