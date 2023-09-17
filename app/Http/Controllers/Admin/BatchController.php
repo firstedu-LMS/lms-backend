@@ -19,9 +19,9 @@ class BatchController extends BaseController
         return $this->success(BatchResource::collection($batches), 'all batches');
     }
 
-    public function createBatchName()
+    public function createBatchName($course_id)
     {
-        $batch = Batch::select('name')
+        $batch = Batch::where('course_id',$course_id)->withTrashed()->select('name')
             ->orderByDesc('name')
             ->value('name');
             $batchId = substr($batch, 6);
@@ -37,7 +37,7 @@ class BatchController extends BaseController
     public function store(BatchRequest $request)
     {
         $batch = new Batch();
-        $batch->name = $this->createBatchName();
+        $batch->name = $this->createBatchName($request->course_id);
         $batch->course_id = $request->course_id;
         $batch->instructor_id = $request->instructor_id;
         $batch->start_date = $request->start_date;

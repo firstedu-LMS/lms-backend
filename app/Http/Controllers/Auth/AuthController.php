@@ -1,17 +1,30 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
-use App\Http\Controllers\BaseController;
-use App\Http\Requests\AuthRequest;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Hash;
-use Yaf\Registry;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\BaseController;
 
 class AuthController extends BaseController
 {
+    public function createStudentId()
+    {
+        $student = Student::select('student_id')
+            ->orderByDesc('student_id')
+            ->value('student_id');
+            $studentIdOnly = substr($student, 2);
+        if ($studentIdOnly) {
+            $studentId = str_pad((int)$studentIdOnly + 1, 4, "0", STR_PAD_LEFT);
+        } else {
+            $studentId = config('student.id');
+        }
+        return "S-" . $studentId;
+    }
+
     public function register(AuthRequest $request)
     {
         $user = new User();
@@ -22,16 +35,27 @@ class AuthController extends BaseController
             $user->image_id = $request->image_id;
         }
         $user->save();
-        $token = $user->createToken("first-lms")->plainTextToken;
+        if ($request->role) {
+            $user->assignRole($request->role);
+        } else {
+            $user->assignRole('student');
+            $student = new Student();
+            $student->student_id = $this->createStudentId();
+            $student->user_id = $user->id;
+            $student->save();
+        }
         $user = User::where('id', $user->id)->with('image')->first();
+        $token = $user->createToken("first-lms")->plainTextToken;
+
         return $this->success(["user" => $user, "token" => $token], "Created", config('http_status_code.created'));
     }
 
     public function login(AuthRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('roles')->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
+                // event(new Registered($user));
                 $token = $user->createToken("first-lms")->plainTextToken;
                 if ($user->image_id !== null) {
                     $user = User::where('email', $request->email)->with(['image', 'roles'])->first();
