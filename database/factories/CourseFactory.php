@@ -22,7 +22,7 @@ class CourseFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->text(),
-            'image'     => fake()->name() ,
+            'image_id'     => 1 ,
             'fee' => fake()->numberBetween(100, 200),
             'status' => Arr::random($this->status) ,
             'open_or_close' => Arr::random([true,false]),
