@@ -21,10 +21,24 @@ class StudentController extends BaseController
     public function profile(Request $request)
     {
         $user = $request->user();
-        $student = Student::where('user_id', $user->id)->with(['user' => function ($query) {
-            $query->with(['image','roles']);
-        }])->first();
-        return response()->json($student);
+        $student = Student::where('user_id', $user->id)->first();
+        $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
+        $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
+        $data = [
+            'id' => $student->id,
+            'name' => $user->name,
+            'student_id'=> $student->student_id,
+            'email' => $user->email,
+            'phone' =>$student->phone,
+            'address' => $student->address,
+            'edu' => $student->education,
+            'dob' => $student->date_of_birth,
+            'created_at' => $student->created_at,
+            'course_completion_count' => $courseCompletionCount,
+            'id_progess_course_count' => $idProgressCourseCount,
+            'achievement_count' => 1,
+        ];
+        return response()->json($data);
     }
 
     public function update(Request $request, $student)
