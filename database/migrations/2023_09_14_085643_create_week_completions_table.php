@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('course_id');
             $table->integer('batch_id');
             $table->integer('week_id');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

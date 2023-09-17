@@ -66,4 +66,9 @@ class EnrollmentController extends BaseController
         $enrollment->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
+    // public function destroy(Enrollment $enrollment)
+    // {
+    //     $enrollment->delete();
+    //     return $this->success([], 'deleted', config('http_status_code.no_content'));
+    // }
 }

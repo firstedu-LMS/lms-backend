@@ -76,7 +76,7 @@ class AuthController extends BaseController
     public function logout(Request $request)
     {
         $user = auth('sanctum')->user();
-        $user->currentAccessToken()->delete();
+        $request->user()->currentAccessToken()->delete();
         return $this->success($user, 'Logout');
     }
 }
