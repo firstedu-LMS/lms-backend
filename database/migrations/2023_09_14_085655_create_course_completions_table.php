@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('week_completion_count')->default(0);
             $table->integer('student_id');
             $table->integer('course_id');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

@@ -55,11 +55,13 @@ class EnrollmentController extends BaseController
     }
     public function index()
     {
-        return $this->success(Enrollment::with(['course','student'])->get(),"All enrollments");
+        return $this->success(Enrollment::with(['course','student' => function ($query) {
+            $query->with('user');
+        }])->get(),"All enrollments");
     }
-    public function destroy(Enrollment $enrollment)
-    {
-        $enrollment->delete();
-        return $this->success([], 'deleted', config('http_status_code.no_content'));
-    }
+    // public function destroy(Enrollment $enrollment)
+    // {
+    //     $enrollment->delete();
+    //     return $this->success([], 'deleted', config('http_status_code.no_content'));
+    // }
 }
