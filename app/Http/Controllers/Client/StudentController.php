@@ -33,14 +33,13 @@ class StudentController extends BaseController
             'address' => $student->address,
             'edu' => $student->education,
             'dob' => $student->date_of_birth,
-            'created_at' => $student->created_at,
+            'created_at' => $student->created_at->format('d-m-Y'),
             'course_completion_count' => $courseCompletionCount,
             'id_progess_course_count' => $idProgressCourseCount,
             'achievement_count' => 1,
         ];
         return response()->json($data);
     }
-
     public function update(Request $request, $student)
     {
         $student = Student::where('id', $student)->first();
