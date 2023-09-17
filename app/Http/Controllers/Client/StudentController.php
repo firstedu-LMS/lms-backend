@@ -20,7 +20,8 @@ class StudentController extends BaseController
 {
     public function profile(Request $request)
     {
-        $user = $request->user();
+        $carentUser = $request->user();
+        $user = User::where('id', $carentUser->id)->with('roles')->first();
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
         $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
@@ -37,6 +38,7 @@ class StudentController extends BaseController
             'course_completion_count' => $courseCompletionCount,
             'id_progess_course_count' => $idProgressCourseCount,
             'achievement_count' => 1,
+            'roles' => $user->roles,
         ];
         return response()->json($data);
     }
