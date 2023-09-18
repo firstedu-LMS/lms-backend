@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Mail\AdminLoginVertifyMail;
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Instructor;
-use App\Models\User;
+use App\Mail\AdminLoginVertifyMail;
+use App\Utils\CheckToDeleteService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,3 +107,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
         'data' => 'oki'
     ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+
+Route::get('delete-service',function ()  {
+    $clean = new CheckToDeleteService( 'Course' , 2);
+    $clean->naruto()->isClean();
+});

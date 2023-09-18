@@ -10,6 +10,7 @@ use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use App\Models\CourseCompletion;
 use App\Models\Student;
+use App\Utils\CheckToDeleteService as UtilsCheckToDeleteService;
 use CheckToDeleteService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -95,12 +96,11 @@ class CourseController extends BaseController
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
 
-        $isCourseHasAttendedStudent = CourseCompletion::where('course_id',$id)->count();
-
-        if ($isCourseHasAttendedStudent) {
-            return $this->error([], "There are students who are attending this course", config('http_status_code.not_found'));
+        $service = new UtilsCheckToDeleteService($id);
+        $isClean = $service->doesCourseHasRelatedStudentAndInstructor()->isClean();
+        if ($isClean) {
+            return $this->error([],'There are students who are attending this course',config('http_status_code.unprocessable_content'));
         }
-
         $course->delete();
         event(new CourseDeleteResignCache());
 
