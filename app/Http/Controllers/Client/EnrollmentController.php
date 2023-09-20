@@ -29,7 +29,7 @@ class EnrollmentController extends Controller
             ],400);
         }
 
-        $enrollment =new Enrollment($request->all());
+        $enrollment = new Enrollment($request->all());
         $enrollment->save();
         return $this->success($enrollment,"successfully created",config('http_status_code.created'));
     }
