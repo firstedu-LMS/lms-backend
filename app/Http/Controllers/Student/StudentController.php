@@ -21,7 +21,7 @@ class StudentController extends BaseController
     public function profile(Request $request)
     {
         $carentUser = $request->user();
-        $user = User::where('id', $carentUser->id)->with('roles')->first();
+        $user = User::where('id', $carentUser->id)->with(['roles','image'])->first();
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
         $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
