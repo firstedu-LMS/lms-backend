@@ -24,7 +24,7 @@ use App\Http\Controllers\Client\EnrollmentController;
 */
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user = $request->user();
-    return User::where('id', $user->id)->with(['roles','image'])->first();
+    return User::where('id', $user->id)->with(['roles','image' , 'student'])->first();
 });
 
 

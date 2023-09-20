@@ -20,7 +20,7 @@ class EnrollmentController extends BaseController
 {
     public function index()
     {
-        return $this->success(Enrollment::with(['course','student'])->get(),"All enrollments");
+        return $this->success(Enrollment::with(['course','student.user'])->get(),"All enrollments");
     }
 
     public function store(Request $request)
