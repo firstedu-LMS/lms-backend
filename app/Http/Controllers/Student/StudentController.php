@@ -39,7 +39,7 @@ class StudentController extends BaseController
             'id_progess_course_count' => $idProgressCourseCount,
             'achievement_count' => 1,
             'roles' => $user->roles,
-            'image' => $user->image->image,
+            'image' => $user->image->image ? $user->image->image : [],
         ];
         return response()->json($data);
     }
