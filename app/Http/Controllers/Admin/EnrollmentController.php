@@ -34,7 +34,7 @@ class EnrollmentController extends BaseController
         if($validator->fails()) {
             return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
         }
-        
+
         $coursePerStudent = new CoursePerStudent();
         $coursePerStudent->course_id = $request->course_id;
         $coursePerStudent->batch_id = $request->batch_id;
@@ -60,11 +60,6 @@ class EnrollmentController extends BaseController
             $lessonCompletion->save();
         }
         return $this->success($coursePerStudent,"Successfully created");
-    }
-    public function destroy(Enrollment $enrollment)
-    {
-        $enrollment->delete();
-        return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
     // public function destroy(Enrollment $enrollment)
     // {
