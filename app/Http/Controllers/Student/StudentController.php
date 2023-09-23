@@ -40,6 +40,7 @@ class StudentController extends BaseController
             'achievement_count' => 1,
             'roles' => $user->roles,
             'image' => $user->image->image ? $user->image->image : [],
+            'image_id' => $user->image->id ? $user->image->id : ''
         ];
         return response()->json($data);
     }
