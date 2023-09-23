@@ -68,9 +68,11 @@ class StudentController extends BaseController
 
     public function course_per_students($student)
     {
-        return $this->success(CoursePerStudent::where('student_id',$student)->with(['batch' => function($query) {
-            $query->with('course');
-        },'student','image'])->get(),'All datas that student enroll');
+        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+        $query->with(['course' => function ($query) {
+            $query->with('image');
+        }]);
+    }, 'student'])->get(), 'All data that the student has enrolled');
     }
 
     public function lessonCompletion(Request $request)
