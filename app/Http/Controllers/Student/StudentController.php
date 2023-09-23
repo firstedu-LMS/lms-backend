@@ -70,7 +70,7 @@ class StudentController extends BaseController
     {
         return $this->success(CoursePerStudent::where('student_id',$student)->with(['batch' => function($query) {
             $query->with('course');
-        },'student'])->get(),'All datas that student enroll');
+        },'student','image'])->get(),'All datas that student enroll');
     }
 
     public function lessonCompletion(Request $request)
