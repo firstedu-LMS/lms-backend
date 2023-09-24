@@ -36,16 +36,9 @@ class BatchController extends BaseController
 
     public function store(BatchRequest $request)
     {
-        $batch = new Batch();
-        $batch->name = $this->createBatchName($request->course_id);
-        $batch->course_id = $request->course_id;
-        $batch->instructor_id = $request->instructor_id;
-        $batch->start_date = $request->start_date;
-        $batch->end_date = $request->end_date;
-        $batch->start_time = $request->start_time;
-        $batch->end_time = $request->end_time;
-        $batch->status = $request->status;
-        $batch->save();
+        $data =   $request->validated();
+        $data['name'] = $this->createBatchName($request->course_id);
+        $batch = Batch::create($data);
         return $this->success(new BatchResource($batch), 'created', config('http_status_code.created'));
     }
 
