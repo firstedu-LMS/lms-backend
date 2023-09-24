@@ -1,10 +1,9 @@
 <?php
 
-
-use App\Http\Controllers\Student\StudentController ;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Student\StudentController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [StudentController::class, 'profile']);

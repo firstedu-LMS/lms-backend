@@ -22,7 +22,7 @@ class StudentController extends BaseController
     public function profile(Request $request)
     {
         $carentUser = $request->user();
-        $user = User::where('id', $carentUser->id)->with('roles')->first();
+        $user = User::where('id', $carentUser->id)->with(['roles','image'])->first();
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
         $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
@@ -57,9 +57,11 @@ class StudentController extends BaseController
 
     public function course_per_students($student)
     {
-        return $this->success(CoursePerStudent::where('student_id',$student)->with(['batch' => function($query) {
-            $query->with('course');
-        },'student'])->get(),'All datas that student enroll');
+        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+        $query->with(['course' => function ($query) {
+            $query->with('image');
+        }]);
+    }, 'student'])->get(), 'All data that the student has enrolled');
     }
 
     public function lessonCompletion(Request $request)

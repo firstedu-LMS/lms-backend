@@ -21,7 +21,7 @@ class EnrollmentController extends BaseController
 {
     public function index()
     {
-        return $this->success(Enrollment::with(['course','student'])->get(),"All enrollments");
+        return $this->success(Enrollment::with(['course','student.user'])->get(),"All enrollments");
     }
 
     public function store(EnrollmentRequest $request)
@@ -58,13 +58,13 @@ class EnrollmentController extends BaseController
     public function createlessonCompletionRelatedToWeeks($request,$weeks){
         foreach($weeks as $week) {
             $lessonCount = Lesson::where('week_id',$week->id)->count();
-            $lessonCompletion = new WeekCompletion();
-            $lessonCompletion->lesson_count = $lessonCount;
-            $lessonCompletion->student_id = $request->student_id;
-            $lessonCompletion->course_id = $request->course_id;
-            $lessonCompletion->batch_id = $request->batch_id;
-            $lessonCompletion->week_id = $week->id;
-            $lessonCompletion->save();
+            $weekCompletion = new WeekCompletion();
+            $weekCompletion->lesson_count = $lessonCount;
+            $weekCompletion->student_id = $request->student_id;
+            $weekCompletion->course_id = $request->course_id;
+            $weekCompletion->batch_id = $request->batch_id;
+            $weekCompletion->week_id = $week->id;
+            $weekCompletion->save();
         }
     }
 
@@ -72,6 +72,7 @@ class EnrollmentController extends BaseController
         $enrollment = Enrollment::where('course_id',$request->course_id)->where('student_id',$request->student_id)->first();
         $enrollment->delete();
     }
+
     // public function destroy(Enrollment $enrollment)
     // {
     //     $enrollment->delete();
