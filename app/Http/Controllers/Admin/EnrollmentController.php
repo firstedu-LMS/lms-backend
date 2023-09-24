@@ -21,7 +21,7 @@ class EnrollmentController extends BaseController
 {
     public function index()
     {
-        return $this->success(Enrollment::with(['course','student'])->get(),"All enrollments");
+        return $this->success(Enrollment::with(['course','student.user'])->get(),"All enrollments");
     }
 
     public function store(EnrollmentRequest $request)
@@ -72,6 +72,7 @@ class EnrollmentController extends BaseController
         $enrollment = Enrollment::where('course_id',$request->course_id)->where('student_id',$request->student_id)->first();
         $enrollment->delete();
     }
+
     // public function destroy(Enrollment $enrollment)
     // {
     //     $enrollment->delete();
