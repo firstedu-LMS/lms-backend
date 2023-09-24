@@ -26,18 +26,7 @@ class CareerController extends BaseController
      */
     public function store(CareerRequest $request)
     {
-        $career = new Career();
-        $career->name  = $request->name ;
-        $career->vacancy = $request->vacancy;
-        $career->age= $request->age;
-        $career->job_description= $request->job_description;
-        $career->job_requirement= $request->job_requirement;
-        $career->position= $request->position;
-        $career->deadline = $request->deadline;
-        $career->salary= $request->salary;
-        $career->salary_period= $request->salary_period;
-        $career->employment_status= $request->employment_status;
-        $career->save();
+        $career =  Career::create($request->validated());
         return $this->success(new CareerResource($career),'created',config('http_status_code.created'));
     }
 

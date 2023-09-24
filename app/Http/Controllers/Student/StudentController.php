@@ -39,10 +39,12 @@ class StudentController extends BaseController
             'id_progess_course_count' => $idProgressCourseCount,
             'achievement_count' => 1,
             'roles' => $user->roles,
+            'image_id' => $user->image->id ? $user->image->id : ''
             'image' => $user->image ? $user->image->image : [],
         ];
         return response()->json($data);
     }
+
     public function update(Request $request, $student)
     {
         $student = Student::where('id', $student)->first();
@@ -52,6 +54,7 @@ class StudentController extends BaseController
         $student->update();
         return $this->success($student, "student info updated");
     }
+
     public function enrollment(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -106,6 +109,7 @@ class StudentController extends BaseController
             }
             $weekCompletion->update();
     }
+    
     public function courseCompletion($request,$lesson)
     {
         $courseCompletion = CourseCompletion::where('student_id',$request->student_id)->where('course_id',$lesson->course_id)->first();

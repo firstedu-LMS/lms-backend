@@ -33,15 +33,9 @@ class CourseController extends BaseController
      */
     public function store(CourseRequest $request)
     {
-        $course = new Course();
-        $course->name =  $request->name;
-        $course->description =  $request->description ;
-        $course->fee =  $request->fee;
-        $course->age = $request->age;
-        $course->status =   $request->status ;
-        $course->image_id = $request->image_id;
-        $course->available = json_decode($request->available);
-        $course->save();
+        $data = $request->validated();
+        $data['available'] = json_decode($request->available());
+        $course = Course::create($data);
         return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
     }
 

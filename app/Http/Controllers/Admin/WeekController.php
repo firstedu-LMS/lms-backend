@@ -35,11 +35,9 @@ class WeekController extends BaseController
 
     public function store(WeekRequest $request)
     {
-        $week = new Week();
-        $week->course_id = $request->course_id;
-        $week->batch_id = $request->batch_id;
-        $week->week_number = $this->createWeekNumber($request->batch_id);
-        $week->save();
+        $data =   $request->validated();
+        $data['week_number'] =  $this->createWeekNumber($request->batch_id);
+        $week = Week::create($data);
         return $this->success(new WeekResource($week), 'Created', config('http_status_code.created'));
     }
 

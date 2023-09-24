@@ -10,6 +10,7 @@ use App\Models\CourseCompletion;
 use App\Models\CoursePerStudent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\EnrollmentRequest;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
 use App\Models\WeekCompletion;
@@ -23,32 +24,38 @@ class EnrollmentController extends BaseController
         return $this->success(Enrollment::with(['course','student.user'])->get(),"All enrollments");
     }
 
-    public function store(Request $request)
+    public function store(EnrollmentRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-        "course_id" => "required",
-        "student_id" => "required",
-        "batch_id" => "required"
+        $coursePerStudent = CoursePerStudent::create($request->validated());
+
+        $weeks = Week::where('course_id', $request->course_id)
+                        ->where('batch_id', $request->batch_id)
+                        ->get();
+
+        $this->deleteOldEnrollment($request);
+
+        CourseCompletion::create([
+            'week_count' => $this->countWeeks($request,$weeks),
+            'student_id' => $request->student_id,
+            'course_id '=>$request->course_id
         ]);
+        
+        $this->createlessonCompletionRelatedToWeeks($request,$weeks);
 
-        if($validator->fails()) {
-            return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
-        }
+        return $this->success($coursePerStudent,"Successfully created");
+    }
 
-        $coursePerStudent = new CoursePerStudent();
-        $coursePerStudent->course_id = $request->course_id;
-        $coursePerStudent->batch_id = $request->batch_id;
-        $coursePerStudent->student_id = $request->student_id;
-        $coursePerStudent->save();
-        $enrollment = Enrollment::where('course_id',$request->course_id)->where('student_id',$request->student_id)->first();
+    public function destroy(Enrollment $enrollment)
+    {
         $enrollment->delete();
-        $weeks = Week::where('course_id',$request->course_id)->where('batch_id',$request->batch_id)->get();
-        $weekcount = $weeks->count();
-        $courseCompletion = new CourseCompletion();
-        $courseCompletion->week_count = $weekcount;
-        $courseCompletion->student_id = $request->student_id;
-        $courseCompletion->course_id = $request->course_id;
-        $courseCompletion->save();
+        return $this->success([], 'deleted', config('http_status_code.no_content'));
+    }
+
+    public function countWeeks($request,$weeks) {
+        return $weekcount = $weeks->count();
+    }
+
+    public function createlessonCompletionRelatedToWeeks($request,$weeks){
         foreach($weeks as $week) {
             $lessonCount = Lesson::where('week_id',$week->id)->count();
             $lessonCompletion = new WeekCompletion();
@@ -59,8 +66,13 @@ class EnrollmentController extends BaseController
             $lessonCompletion->week_id = $week->id;
             $lessonCompletion->save();
         }
-        return $this->success($coursePerStudent,"Successfully created");
     }
+
+    public function  deleteOldEnrollment($request) {
+        $enrollment = Enrollment::where('course_id',$request->course_id)->where('student_id',$request->student_id)->first();
+        $enrollment->delete();
+    }
+
     // public function destroy(Enrollment $enrollment)
     // {
     //     $enrollment->delete();

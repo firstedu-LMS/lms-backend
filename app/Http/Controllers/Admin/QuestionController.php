@@ -14,16 +14,10 @@ class QuestionController extends BaseController
     {
         return $this->success(QuestionResource::collection(Question::with('lesson')->get()),'All courses');
     }
+    
     public function store(QuestionRequest $request)
     {
-        $question = new Question();
-        $question->lesson_id = $request->lesson_id;
-        $question->title = $request->title;
-        $question->choice1 = $request->choice1;
-        $question->choice2 = $request->choice2;
-        $question->choice3 = $request->choice3;
-        $question->answer = $request->answer;
-        $question->save();
+        $question = Question::create($request->validated());
         return $this->success(new QuestionResource($question), 'Created',config('http_status_code.created'));
     }
     public function show($id)
