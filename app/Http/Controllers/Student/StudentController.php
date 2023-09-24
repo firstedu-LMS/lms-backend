@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Models\CourseCompletion;
 use App\Models\Enrollment;
+use App\Utils\FormatJsonForResponseService\Student\ProfileJson;
 use Illuminate\Support\Facades\Validator;
 
 class StudentController extends BaseController
@@ -25,23 +26,8 @@ class StudentController extends BaseController
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
         $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
-        $data = [
-            'id' => $student->id,
-            'name' => $user->name,
-            'student_id'=> $student->student_id,
-            'email' => $user->email,
-            'phone' =>$student->phone,
-            'address' => $student->address,
-            'education' => $student->education,
-            'date_of_birth' => $student->date_of_birth,
-            'created_at' => $student->created_at->format('d-m-Y'),
-            'course_completion_count' => $courseCompletionCount,
-            'id_progess_course_count' => $idProgressCourseCount,
-            'achievement_count' => 1,
-            'roles' => $user->roles,
-            'image_id' => $user->image->id ? $user->image->id : ''
-            'image' => $user->image ? $user->image->image : [],
-        ];
+        $profile = new  ProfileJson($user,$student,$courseCompletionCount,$idProgressCourseCount);
+        $data = $profile->getJson();
         return response()->json($data);
     }
 
