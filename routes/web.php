@@ -1,9 +1,14 @@
 <?php
 
 use App\Models\User;
+use App\Models\Batch;
 use App\Models\Course;
 use App\Models\Instructor;
+use App\Models\Application;
 use App\Mail\AdminLoginVertifyMail;
+use App\Models\Career;
+use App\Models\Student;
+use App\Models\Week;
 use App\Utils\CheckToDeleteService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -46,7 +51,16 @@ Route::get('/', function () {
     }
     return "Finish";
 });
-
+Route::get('/fakeDatas', function () {
+    Application::factory()->count(20)->create();
+    Course::factory()->count(20)->create();
+    Batch::factory()->count(20)->create();
+    Career::factory()->count(20)->create();
+    Instructor::factory()->count(20)->create();
+    Student::factory()->count(20)->create();
+    Week::factory()->count(20)->create();
+    return "success";
+});
 Route::get('/mail', function () {
     Mail::to('myatkyawt974@gmail.com')->send(new AdminLoginVertifyMail());
     echo "mail sended";

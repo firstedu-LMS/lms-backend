@@ -23,9 +23,10 @@ class CourseFactory extends Factory
             'name' => fake()->name(),
             'description' => fake()->text(),
             'image_id'     => 1 ,
+            'age' => 'over 18',
             'fee' => fake()->numberBetween(100, 200),
             'status' => Arr::random($this->status) ,
-            'open_or_close' => Arr::random([true,false]),
+            'available' => Arr::random([true,false]),
         ];
     }
 }

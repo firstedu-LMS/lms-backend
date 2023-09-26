@@ -33,9 +33,19 @@ class CourseController extends BaseController
      */
     public function store(CourseRequest $request)
     {
-        $data = $request->validated();
-        $data['available'] = json_decode($request->available());
-        $course = Course::create($data);
+        // $data = $request->validated();
+        // $data['available'] = json_decode($request->available);
+        // $course = Course::create($data);
+        $course = new Course();
+        $course->name = $request->name;
+        $course->description = $request->description;
+        $course->fee = $request->fee;
+        $course->age = $request->age;
+        $course->status = $request->status;
+        $course->available = $request->available;
+        $course->image_id = $request->image_id;
+        $course->save();
+        return $course;
         return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
     }
 
@@ -85,7 +95,7 @@ class CourseController extends BaseController
     public function destroy(string $id)
     {
         $course = Course::where('id', $id)->first();
-    
+
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }

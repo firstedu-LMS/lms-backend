@@ -31,8 +31,8 @@ class ProfileJson  implements  JsonResponseInterface {
                 'id_progess_course_count' => $this->idProgressCourseCount,
                 'achievement_count' => 1,
                 'roles' => $this->user->roles,
-                'image' => $this->user->image->image ? $this->user->image->image : [],
-                'image_id' => $this->user->image->id ? $this->user->image->id : ''
+                'image' => $this->user->image ? $this->user->image->image : [],
+                'image_id' => $this->user->image ? $this->user->image->id : ''
             ];
     }
 
@@ -40,4 +40,3 @@ class ProfileJson  implements  JsonResponseInterface {
         return $this->format();
     }
 }
-  
