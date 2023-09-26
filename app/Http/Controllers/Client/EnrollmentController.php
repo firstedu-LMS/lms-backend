@@ -15,7 +15,7 @@ class EnrollmentController extends Controller
             'course_id' => 'required',
             'student_id' => 'required'
         ]);
-        
+
         if($validator->fails()) {
             return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
         }
