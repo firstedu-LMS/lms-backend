@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Models\CourseCompletion;
 use App\Models\Enrollment;
+use App\Utils\FormatJsonForResponseService\Student\ProfileJson;
 use Illuminate\Support\Facades\Validator;
 
 class StudentController extends BaseController
@@ -25,24 +26,11 @@ class StudentController extends BaseController
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
         $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
-        $data = [
-            'id' => $student->id,
-            'name' => $user->name,
-            'student_id'=> $student->student_id,
-            'email' => $user->email,
-            'phone' =>$student->phone,
-            'address' => $student->address,
-            'edu' => $student->education,
-            'dob' => $student->date_of_birth,
-            'created_at' => $student->created_at->format('d-m-Y'),
-            'course_completion_count' => $courseCompletionCount,
-            'id_progess_course_count' => $idProgressCourseCount,
-            'achievement_count' => 1,
-            'roles' => $user->roles,
-            'image' => $user->image ? $user->image->image : [],
-        ];
+        $profile = new  ProfileJson($user,$student,$courseCompletionCount,$idProgressCourseCount);
+        $data = $profile->getJson();
         return response()->json($data);
     }
+
     public function update(Request $request, $student)
     {
         $student = Student::where('id', $student)->first();
@@ -52,6 +40,7 @@ class StudentController extends BaseController
         $student->update();
         return $this->success($student, "student info updated");
     }
+
     public function enrollment(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -68,9 +57,11 @@ class StudentController extends BaseController
 
     public function course_per_students($student)
     {
-        return $this->success(CoursePerStudent::where('student_id',$student)->with(['batch' => function($query) {
-            $query->with('course');
-        },'student'])->get(),'All datas that student enroll');
+        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+        $query->with(['course' => function ($query) {
+            $query->with('image');
+        }]);
+    }, 'student'])->get(), 'All data that the student has enrolled');
     }
 
     public function lessonCompletion(Request $request)
@@ -104,6 +95,7 @@ class StudentController extends BaseController
             }
             $weekCompletion->update();
     }
+
     public function courseCompletion($request,$lesson)
     {
         $courseCompletion = CourseCompletion::where('student_id',$request->student_id)->where('course_id',$lesson->course_id)->first();

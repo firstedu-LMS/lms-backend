@@ -24,11 +24,7 @@ class ApplicationController extends BaseController
 
     public function store(ApplicationRequest $request)
     {
-        $application = new Application();
-        $application->career = $request->career;
-        $application->email = $request->email;
-        $application->cv_id = $request->cv_id;
-        $application->save();
+        $application = Application::create($request->validated());
         return $this->success(new ApplicationResource($application), 'Created', config('http_status_code.created'));
     }
 
