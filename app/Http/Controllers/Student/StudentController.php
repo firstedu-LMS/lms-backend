@@ -95,7 +95,7 @@ class StudentController extends BaseController
             }
             $weekCompletion->update();
     }
-    
+
     public function courseCompletion($request,$lesson)
     {
         $courseCompletion = CourseCompletion::where('student_id',$request->student_id)->where('course_id',$lesson->course_id)->first();

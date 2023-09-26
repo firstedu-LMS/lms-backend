@@ -52,34 +52,14 @@ class BatchController extends BaseController
     }
 
 
-    public function update(Request $request, $id)
+    public function update(BatchRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'instructor_id' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'status' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->error($validator->errors(), [], config('http_status_code.unprocessable_content'));
-        }
-
         $batch = Batch::withTrashed()->where('id', $id)->first();
         if (!$batch) {
             return $this->error([], "batch not found", config('http_status_code.not_found'));
         }
-        $batch->name = $batch->name;
-        $batch->course_id = $batch->course_id;
-        $batch->instructor_id = $request->instructor_id;
-        $batch->start_date = $request->start_date;
-        $batch->end_date = $request->end_date;
-        $batch->start_time = $request->start_time;
-        $batch->end_time = $request->end_time;
-        $batch->status = $request->status;
-        $batch->update();
+        $data = $request->validated();
+        $batch->update($data);
         if ($batch->status == true || $batch->status == 1) {
             $batch->restore();
         } else {
