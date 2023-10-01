@@ -34,7 +34,7 @@ class CourseController extends BaseController
     public function store(CourseRequest $request)
     {
         $data = $request->validated();
-        $data['available'] = json_decode($request->available());
+        $data['available'] = json_decode($request->available);
         $course = Course::create($data);
         return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
     }
@@ -68,14 +68,15 @@ class CourseController extends BaseController
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
-        $course->name =  $request->name;
-        $course->description =  $request->description ;
-        $course->fee =  $request->fee;
-        $course->age = $request->age;
-        $course->status =   $request->status ;
-        $course->image_id = $request->image_id;
-        $course->available = json_decode($request->available);
-        $course->update();
+        $data = $request->validated();
+        // $course->name =  $request->name;
+        // $course->description =  $request->description ;
+        // $course->fee =  $request->fee;
+        // $course->age = $request->age;
+        // $course->status =   $request->status ;
+        // $course->image_id = $request->image_id;
+        $data['available'] = json_decode($request->available);
+        $course->update($data);
         return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 
@@ -89,7 +90,6 @@ class CourseController extends BaseController
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
-
         $service = new UtilsCheckToDeleteService($id);
         $isClean = $service->doesCourseHasRelatedStudentAndInstructor()->isClean();
         if ($isClean) {
@@ -97,7 +97,6 @@ class CourseController extends BaseController
         }
         $course->delete();
         event(new CourseDeleteResignCache());
-
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 }

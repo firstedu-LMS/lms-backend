@@ -34,14 +34,14 @@ class AssignmentController extends BaseController
             if (!$assignment) {
                 return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
             }
-            $assignment->title = $request->title;
-            $assignment->course_id = $request->course_id;
-            $assignment->batch_id = $request->batch_id;
-            $assignment->test_date = $request->test_date;
-            $assignment->test_time = $request->test_time;
-            $assignment->agenda = $request->agenda;
-            $assignment->file_id = $request->file_id;
-            $assignment->update();
+            // $assignment->title = $request->title;
+            // $assignment->course_id = $request->course_id;
+            // $assignment->batch_id = $request->batch_id;
+            // $assignment->test_date = $request->test_date;
+            // $assignment->test_time = $request->test_time;
+            // $assignment->agenda = $request->agenda;
+            // $assignment->file_id = $request->file_id;
+            $assignment->update($request->validated());
             return $this->success(new Assignment([$assignment]), 'Updated assignment',config('http_status_code.ok'));
     }
     public function destroy(Assignment $assignment)
