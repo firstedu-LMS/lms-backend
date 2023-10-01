@@ -16,10 +16,10 @@ class AssignmentController extends BaseController
     }
     public function store(AssignmentRequest $request)
     {
-        $assignment =  Assignment::created($request->validated());   
+        $assignment =  Assignment::create($request->validated());
         return $this->success(new AssignmentResource($assignment),'created',config('http_status_code.created'));
     }
-    
+
     public function show($id)
     {
         $assignment = Assignment::with(["course","batch","file"])->find($id);

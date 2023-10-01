@@ -86,7 +86,7 @@ class CourseController extends BaseController
     public function destroy(string $id)
     {
         $course = Course::where('id', $id)->first();
-    
+
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }

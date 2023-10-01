@@ -14,7 +14,7 @@ class QuestionController extends BaseController
     {
         return $this->success(QuestionResource::collection(Question::with('lesson')->get()),'All courses');
     }
-    
+
     public function store(QuestionRequest $request)
     {
         $question = Question::create($request->validated());
