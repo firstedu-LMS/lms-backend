@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\CourseCreated;
-use App\Events\CourseDeleteResignCache;
-use App\Http\Controllers\BaseController;
-use App\Http\Requests\CourseRequest;
-use App\Http\Resources\CourseResource;
+use Exception;
 use App\Models\Course;
-use App\Models\CourseCompletion;
 use App\Models\Student;
-use App\Utils\CheckToDeleteService as UtilsCheckToDeleteService;
-use CheckToDeleteService;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Events\CourseCreated;
+use App\Models\CourseCompletion;
+use App\Http\Requests\CourseRequest;
+use App\Utils\CheckToDeleteService ;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use App\Http\Resources\CourseResource;
+use App\Events\CourseDeleteResignCache;
+use App\Services\CourseDeletionService;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\BaseController;
 
 class CourseController extends BaseController
 {
@@ -69,34 +70,33 @@ class CourseController extends BaseController
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
         $data = $request->validated();
-        // $course->name =  $request->name;
-        // $course->description =  $request->description ;
-        // $course->fee =  $request->fee;
-        // $course->age = $request->age;
-        // $course->status =   $request->status ;
-        // $course->image_id = $request->image_id;
+
         $data['available'] = json_decode($request->available);
+
         $course->update($data);
+        
         return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id,CourseDeletionService $courseDeletionService)
     {
         $course = Course::where('id', $id)->first();
 
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
-        $service = new UtilsCheckToDeleteService($id);
-        $isClean = $service->doesCourseHasRelatedStudentAndInstructor()->isClean();
-        if ($isClean) {
-            return $this->error([],'There are students who are attending this course',config('http_status_code.unprocessable_content'));
+        
+        try {
+            //logic for deleting the course are implemented in the service
+            $courseDeletionService->deleteCourse($course);
+            event(new CourseDeleteResignCache());
+            return $this->success([], 'deleted', config('http_status_code.no_content'));
+        } catch (Exception $e) {
+            return $this->error([], $e->getMessage(), config('http_status_code.unprocessable_content'));
         }
-        $course->delete();
-        event(new CourseDeleteResignCache());
-        return $this->success([], 'deleted', config('http_status_code.no_content'));
+
     }
 }
