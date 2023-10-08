@@ -17,6 +17,7 @@ class Course extends Model
             'image_id',
             'age',
             'fee',
+            'age',
             'status',
             'available'
     ];

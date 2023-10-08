@@ -70,11 +70,8 @@ class CourseController extends BaseController
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
         $data = $request->validated();
-
         $data['available'] = json_decode($request->available);
-
         $course->update($data);
-        
         return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 

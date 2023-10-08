@@ -43,7 +43,7 @@ class WeekController extends BaseController
 
     public function show($id)
     {
-         $week = Week::where('id', $id)->with(['course','batch'])->first();
+         $week = Week::where('id', $id)->first();
         if (!$week) {
             return $this->error([], 'there is no week', config('http_status_code.not_found'));
         }
