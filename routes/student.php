@@ -10,4 +10,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/user/{student}', [StudentController::class, 'update']);
     Route::get('/course-per-students/{student_id}', [StudentController::class,'course_per_students']);
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
+    // Route::get('/student/{student}/lesson',[StudentController::class,'lessons']);
 });

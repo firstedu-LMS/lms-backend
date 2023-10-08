@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Week;
-use App\Models\Batch;
 use App\Models\Enrollment;
-use Illuminate\Http\Request;
 use App\Models\CourseCompletion;
 use App\Models\CoursePerStudent;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\EnrollmentRequest;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
-use App\Models\WeekCompletion;
-use CheckToDeleteService;
-use Illuminate\Support\Facades\Validator;
+
 
 class EnrollmentController extends BaseController
 {
