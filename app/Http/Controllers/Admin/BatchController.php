@@ -8,15 +8,17 @@ use App\Http\Controllers\BaseController;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\Batch;
+use App\Utils\FormatJsonForResponseService\Admin\BatchJson;
 use Illuminate\Support\Facades\Validator;
 
 class BatchController extends BaseController
 {
     public function index($course_id)
     {
-        $course = Course::where('id', $course_id)->first();
-        $batches = Batch::where('course_id', $course->id)->with(['course','instructor.user'])->withTrashed()->get();
-        return $this->success(BatchResource::collection($batches), 'all batches');
+        $batches = Batch::where('course_id', $course_id)->with(['course','instructor.user'])->withTrashed()->first();
+        $batches = new BatchJson($batches);
+        $data = $batches->getJson();
+        return $this->success(BatchResource::collection($data), 'all batches');
     }
 
     public function createBatchName($course_id)
@@ -44,10 +46,12 @@ class BatchController extends BaseController
 
     public function show($id)
     {
-        $batch = Batch::withTrashed()->where('id', $id)->first();
+        $batch = Batch::withTrashed()->where('id',$id)->first();
         if (!$batch) {
             return $this->error([], "batch not found", config('http_status_code.not_found'));
         }
+        $data = new BatchJson($batch);
+        $batch = $data->getJson();
         return $this->success($batch, 'batch show');
     }
 
