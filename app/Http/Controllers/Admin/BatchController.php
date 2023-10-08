@@ -36,7 +36,6 @@ class BatchController extends BaseController
         return $batchName;
     }
 
-
     public function store(BatchRequest $request)
     {
         $data =   $request->validated();

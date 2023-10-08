@@ -10,7 +10,6 @@ use App\Http\Controllers\BaseController;
 
 class CvFormController extends BaseController
 {
-    
     public function store(CvFormRequest $request)
     {
         $CvForm = new CvForm();

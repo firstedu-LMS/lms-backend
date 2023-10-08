@@ -8,8 +8,11 @@ trait LogModelService
     {
         parent::booted();
 
-        static::updated(function ($model) {
-            
+        static::updating(function ($model) {
+            $oldValues = $model->getOriginal(); // Old values
+            $newValues = $model->getAttributes(); // New values
+            logger($oldValues);
+            logger($newValues);
         });
 
     }
