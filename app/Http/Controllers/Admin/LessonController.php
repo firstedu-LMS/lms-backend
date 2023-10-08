@@ -62,14 +62,7 @@ class LessonController extends BaseController
         if (!$lesson) {
             return $this->error([], "lesson not found", config('http_status_code.not_found'));
         }
-        $lesson = new Lesson();
-        $lesson->name = $request->name;
-        $lesson->description = $request->description;
-        $lesson->video_id = $request->video_id;
-        $lesson->week_id = $request->week_id;
-        $lesson->course_id = $request->course_id;
-        $lesson->batch_id = $request->batch_id;
-        $lesson->update();
+        $lesson->update($request->validated());
         return $this->success(new LessonResource($lesson), 'lesson show');
     }
 

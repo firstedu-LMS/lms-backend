@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BatchRequest;
-use App\Http\Resources\BatchResource;
-use App\Http\Controllers\BaseController;
+use Exception;
+use App\Models\Batch;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use App\Models\Batch;
+use App\Http\Requests\BatchRequest;
+use App\Utils\CheckToDeleteService;
+use App\Http\Resources\BatchResource;
+use App\Services\BatchDeletionService;
+use App\Http\Controllers\BaseController;
 use App\Utils\FormatJsonForResponseService\Admin\BatchJson;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +37,6 @@ class BatchController extends BaseController
         }
         return $batchName;
     }
-
 
     public function store(BatchRequest $request)
     {
@@ -72,12 +74,15 @@ class BatchController extends BaseController
         return $this->success(new BatchResource($batch), 'updated');
     }
 
-    public function destroy($id)
+    public function destroy($id,BatchDeletionService $batchDeletionService)
     {
         $batch = Batch::where('id', $id)->first();
-        $batch->status = false;
-        $batch->update();
-        $batch->delete();
-        return $this->success([], 'deleted', config('http_status_code.no_content'));
+        try {
+            //logic for deleting the batch are implemented in the service
+            $batchDeletionService->deleteBatch($batch);
+            return $this->success([], 'deleted', config('http_status_code.no_content'));
+        } catch (Exception $e) {
+            return $this->error([], $e->getMessage(), config('http_status_code.unprocessable_content'));
+        }
     }
 }

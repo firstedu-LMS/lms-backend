@@ -33,19 +33,13 @@ class QuestionController extends BaseController
         $question->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
-    // public function update(QuestionRequest $request, $id)
-    // {
-    //     $question = Question::where('id', $id)->first();
-    //     if (!$question) {
-    //         return $this->error([], 'there is no question', config('http_status_code.not_found'));
-    //     }
-    //     $question->lesson_id = $request->lesson_id;
-    //     $question->title = $request->title;
-    //     $question->choice1 = $request->choice1;
-    //     $question->choice2 = $request->choice2;
-    //     $question->choice3 = $request->choice3;
-    //     $question->answer = $request->answer;
-    //     $question->update();
-    //     return $this->success(new QuestionResource($question), 'Updated question',config('http_status_code.ok'));
-    // }
+    public function update(QuestionRequest $request, $id)
+    {
+        $question = Question::where('id', $id)->first();
+        if (!$question) {
+            return $this->error([], 'there is no question', config('http_status_code.not_found'));
+        }
+        $question->update($request->validated());
+        return $this->success(new QuestionResource($question), 'Updated question',config('http_status_code.ok'));
+    }
 }

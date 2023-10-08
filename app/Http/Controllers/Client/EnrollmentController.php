@@ -12,7 +12,7 @@ class EnrollmentController extends Controller
 {
     public function store(EnrollmentRequest $request)
     {
-        $existEnrollmentForCurrentStudent = Enrollment::where('student_id',$request->student_id)->first();
+        $existEnrollmentForCurrentStudent = Enrollment::where('student_id',$request->student_id)->where('course_id' , $request->course_id)->first();
 
         if ($existEnrollmentForCurrentStudent) {
             return response()->json([

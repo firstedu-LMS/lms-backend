@@ -105,4 +105,8 @@ class StudentController extends BaseController
         }
         $courseCompletion->update();
     }
+
+    // public function lessons(Student $student){
+    //     $lessons = 
+    // }
 }

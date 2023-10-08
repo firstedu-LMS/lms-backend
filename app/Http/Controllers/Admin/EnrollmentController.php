@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Week;
-use App\Models\Batch;
 use App\Models\Enrollment;
-use Illuminate\Http\Request;
 use App\Models\CourseCompletion;
 use App\Models\CoursePerStudent;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\EnrollmentRequest;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
-use App\Models\WeekCompletion;
-use CheckToDeleteService;
-use Illuminate\Support\Facades\Validator;
+
 
 class EnrollmentController extends BaseController
 {
@@ -31,14 +26,13 @@ class EnrollmentController extends BaseController
         $weeks = Week::where('course_id', $request->course_id)
                         ->where('batch_id', $request->batch_id)
                         ->get();
+        
+        $courseCompletionData = $request->only(['student_id','course_id']);                
+        $courseCompletionData['week_count'] = $weeks->count();
 
         $this->deleteOldEnrollment($request);
 
-        CourseCompletion::create([
-            'week_count' => $this->countWeeks($request,$weeks),
-            'student_id' => $request->student_id,
-            'course_id '=>$request->course_id
-        ]);
+        CourseCompletion::create($courseCompletionData);
         
         $this->createlessonCompletionRelatedToWeeks($request,$weeks);
 
@@ -51,20 +45,15 @@ class EnrollmentController extends BaseController
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 
-    public function countWeeks($request,$weeks) {
-        return $weekcount = $weeks->count();
-    }
+   
 
     public function createlessonCompletionRelatedToWeeks($request,$weeks){
+        $lessonData = $request->only(['student_id','course_id','batch_id']);
         foreach($weeks as $week) {
             $lessonCount = Lesson::where('week_id',$week->id)->count();
-            $weekCompletion = new WeekCompletion();
-            $weekCompletion->lesson_count = $lessonCount;
-            $weekCompletion->student_id = $request->student_id;
-            $weekCompletion->course_id = $request->course_id;
-            $weekCompletion->batch_id = $request->batch_id;
-            $weekCompletion->week_id = $week->id;
-            $weekCompletion->save();
+            $lessonData['lesson_count'] = $lessonCount;
+            $lessonData['week_id'] = $week->id;
+            LessonCompletion::create($lessonData);
         }
     }
 
@@ -72,7 +61,6 @@ class EnrollmentController extends BaseController
         $enrollment = Enrollment::where('course_id',$request->course_id)->where('student_id',$request->student_id)->first();
         $enrollment->delete();
     }
-
     // public function destroy(Enrollment $enrollment)
     // {
     //     $enrollment->delete();
