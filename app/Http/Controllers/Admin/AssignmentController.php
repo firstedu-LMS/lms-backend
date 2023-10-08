@@ -30,7 +30,7 @@ class AssignmentController extends BaseController
     }
     public function update(AssignmentRequest $request,$id)
     {
-        $assignment = Assignment::where('id',$id)->first();
+            $assignment = Assignment::where('id',$id)->first();
             if (!$assignment) {
                 return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
             }

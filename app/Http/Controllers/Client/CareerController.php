@@ -13,7 +13,6 @@ class CareerController extends BaseController
 {
     public function index()
     {
-
         if (Cache::has('careers')) {
             $careers = Cache::get('careers');
         } else {
@@ -21,7 +20,6 @@ class CareerController extends BaseController
                 return  Career::all();
             });
         }
-
         return $this->success(CareerResource::collection($careers), 'careers');
     }
 
