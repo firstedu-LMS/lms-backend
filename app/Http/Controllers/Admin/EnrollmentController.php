@@ -10,7 +10,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\EnrollmentRequest;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
-
+use App\Models\WeekCompletion;
 
 class EnrollmentController extends BaseController
 {
@@ -26,14 +26,14 @@ class EnrollmentController extends BaseController
         $weeks = Week::where('course_id', $request->course_id)
                         ->where('batch_id', $request->batch_id)
                         ->get();
-        
-        $courseCompletionData = $request->only(['student_id','course_id']);                
+
+        $courseCompletionData = $request->only(['student_id','course_id']);
         $courseCompletionData['week_count'] = $weeks->count();
 
         $this->deleteOldEnrollment($request);
 
         CourseCompletion::create($courseCompletionData);
-        
+
         $this->createlessonCompletionRelatedToWeeks($request,$weeks);
 
         return $this->success($coursePerStudent,"Successfully created");
@@ -45,15 +45,15 @@ class EnrollmentController extends BaseController
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 
-   
+
 
     public function createlessonCompletionRelatedToWeeks($request,$weeks){
-        $lessonData = $request->only(['student_id','course_id','batch_id']);
+        $weekData = $request->only(['student_id','course_id','batch_id']);
         foreach($weeks as $week) {
             $lessonCount = Lesson::where('week_id',$week->id)->count();
-            $lessonData['lesson_count'] = $lessonCount;
-            $lessonData['week_id'] = $week->id;
-            LessonCompletion::create($lessonData);
+            $weekData['lesson_count'] = $lessonCount;
+            $weekData['week_id'] = $week->id;
+            WeekCompletion::create($weekData);
         }
     }
 
