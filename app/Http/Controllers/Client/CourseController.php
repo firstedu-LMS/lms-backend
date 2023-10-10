@@ -23,7 +23,6 @@ class CourseController extends BaseController
         //If the frontend team want only the required fields ,use the GetLatestForCourseResource
         return $this->success(CourseResource::collection($course), 'latest courses');
     }
-
     public function show($id)
     {
         $course =  Course::where('id', $id)->first();

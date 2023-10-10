@@ -20,7 +20,8 @@ class WeekResource extends JsonResource
             'batch_id' => $this->batch_id,
             'course' => $this->course,
             'batch' => $this->batch,
-            'week_number' => $this->week_number
+            'week_number' => $this->week_number,
+            'locked' => $this->locked ?? false,
         ];
     }
 }
