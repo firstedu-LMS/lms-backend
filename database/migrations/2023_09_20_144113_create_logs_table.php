@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('course_name');
-            $table->string('columns');
+            $table->string('model');
+            $table->string('old_value');
+            $table->string('new_value');
+            $table->enum('user',['admin','instructor'])->default('admin');
             $table->timestamp('updated');
         });
     }

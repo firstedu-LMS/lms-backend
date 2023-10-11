@@ -20,8 +20,8 @@ class BatchFactory extends Factory
         static $number= 1;
         return [
             'name' => 'Batch-' .$number++,
-            'course_id' => fake()->numberBetween(1,20),
-            'instructor_id' => fake()->numberBetween(1,20),
+            'course_id' => fake()->numberBetween(1,3),
+            'instructor_id' => fake()->numberBetween(1,3),
             'start_date' => fake()->date('Y/m/d'),
             'end_date' => fake()->date('Y/m/d'),
             'start_time' => fake()->time(),
