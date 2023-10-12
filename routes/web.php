@@ -133,6 +133,6 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 
 
-Route::get('delete-service',function ()  {
-    $clean = new CheckToDeleteService( 'Course' , 2);
-});
+// Route::get('delete-service',function ()  {
+//     $clean = new CheckToDeleteService( 'Course' , 2);
+// });

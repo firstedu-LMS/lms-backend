@@ -15,6 +15,7 @@ class CvFormController extends BaseController
         $CvForm = new CvForm();
         $filename = time() . "_" . $request->file('cv')->getclientoriginalname();
         $file = request()->file('cv')->storeas('cvform', $filename);
+        return $file;
         $CvForm->cv = $file;
         $CvForm->save();
         return $this->success(new CvFormResource($CvForm),'created',config('http_status_code.created'));
