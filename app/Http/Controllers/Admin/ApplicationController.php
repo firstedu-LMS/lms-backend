@@ -21,8 +21,6 @@ class ApplicationController extends BaseController
     public function index()
     {
        $data = ApplicationResource::collection(Application::with('cv')->get());
-       $application =new ApplicationJson($data);
-       $data = $application->format();
        return $this->success($data,"Application datas");
     }
 
