@@ -15,7 +15,9 @@ use App\Models\LessonCompletion;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WeekResource;
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\LessonCompletionRequest;
 use App\Http\Resources\LessonResource;
+use App\Http\Resources\StudentLessonsWeekResource;
 use Illuminate\Support\Facades\Validator;
 use App\Utils\FormatJsonForResponseService\Student\ProfileJson;
 
@@ -57,23 +59,16 @@ class StudentController extends BaseController
     //     return $this->success($enrollment, "successfully created", config('http_status_code.created'));
     // }
 
-    public function lessonCompletion(Request $request)
+    public function lessonCompletion(LessonCompletionRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            "student_id" => "required",
-            "lesson_id" => "required"
-        ]);
-        if ($validator->fails()) {
-            return $this->error($validator->errors(), "Validation Fail", config('http_status_code.unprocessable_content'));
-        }
         $lesson = Lesson::where('id', $request->lesson_id)->first();
-        $lessonCompletion = new LessonCompletion();
-        $lessonCompletion->lesson_id = $lesson->id;
-        $lessonCompletion->week_id = $lesson->week_id;
-        $lessonCompletion->batch_id = $lesson->batch_id;
-        $lessonCompletion->course_id = $lesson->course_id;
-        $lessonCompletion->student_id = $request->student_id;
-        $lessonCompletion->save();
+        $lessonCompletion = LessonCompletion::create([
+            'lesson_id'      =>  $lesson->id,
+            'week_id'        =>  $lesson->week_id,
+            'batch_id'       =>  $lesson->batch_id,
+            'course_id'      =>  $lesson->course_id,
+            'student_id'     =>  $request->student_id
+        ]);
         $this->weekCompletion($request, $lesson);
         return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
     }
@@ -117,11 +112,12 @@ class StudentController extends BaseController
             for ($i = 0; $i <= $count; $i++) {
                 $weeks[$i]['locked'] = true;
             }
-            return $this->success(WeekResource::collection($weeks), 'all weeks');
+            return $this->success(StudentLessonsWeekResource::collection($weeks), 'all weeks');
         } else {
             return $this->error(["message" => "Course not found for student"], "", config('http_status_code.not_found'));
         }
     }
+
     public function studentGetlessonsOfWeek(Request $request)
     {
         $exist = CoursePerStudent::where('student_id', $request->student_id)->where('batch_id', $request->batch_id)->where('course_id', $request->course_id)->first();

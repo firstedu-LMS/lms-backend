@@ -2,7 +2,6 @@
 
 namespace App\Services\Client;
 
-
 use Exception;
 use App\Models\Batch;
 use App\Models\CoursePerStudent;
