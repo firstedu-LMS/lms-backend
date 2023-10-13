@@ -4,19 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Exception;
 use App\Models\Course;
-use App\Models\Student;
 use Illuminate\Http\Request;
-use App\Events\CourseCreated;
-use App\Models\CourseCompletion;
 use App\Http\Requests\CourseRequest;
-use App\Utils\CheckToDeleteService ;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
 use App\Http\Resources\CourseResource;
 use App\Events\CourseDeleteResignCache;
-use App\Services\CourseDeletionService;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
+use App\Services\Client\CourseDeletionSerivce;
 
 class CourseController extends BaseController
 {
@@ -81,7 +74,7 @@ class CourseController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id,CourseDeletionService $courseDeletionService)
+    public function destroy(string $id, CourseDeletionSerivce $courseDeletionService)
     {
         $course = Course::where('id', $id)->first();
 

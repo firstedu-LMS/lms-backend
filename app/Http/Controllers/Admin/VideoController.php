@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class VideoController extends BaseController
 {
     public function store(Request $request){
+        //validation rules needed to fix
         $validator = Validator::make($request->all(),[
             'video'  => 'mimes:mp4,mov,ogg | max:20000',
         ]

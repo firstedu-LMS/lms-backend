@@ -7,11 +7,9 @@ use App\Models\Batch;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Requests\BatchRequest;
-use App\Utils\CheckToDeleteService;
 use App\Http\Resources\BatchResource;
-use App\Services\BatchDeletionService;
 use App\Http\Controllers\BaseController;
-use Illuminate\Support\Facades\Validator;
+use App\Services\Client\BatchDeletionService;
 
 class BatchController extends BaseController
 {
@@ -50,7 +48,9 @@ class BatchController extends BaseController
         if (!$batch) {
             return $this->error([], "batch not found", config('http_status_code.not_found'));
         }
-        return $this->success($batch, 'batch show');
+        // $data = new BatchJson($batch);
+        // $batch = $data->getJson();
+        return $this->success(new BatchResource($batch), 'batch show');
     }
 
 

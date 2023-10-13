@@ -12,7 +12,7 @@ class CreateRoles extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-roles';
+    protected $signature = 'create-roles';
 
     /**
      * The console command description.
