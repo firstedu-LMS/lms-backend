@@ -59,19 +59,7 @@ class StudentController extends BaseController
     //     return $this->success($enrollment, "successfully created", config('http_status_code.created'));
     // }
 
-    public function lessonCompletion(LessonCompletionRequest $request)
-    {
-        $lesson = Lesson::where('id', $request->lesson_id)->first();
-        $lessonCompletion = LessonCompletion::create([
-            'lesson_id'      =>  $lesson->id,
-            'week_id'        =>  $lesson->week_id,
-            'batch_id'       =>  $lesson->batch_id,
-            'course_id'      =>  $lesson->course_id,
-            'student_id'     =>  $request->student_id
-        ]);
-        $this->weekCompletion($request, $lesson);
-        return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
-    }
+
 
     public function weekCompletion($request, $lesson)
     {
@@ -98,29 +86,29 @@ class StudentController extends BaseController
         return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
     }
 
-    public function studentGetweeksOfCourse(Request $request)
+    public function studentGetweeksOfCourse($student_id , $course_id , $batch_id)
     {
-        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
+        $exist = CoursePerStudent::where('student_id', $student_id)->where('course_id', $course_id)->where('batch_id', $batch_id)->get();
         if ($exist) {
-            $completion = CourseCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->first();
+            $completion = CourseCompletion::where('student_id', $student_id)->where('course_id', $course_id)->first();
             $count = $completion->week_completion_count;
-            $weeks = Week::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
+            $weeks = Week::where('course_id', $course_id)->where('batch_id', $batch_id)->get();
             for ($i = 0; $i <= $count; $i++) {
                 $weeks[$i]['locked'] = true;
             }
-            return $this->success(StudentLessonsWeekResource::collection($weeks), 'all weeks');
+            return $this->success(WeekResource::collection($weeks), 'all weeks');
         } else {
             return $this->error(["message" => "Course not found for student"], "", config('http_status_code.not_found'));
         }
     }
-
-    public function studentGetlessonsOfWeek(Request $request)
+    
+    public function studentGetlessonsOfWeek($student_id , $course_id , $batch_id , $week_id)
     {
-        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('batch_id', $request->batch_id)->where('course_id', $request->course_id)->first();
+        $exist = CoursePerStudent::where('student_id', $student_id)->where('batch_id', $batch_id)->where('course_id', $course_id)->first();
         if ($exist) {
-            $completion = WeekCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('week_id', $request->week_id)->first();
+            $completion = WeekCompletion::where('student_id', $student_id)->where('course_id', $course_id)->where('week_id', $week_id)->first();
             $count = $completion->lesson_completion_count;
-            $lessons = Lesson::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->where('week_id', $request->week_id)->get();
+            $lessons = Lesson::where('course_id', $course_id)->where('batch_id', $batch_id)->where('week_id', $week_id)->get();
             for ($i = 0; $i <= $count; $i++) {
                 $lessons[$i]['locked'] = true;
             }
@@ -128,33 +116,5 @@ class StudentController extends BaseController
         }
     }
 
-    public function studentGetweeksOfCourse(Request $request)
-    {
-        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
-        if ($exist) {
-            $completion = CourseCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->first();
-            $count = $completion->week_completion_count;
-            $weeks = Week::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
-            for ($i = 0; $i <= $count; $i++) {
-                $weeks[$i]['locked'] = true;
-            }
-            return $this->success(StudentLessonsWeekResource::collection($weeks), 'all weeks');
-        } else {
-            return $this->error(["message" => "Course not found for student"], "", config('http_status_code.not_found'));
-        }
-    }
-
-    public function studentGetlessonsOfWeek(Request $request)
-    {
-        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('batch_id', $request->batch_id)->where('course_id', $request->course_id)->first();
-        if ($exist) {
-            $completion = WeekCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('week_id', $request->week_id)->first();
-            $count = $completion->lesson_completion_count;
-            $lessons = Lesson::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->where('week_id', $request->week_id)->get();
-            for ($i = 0; $i <= $count; $i++) {
-                $lessons[$i]['locked'] = true;
-            }
-            return $this->success(LessonResource::collection($lessons), 'all weeks');
-        }
-    }
+   
 }

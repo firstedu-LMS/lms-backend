@@ -22,6 +22,7 @@ class VideoRequest extends FormRequest
             'video'  => 'mimes:video/mp4,video/x-flv,application/x-mpegURL',
         ];
     }
+    
     protected function failedValidation(Validator $validator)
     {
         throw new ValidationException($validator,response()->json([
