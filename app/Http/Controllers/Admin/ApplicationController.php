@@ -29,6 +29,7 @@ class ApplicationController extends BaseController
         $application = Application::create($request->validated());
         return $this->success(new ApplicationResource($application), 'Created', config('http_status_code.created'));
     }
+    
     public function destroy(string $id)
     {
         $application = Application::where('id', $id)->first();
