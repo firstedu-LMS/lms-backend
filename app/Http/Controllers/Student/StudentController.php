@@ -13,11 +13,12 @@ use App\Models\CourseCompletion;
 use App\Models\CoursePerStudent;
 use App\Models\LessonCompletion;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LessonResource;
+use App\Http\Resources\WeekResource;
 use App\Http\Controllers\BaseController;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\LessonCompletionRequest;
+use App\Http\Resources\LessonResource;
 use App\Http\Resources\StudentLessonsWeekResource;
+use Illuminate\Support\Facades\Validator;
 use App\Utils\FormatJsonForResponseService\Student\ProfileJson;
 
 class StudentController extends BaseController
@@ -25,11 +26,11 @@ class StudentController extends BaseController
     public function profile(Request $request)
     {
         $carentUser = $request->user();
-        $user = User::where('id', $carentUser->id)->with(['roles','image'])->first();
+        $user = User::where('id', $carentUser->id)->with(['roles', 'image'])->first();
         $student = Student::where('user_id', $user->id)->first();
-        $courseCompletionCount = CourseCompletion::where('student_id',$student->id)->where('status',true)->count();
-        $idProgressCourseCount = CourseCompletion::where('student_id',$student->id)->where('status',false)->count();
-        $profile = new  ProfileJson($user,$student,$courseCompletionCount,$idProgressCourseCount);
+        $courseCompletionCount = CourseCompletion::where('student_id', $student->id)->where('status', true)->count();
+        $idProgressCourseCount = CourseCompletion::where('student_id', $student->id)->where('status', false)->count();
+        $profile = new  ProfileJson($user, $student, $courseCompletionCount, $idProgressCourseCount);
         $data = $profile->getJson();
         return response()->json($data);
     }
@@ -44,27 +45,43 @@ class StudentController extends BaseController
         return $this->success($student, "student info updated");
     }
 
-    public function enrollment(Request $request)
+    // public function enrollment(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'course_id' => 'required',
+    //         'student_id' => 'required'
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return $this->error($validator->errors(), "Validation failed", config('http_status_code.unprocessable_content'));
+    //     }
+    //     $enrollment = new Enrollment($request->all());
+    //     $enrollment->save();
+    //     return $this->success($enrollment, "successfully created", config('http_status_code.created'));
+    // }
+
+    public function lessonCompletion(LessonCompletionRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'course_id' => 'required',
-            'student_id' => 'required'
+        $lesson = Lesson::where('id', $request->lesson_id)->first();
+        $lessonCompletion = LessonCompletion::create([
+            'lesson_id'      =>  $lesson->id,
+            'week_id'        =>  $lesson->week_id,
+            'batch_id'       =>  $lesson->batch_id,
+            'course_id'      =>  $lesson->course_id,
+            'student_id'     =>  $request->student_id
         ]);
-        if($validator->fails()) {
-            return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
-        }
-        $enrollment =new Enrollment($request->all());
-        $enrollment->save();
-        return $this->success($enrollment,"successfully created",config('http_status_code.created'));
+        $this->weekCompletion($request, $lesson);
+        return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
     }
 
-    public function course_per_students($student)
+    public function weekCompletion($request, $lesson)
     {
-        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
-        $query->with(['course' => function ($query) {
-            $query->with('image');
-        }]);
-    }, 'student'])->get(), 'All data that the student has enrolled');
+        $weekCompletion = WeekCompletion::where('student_id', $request->student_id)->where('course_id', $lesson->course_id)->where('batch_id', $lesson->batch_id)->where('week_id', $lesson->week_id)->first();
+        $weekCompletion->lesson_completion_count++;
+        if ($weekCompletion->lesson_completion_count == $weekCompletion->lesson_count) {
+            $weekCompletion->status = true;
+            $this->courseCompletion($request, $lesson);
+        }
+        $weekCompletion->update();
     }
 
     public function lessonCompletion(LessonCompletionRequest $request)
@@ -81,25 +98,34 @@ class StudentController extends BaseController
         return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
     }
 
-    public function weekCompletion($request,$lesson)
+    public function studentGetweeksOfCourse(Request $request)
     {
-            $weekCompletion = WeekCompletion::where('student_id',$request->student_id)->where('course_id',$lesson->course_id)->where('batch_id',$lesson->batch_id)->where('week_id',$lesson->week_id)->first();
-            $weekCompletion->lesson_completion_count++;
-            if($weekCompletion->lesson_completion_count == $weekCompletion->lesson_count) {
-                $weekCompletion->status = true;
-                $this->courseCompletion($request,$lesson);
+        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
+        if ($exist) {
+            $completion = CourseCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->first();
+            $count = $completion->week_completion_count;
+            $weeks = Week::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->get();
+            for ($i = 0; $i <= $count; $i++) {
+                $weeks[$i]['locked'] = true;
             }
-            $weekCompletion->update();
+            return $this->success(StudentLessonsWeekResource::collection($weeks), 'all weeks');
+        } else {
+            return $this->error(["message" => "Course not found for student"], "", config('http_status_code.not_found'));
+        }
     }
 
-    public function courseCompletion($request,$lesson)
+    public function studentGetlessonsOfWeek(Request $request)
     {
-        $courseCompletion = CourseCompletion::where('student_id',$request->student_id)->where('course_id',$lesson->course_id)->first();
-        $courseCompletion->week_completion_count++;
-        if($courseCompletion->week_completion_count == $courseCompletion->week_count) {
-            $courseCompletion->status = true;
+        $exist = CoursePerStudent::where('student_id', $request->student_id)->where('batch_id', $request->batch_id)->where('course_id', $request->course_id)->first();
+        if ($exist) {
+            $completion = WeekCompletion::where('student_id', $request->student_id)->where('course_id', $request->course_id)->where('week_id', $request->week_id)->first();
+            $count = $completion->lesson_completion_count;
+            $lessons = Lesson::where('course_id', $request->course_id)->where('batch_id', $request->batch_id)->where('week_id', $request->week_id)->get();
+            for ($i = 0; $i <= $count; $i++) {
+                $lessons[$i]['locked'] = true;
+            }
+            return $this->success(LessonResource::collection($lessons), 'all weeks');
         }
-        $courseCompletion->update();
     }
 
     public function studentGetweeksOfCourse(Request $request)

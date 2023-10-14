@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Image;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\Validator;
 
 class ImageController extends BaseController
 {
     public function store(Request $request) {
+        $validator = Validator::make($request->all(),[
+            $request->file('course_image') ? 'course_image' : 'user_image' => 'required|mimes:png,jpeg,jpg',
+        ]
+        );
+        if($validator->fails()) {
+            return $this->error($validator->errors(),"Validation Error",config('http_status_code.unprocessable_content'));
+        }
         if ($request->file('course_image')) {
             return $this->success($this->handleImageStorage('course_image',$request),'image stored');
         }

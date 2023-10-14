@@ -6,9 +6,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Week>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Enrollment>
  */
-class WeekFactory extends Factory
+class EnrollmentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,11 +17,9 @@ class WeekFactory extends Factory
      */
     public function definition(): array
     {
-        static $number= 1;
         return [
-            "course_id" =>fake()->numberBetween(1,3),
-            "batch_id" => fake()->numberBetween(1,3),
-            "week_number" => "week-".$number++,
+            'course_id' => Arr::random([1,2,3]),
+            'student_id' => Arr::random([1,2,3]),
         ];
     }
 }

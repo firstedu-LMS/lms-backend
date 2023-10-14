@@ -65,10 +65,10 @@ class AuthController extends BaseController
                     "token" => $token
                 ], 'login');
             } else {
-                return $this->error([], "Wrong Password !", config('http_status_code.forbidden'));
+                return $this->error(["password" => "Wrong Password !"], "", config('http_status_code.forbidden'));
             }
         } else {
-            return $this->error([], "There is no user with this email !", config('http_status_code.not_found'));
+            return $this->error(["email" => "There is no user with this email !"], "", config('http_status_code.not_found'));
         }
     }
 

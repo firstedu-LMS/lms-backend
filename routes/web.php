@@ -1,14 +1,17 @@
 <?php
 
 use App\Models\User;
+use App\Models\Week;
 use App\Models\Batch;
+use App\Models\Career;
 use App\Models\Course;
+use App\Models\Student;
+use App\Models\Enrollment;
 use App\Models\Instructor;
 use App\Models\Application;
 use App\Mail\AdminLoginVertifyMail;
-use App\Models\Career;
-use App\Models\Student;
-use App\Models\Week;
+use App\Models\Assignment;
+use App\Models\CvForm;
 use App\Utils\CheckToDeleteService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -52,14 +55,20 @@ Route::get('/', function () {
     return "Finish";
 });
 Route::get('/fakeDatas', function () {
-    Application::factory()->count(20)->create();
-    Course::factory()->count(20)->create();
-    Batch::factory()->count(20)->create();
-    Career::factory()->count(20)->create();
-    Instructor::factory()->count(20)->create();
+    Application::factory()->count(5)->create();
+    Batch::factory()->count(5)->create();
+    Career::factory()->count(5)->create();
+    CvForm::factory()->count(5)->create();
+    Course::factory()->count(5)->create();
+    Instructor::factory()->count(10)->create();
     Student::factory()->count(20)->create();
-    Week::factory()->count(20)->create();
-    return "success";
+    Week::factory()->count(15)->create();
+    Enrollment::factory()->count(30)->create();
+    Assignment::factory()->count(10)->create();
+    return response('
+        <div style="display:flex;justify-content:center;align-items:center;width:100vw;height:100vh;">
+        <span style="color:cornflowerblue; font-size: 100px;">Suii</span></div>
+    ');
 });
 Route::get('/mail', function () {
     Mail::to('myatkyawt974@gmail.com')->send(new AdminLoginVertifyMail());
@@ -124,6 +133,6 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 
 
-Route::get('delete-service',function ()  {
-    $clean = new CheckToDeleteService( 'Course' , 2);
-});
+// Route::get('delete-service',function ()  {
+//     $clean = new CheckToDeleteService( 'Course' , 2);
+// });

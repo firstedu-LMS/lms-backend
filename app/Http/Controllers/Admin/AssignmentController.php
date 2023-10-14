@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\AssignmentRequest;
 use App\Http\Resources\AssignmentResource;
 use App\Models\Assignment;
+use App\Utils\FormatJsonForResponseService\Admin\AssignmentJson;
 use Illuminate\Http\Request;
 
 class AssignmentController extends BaseController
@@ -29,7 +30,11 @@ class AssignmentController extends BaseController
         if(!$assignment) {
             return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
         }
-            return $this->success(new AssignmentResource($assignment),"Assignment is showing with this id");
+            $data = new AssignmentResource($assignment);
+            $assignment = new AssignmentJson($data);
+            $data = $assignment->getJson();
+            return response()->json($data);
+            return $this->success($data,"Detail of Assignment");
     }
     public function update(AssignmentRequest $request,$id)
     {
@@ -37,14 +42,8 @@ class AssignmentController extends BaseController
             if (!$assignment) {
                 return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
             }
-            // $assignment->title = $request->title;
-            // $assignment->course_id = $request->course_id;
-            // $assignment->batch_id = $request->batch_id;
-            // $assignment->test_date = $request->test_date;
-            // $assignment->test_time = $request->test_time;
-            // $assignment->agenda = $request->agenda;
-            // $assignment->file_id = $request->file_id;
-            $assignment->update($request->validated());
+            $data = $request->validated();
+            $assignment->update($data);
             return $this->success(new Assignment([$assignment]), 'Updated assignment',config('http_status_code.ok'));
     }
     public function destroy(Assignment $assignment)
