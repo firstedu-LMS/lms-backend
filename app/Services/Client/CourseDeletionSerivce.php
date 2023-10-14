@@ -6,7 +6,7 @@ use Exception;
 use App\Models\Batch;
 use App\Models\CourseCompletion;
 
-class CourseDeletionService
+class CourseDeletionSerivce
 {
     public function deleteCourse($course)
     {

@@ -14,9 +14,9 @@ class AssignmentController extends BaseController
     public function index()
     {
         $assignments = AssignmentResource::collection(Assignment::with(["course","batch","file"])->get());
-        $data = new AssignmentJson($assignments);
-        $assignments = $data->getJson();
-        return $this->success($assignments,"asignment datas");
+        // $data = new AssignmentJson($assignments);
+        // $assignments = $data->getJson();
+        return $this->success(AssignmentResource::collection($assignments),"asignment datas");
     }
     public function store(AssignmentRequest $request)
     {
