@@ -101,6 +101,15 @@ class StudentController extends BaseController
             return $this->error(["message" => "Course not found for student"], "", config('http_status_code.not_found'));
         }
     }
+
+    public function course_per_students($student)
+    {
+        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+            $query->with(['course' => function ($query) {
+                $query->with('image');
+            }]);
+        }, 'student'])->get(), 'All data that the student has enrolled');
+    }
     
     public function studentGetlessonsOfWeek($student_id , $course_id , $batch_id , $week_id)
     {
