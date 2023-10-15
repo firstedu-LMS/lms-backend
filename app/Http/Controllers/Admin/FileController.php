@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
 
+use function App\Helper\storeFile;
+
 class FileController extends BaseController
 {
     public function store(Request $request){
@@ -26,8 +28,7 @@ class FileController extends BaseController
     
     public function handleFileCreate($request,$name)
     {
-        $filename = time() . "_" . $request->file($name)->getclientoriginalname();
-        $fileStore = $request->file($name)->storeas($name, $filename);
+        $fileStore = storeFile($request->file($name));
         $file =  File::create([
             'file'=> $fileStore
         ]);
