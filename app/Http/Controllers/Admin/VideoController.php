@@ -18,6 +18,8 @@ class VideoController extends BaseController
         if($validator->fails()) {
             return $this->error($validator->errors(),"Validation Error",config('http_status_code.unprocessable_content'));
         }
+        
+
         $filename = time() . "_" . $request->file('video')->getclientoriginalname();
         $fileStore = request()->file('video')->storeas('videos', $filename);
         $file =  Video::create([

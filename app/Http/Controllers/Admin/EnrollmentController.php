@@ -43,6 +43,7 @@ class EnrollmentController extends BaseController
         $enrollment->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
+    
     public function createlessonCompletionRelatedToWeeks($request, $weeks)
     {
         $weekData = $request->only(['student_id', 'course_id', 'batch_id']);
