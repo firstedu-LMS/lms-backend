@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+use function App\Helper\hello;
+use function App\Helper\storeFile;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -131,7 +134,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-
+Route::get('helper',function(){
+ return storeFile();
+});
 
 // Route::get('delete-service',function ()  {
 //     $clean = new CheckToDeleteService( 'Course' , 2);
