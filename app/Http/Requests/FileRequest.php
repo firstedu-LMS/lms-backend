@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\ValidationException;
 
-class VideoRequest extends FormRequest
+class FileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,13 +17,18 @@ class VideoRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     */
     public function rules(): array
     {
         return [
-            'video'  => [
-                            'required',
-                            File::types(['mp4',])
-                        ],
+            $this->file('file') ? 'file' : 'assignment' => [
+                                                                'required',
+                                                                File::types(['pdf'])
+                                                            ],
         ];
     }
     
@@ -31,7 +36,7 @@ class VideoRequest extends FormRequest
     {
         throw new ValidationException($validator,response()->json([
             "errors" => $validator->errors(),
-            "messages" => "Validation Errors",
+            "message" => "Validation Error"
         ],config('http_status_code.unprocessable_content')));
     }
 }

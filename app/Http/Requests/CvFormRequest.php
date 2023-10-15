@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
 class CvFormRequest extends FormRequest
@@ -24,7 +25,10 @@ class CvFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cv' => 'required|mimes:pdf'
+            'cv' => [
+                    'required',
+                    File::types(['pdf'])
+                ]
        ];
     }
     protected function failedValidation(Validator $validator)
