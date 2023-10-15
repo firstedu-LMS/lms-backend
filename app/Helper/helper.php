@@ -3,8 +3,8 @@
 namespace App\Helper;
 
 
-function storeFile($file){
+function storeFile($file,$folderName){
     $filename = time() . "_" . $file->getclientoriginalname();
-    $fileStore = $file->storeas('videos', $filename);
+    $fileStore = $file->storeas($folderName, $filename);
     return $fileStore;
 }

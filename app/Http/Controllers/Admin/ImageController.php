@@ -9,6 +9,8 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\ImageRequest;
 use Illuminate\Support\Facades\Validator;
 
+use function App\Helper\storeFile;
+
 class ImageController extends BaseController
 {
     public function store(ImageRequest $request) {
@@ -21,8 +23,7 @@ class ImageController extends BaseController
     }
 
     protected function handleImageStorage (string $imageIdentifier,$request){
-        $filename = time() . "_" . $request->file($imageIdentifier)->getClientOriginalName();
-        $file = request()->file($imageIdentifier)->storeAs($imageIdentifier, $filename);
+        $file = storeFile($request->file($imageIdentifier),$imageIdentifier);
         $image =  Image::create([
             'image'=> $file
         ]);

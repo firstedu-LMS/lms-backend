@@ -13,7 +13,7 @@ use function App\Helper\storeFile;
 class VideoController extends BaseController
 {
     public function store(VideoRequest $request){
-        $fileStore = storeFile($request->file('video'));
+        $fileStore = storeFile($request->file('video'),'video');
         $file =  Video::create([
             'video'=> $fileStore
         ]);

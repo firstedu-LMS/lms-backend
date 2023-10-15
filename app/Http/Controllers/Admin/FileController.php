@@ -22,7 +22,7 @@ class FileController extends BaseController
     
     public function handleFileCreate($request,$name)
     {
-        $fileStore = storeFile($request->file($name));
+        $fileStore = storeFile($request->file($name),$name);
         $file =  File::create([
             'file'=> $fileStore
         ]);
