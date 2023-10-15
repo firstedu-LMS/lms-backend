@@ -134,9 +134,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::get('helper',function(){
- return storeFile();
-});
+
 
 // Route::get('delete-service',function ()  {
 //     $clean = new CheckToDeleteService( 'Course' , 2);
