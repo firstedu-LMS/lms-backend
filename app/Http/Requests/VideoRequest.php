@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\ValidationException;
 
 class VideoRequest extends FormRequest
@@ -19,7 +20,10 @@ class VideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video'  => 'video',
+            'video'  => [
+                            'required',
+                            File::types(['mp4'])
+                        ],
         ];
     }
     
