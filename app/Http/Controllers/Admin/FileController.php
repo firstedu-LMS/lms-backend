@@ -23,6 +23,7 @@ class FileController extends BaseController
             return $this->handleFileCreate($request,'file');
         }
     }
+    
     public function handleFileCreate($request,$name)
     {
         $filename = time() . "_" . $request->file($name)->getclientoriginalname();
