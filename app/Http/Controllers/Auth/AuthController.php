@@ -68,7 +68,7 @@ class AuthController extends BaseController
                 return $this->error(["password" => "Wrong Password !"], "", config('http_status_code.forbidden'));
             }
         } else {
-            return $this->error(["email" => "There is no user with this email !"], "", config('http_status_code.unauthorized'));
+            return $this->error(["email" => "There is no user with this email !"], "", config('http_status_code.forbidden'));
         }
     }
 
