@@ -5,21 +5,23 @@ use App\Models\Week;
 use App\Models\Batch;
 use App\Models\Career;
 use App\Models\Course;
+use App\Models\CvForm;
 use App\Models\Student;
+use App\Models\Assignment;
 use App\Models\Enrollment;
 use App\Models\Instructor;
 use App\Models\Application;
+use function App\Helper\hello;
+use App\Models\CourseCompletion;
+use App\Models\CoursePerStudent;
+use function App\Helper\storeFile;
 use App\Mail\AdminLoginVertifyMail;
-use App\Models\Assignment;
-use App\Models\CvForm;
 use App\Utils\CheckToDeleteService;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-use function App\Helper\hello;
-use function App\Helper\storeFile;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,30 +34,21 @@ use function App\Helper\storeFile;
 |
 */
 //This route will generate 5
-Route::get('/', function () {
-    $numberOfInstructors = 5;
-    for ($i = 0; $i < $numberOfInstructors; $i++) {
-        $instructor = Instructor::select('instructor_id')
-            ->orderByDesc('instructor_id')
-            ->value('instructor_id');
-        $instructorIdOnly = substr($instructor, 2);
-        if ($instructorIdOnly) {
-             $instructorId = "I-" . str_pad((int)$instructorIdOnly + 1, 4, "0", STR_PAD_LEFT);
-        } else {
-            $instructorId = "I" . config('instructorid.id');
-        }
-        $user = new User();
-        $user->name = fake()->name();
-        $user->email = fake()->unique()->safeEmail();
-        $user->password = Hash::make('internet');
-        $user->save();
-        $instructor = new Instructor();
-        $instructor->user_id = $user->id;
-        $instructor->instructor_id = $instructorId;
-        $instructor->cv_id = 1;
-        $instructor->save();
-    }
-    return "Finish";
+Route::get('/{id}', function ($student) {
+    $coursePerStudents = CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+        $query->with(['course' => function ($query) {
+            $query->with('image');
+        }]);
+    }, 'student'])->get();
+
+    $data = $coursePerStudents->map(function ($coursePerStudents) {
+        $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
+        $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
+        $coursePerStudents['percentage'] =  substr((int)$percentage,0,2)."%";
+        return $coursePerStudents;
+    });
+
+    return $data;
 });
 Route::get('/fakeDatas', function () {
     Application::factory()->count(5)->create();
@@ -136,6 +129,21 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 
 
-// Route::get('delete-service',function ()  {
-//     $clean = new CheckToDeleteService( 'Course' , 2);
+// Route::get('something/{something}',function ($something)  {
+
+//     $coursePerStudents = CoursePerStudent::where('student_id', $something)->with(['batch' => function ($query) {
+//         $query->with(['course' => function ($query) {
+//             $query->with('image');
+//         }]);
+//     }, 'student'])->get();
+
+//     $data = $coursePerStudents->map(function ($coursePerStudents) {
+//         $course_completion = CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id'.$coursePerStudents->course_id)->frist();
+//         $weekCout = $course_completion->week_count;
+//         $week_completion_count = $course_completion->course_completion_count;
+//         $coursePerStudents->percentage = $weekCout / $week_completion_count * 100;
+//         return $coursePerStudents;
+//     });
+
+//     return $data;
 // });
