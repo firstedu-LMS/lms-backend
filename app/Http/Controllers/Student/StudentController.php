@@ -104,11 +104,20 @@ class StudentController extends BaseController
 
     public function course_per_students($student)
     {
-        return $this->success(CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
-            $query->with(['course' => function ($query) {
-                $query->with('image');
-            }]);
-        }, 'student'])->get(), 'All data that the student has enrolled');
+        $coursePerStudents = CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
+                    $query->with(['course' => function ($query) {
+                        $query->with('image');
+                    }]);
+                }, 'student'])->get();
+
+        $data = $coursePerStudents->map(function ($coursePerStudents) {
+            $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
+            $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
+            $coursePerStudents['percentage'] =  substr((int)$percentage,0,2)."%";
+            return $coursePerStudents;
+        });
+
+        return $this->success($data , 'All data that the student has enrolled');
     }
     
     public function studentGetlessonsOfWeek($student_id , $course_id , $batch_id , $week_id)
