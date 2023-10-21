@@ -7,8 +7,8 @@
 <h1>To Backup Data</h1>
 <h2>php artisan backup modelName</h2>
 
-#To create an admin account
-#seeder are design for inserting data to database if the admin account is in database notice that data can be duplicate
+To create an admin account
+seeder are design for inserting data to database if the admin account is in database notice that data can be duplicate
 
 If new cloned project 
 --------------------
