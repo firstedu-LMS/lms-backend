@@ -14,7 +14,7 @@ If new cloned project
 --------------------
 php artisan db:seed
 
-If an existing account 
+If an existing project
 -----------------------
 php artisan db:seed --class=AdminSeeder
 
