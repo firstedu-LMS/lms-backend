@@ -45,20 +45,6 @@ class StudentController extends BaseController
         return $this->success($student, "student info updated");
     }
 
-    // public function enrollment(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'course_id' => 'required',
-    //         'student_id' => 'required'
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return $this->error($validator->errors(), "Validation failed", config('http_status_code.unprocessable_content'));
-    //     }
-    //     $enrollment = new Enrollment($request->all());
-    //     $enrollment->save();
-    //     return $this->success($enrollment, "successfully created", config('http_status_code.created'));
-    // }
-
 
 
     public function weekCompletion($request, $lesson)
@@ -105,17 +91,17 @@ class StudentController extends BaseController
     public function course_per_students($student)
     {
         $coursePerStudents = CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
-                    $query->with(['course' => function ($query) {
-                        $query->with('image');
-                    }]);
-                }, 'student'])->get();
+                                                        $query->with(['course' => function ($query) {
+                                                            $query->with('image');
+                                                        }]);
+                                                    }, 'student'])->get();
 
         $data = $coursePerStudents->map(function ($coursePerStudents) {
-            $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
-            $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
-            $coursePerStudents['percentage'] = (int) substr((int)$percentage,0,2);
-            return $coursePerStudents;
-        });
+                                        $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
+                                        $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
+                                        $coursePerStudents['percentage'] = (int) substr((int)$percentage,0,2);
+                                        return $coursePerStudents;
+                                    });
 
         return $this->success($data , 'All data that the student has enrolled');
     }

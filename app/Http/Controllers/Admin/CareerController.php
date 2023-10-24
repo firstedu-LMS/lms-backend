@@ -45,10 +45,10 @@ class CareerController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    //public function edit( $id)
-   // {
-        //
-   // }
+    public function edit( $id)
+    {
+       //     
+    }
 
     /**
      * Update the specified resource in storage.
