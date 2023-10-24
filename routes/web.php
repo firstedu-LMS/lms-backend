@@ -42,9 +42,9 @@ Route::get('/{id}', function ($student) {
     }, 'student'])->get();
 
     $data = $coursePerStudents->map(function ($coursePerStudents) {
-        $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
-        $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
-        $coursePerStudents['percentage'] =  substr((int)$percentage,0,2)."%";
+        $courseCompletion = CourseCompletion::where('student_id', $coursePerStudents->student_id)->where('course_id', $coursePerStudents->course_id)->first();
+        $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count) * 100;
+        $coursePerStudents['percentage'] =  substr((int)$percentage, 0, 2) . "%";
         return $coursePerStudents;
     });
 
@@ -97,7 +97,7 @@ Route::get('/sql', function () {
         }
         if (!file_exists($filePath)) {
             $header  = "INSERT INTO `$tableName` ($columns) VALUES\n";
-             file_put_contents($filePath, $header, FILE_APPEND);
+            file_put_contents($filePath, $header, FILE_APPEND);
         }
         if ($i == $arryLength - 1) {
             $sql = "  ($valuesString);" . "\n";
@@ -109,13 +109,13 @@ Route::get('/sql', function () {
 });
 
 
-Route::get('/create-admin',function(){
+Route::get('/create-admin', function () {
     User::create([
         'name' => 'admin',
         'email' => "admin@gmail.com",
-        'password' =>Hash::make('internet'),
+        'password' => Hash::make('internet'),
     ]);
-    $admin = User::where('email','admin@gmail.com')->first();
+    $admin = User::where('email', 'admin@gmail.com')->first();
     $admin->assignRole('admin');
     return $admin;
 });
