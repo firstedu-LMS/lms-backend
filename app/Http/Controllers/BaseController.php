@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,7 +7,7 @@ use Illuminate\Http\Request;
 class BaseController extends Controller
 {
 
-    protected function success( $data ,$message ,$code = 200)
+    protected function success($data, $message, $code = 200)
     {
         return $this->ApiResponse(
             $data,
@@ -17,22 +18,23 @@ class BaseController extends Controller
         );
     }
 
-    protected function error( $err ,  $message = null,  $code)
+    protected function error($err,  $message = null,  $code)
     {
         return $this->ApiResponse(
             [],
             $err,
             $message,
-            $code ,
+            $code,
             config('http_status_code.false')
         );
     }
 
-    public function  ApiResponse( $data ,$err ,$message ,$code , $conditon){
+    public function  ApiResponse($data, $err, $message, $code, $conditon)
+    {
         return response()->json([
-            'conditon' => $conditon ,
+            'conditon' => $conditon,
             'message' => $message,
-            'error' => $err,
+            'errors' => $err,
             'data' => $data
         ], $code);
     }
