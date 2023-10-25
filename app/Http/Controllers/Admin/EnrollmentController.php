@@ -60,9 +60,5 @@ class EnrollmentController extends BaseController
         $enrollment = Enrollment::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
         $enrollment->delete();
     }
-    // public function destroy(Enrollment $enrollment)
-    // {
-    //     $enrollment->delete();
-    //     return $this->success([], 'deleted', config('http_status_code.no_content'));
-    // }
+   
 }

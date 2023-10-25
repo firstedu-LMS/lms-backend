@@ -23,22 +23,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return User::where('id', $user->id)->with(['roles', 'image'])->first();
 });
 
-Route::apiResource('courses', CourseController::class);
-Route::apiResource('applications', ApplicationController::class);
-Route::apiResource('careers', CareerController::class);
-Route::apiResource('cv-forms', CvFormController::class);
+Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
+Route::get('questions/all/{lesson}', [QuestionController::class, 'index']);
+Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
+Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
+
+Route::post('applications/add-instructor', [ApplicationController::class, 'addInstructor']);
 Route::post('images', [ImageController::class, 'store']);
 Route::post('files', [FileController::class, 'store']);
 Route::post('videos', [VideoController::class, 'store']);
-Route::post('applications/add-instructor', [ApplicationController::class, 'addInstructor']);
+
+Route::apiResource('assignments', AssignmentController::class);
+Route::apiResource('applications', ApplicationController::class);
+Route::apiResource('batches', BatchController::class)->except(['index']);
+Route::apiResource('courses', CourseController::class);
+Route::apiResource('careers', CareerController::class);
+Route::apiResource('cv-forms', CvFormController::class);
 Route::apiResource('instructors', InstructorController::class);
 Route::apiResource('weeks', WeekController::class)->except(['index']);
-Route::apiResource('batches', BatchController::class)->except(['index']);
 Route::apiResource('lessons', LessonController::class)->except(['index']);
 Route::apiResource('questions', QuestionController::class)->except(['index']);
-Route::get('questions/all/{lesson}', [QuestionController::class, 'index']);
-Route::apiResource('assignments', AssignmentController::class);
-Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
-Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
-Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
 Route::apiResource('enrollments', EnrollmentController::class);
