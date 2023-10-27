@@ -12,20 +12,23 @@ use function App\Helper\storeFile;
 
 class FileController extends BaseController
 {
-    public function store(FileRequest $request){
-        if($request->file('assignment')) {
-            return $this->handleFileCreate($request,'assignment');
-        }else {
-            return $this->handleFileCreate($request,'file');
+    public function store(FileRequest $request)
+    {
+        if ($request->file('assignment')) {
+            return $this->handleFileCreate($request, 'assignment');
+        } else if ($request->file('submission_file')) {
+            return $this->handleFileCreate($request, 'submission_file');
+        } else {
+            return $this->handleFileCreate($request, 'file');
         }
     }
-    
-    public function handleFileCreate($request,$name)
+
+    public function handleFileCreate($request, $name)
     {
-        $fileStore = storeFile($request->file($name),$name);
+        $fileStore = storeFile($request->file($name), $name);
         $file =  File::create([
-            'file'=> $fileStore
+            'file' => $fileStore
         ]);
-        return $this->success($file ,$name.' stored',config('http_status_code.created'));
+        return $this->success($file, $name . ' stored', config('http_status_code.created'));
     }
 }

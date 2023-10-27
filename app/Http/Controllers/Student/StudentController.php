@@ -29,8 +29,8 @@ class StudentController extends BaseController
         $user = User::where('id', $carentUser->id)->with(['roles', 'image'])->first();
         $student = Student::where('user_id', $user->id)->first();
         $courseCompletionCount = CourseCompletion::where('student_id', $student->id)->where('status', true)->count();
-        $idProgressCourseCount = CourseCompletion::where('student_id', $student->id)->where('status', false)->count();
-        $profile = new  ProfileJson($user, $student, $courseCompletionCount, $idProgressCourseCount);
+        $inProgressCourseCount = CourseCompletion::where('student_id', $student->id)->where('status', false)->count();
+        $profile = new  ProfileJson($user, $student, $courseCompletionCount, $inProgressCourseCount);
         $data = $profile->getJson();
         return response()->json($data);
     }
@@ -86,7 +86,7 @@ class StudentController extends BaseController
         return $this->success($lessonCompletion, "Successfully created", config('http_status_code.created'));
     }
 
-    public function studentGetweeksOfCourse($student_id , $course_id , $batch_id)
+    public function studentGetweeksOfCourse($student_id, $course_id, $batch_id)
     {
         $exist = CoursePerStudent::where('student_id', $student_id)->where('course_id', $course_id)->where('batch_id', $batch_id)->get();
         if ($exist) {
@@ -104,23 +104,18 @@ class StudentController extends BaseController
 
     public function course_per_students($student)
     {
-        $coursePerStudents = CoursePerStudent::where('student_id', $student)->with(['batch' => function ($query) {
-                    $query->with(['course' => function ($query) {
-                        $query->with('image');
-                    }]);
-                }, 'student'])->get();
-
+        $coursePerStudents = CoursePerStudent::where('student_id', $student)->with(['batch', 'batch.course', 'batch.course.image', 'student'])->get();
         $data = $coursePerStudents->map(function ($coursePerStudents) {
-            $courseCompletion= CourseCompletion::where('student_id',$coursePerStudents->student_id)->where('course_id',$coursePerStudents->course_id)->first();
-            $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count ) * 100;
-            $coursePerStudents['percentage'] = (int) substr((int)$percentage,0,2);
+            $courseCompletion = CourseCompletion::where('student_id', $coursePerStudents->student_id)->where('course_id', $coursePerStudents->course_id)->first();
+            $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count) * 100;
+            $coursePerStudents['percentage'] = (int) substr((int)$percentage, 0, 2);
             return $coursePerStudents;
         });
 
-        return $this->success($data , 'All data that the student has enrolled');
+        return $this->success($data, 'All data that the student has enrolled');
     }
-    
-    public function studentGetlessonsOfWeek($student_id , $course_id , $batch_id , $week_id)
+
+    public function studentGetlessonsOfWeek($student_id, $course_id, $batch_id, $week_id)
     {
         $exist = CoursePerStudent::where('student_id', $student_id)->where('batch_id', $batch_id)->where('course_id', $course_id)->first();
         if ($exist) {
@@ -133,6 +128,4 @@ class StudentController extends BaseController
             return $this->success(LessonResource::collection($lessons), 'all weeks');
         }
     }
-
-   
 }

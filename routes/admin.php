@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\BatchController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Admin\VideoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -42,3 +43,5 @@ Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
 Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
 Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
 Route::apiResource('enrollments', EnrollmentController::class);
+Route::apiResource('submissions', SubmissionController::class);
+Route::post('student-assignment-scores', [SubmissionController::class, 'studentAssignmentScore']);
