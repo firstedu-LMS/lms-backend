@@ -12,7 +12,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-lessons-of-week/{student_id}/{course_id}/{batch_id}/{week_id}', [StudentController::class, 'studentGetlessonsOfWeek']);
     Route::get('/get-weeks-of-course/{student_id}/{course_id}/{batch_id}', [StudentController::class, 'studentGetweeksOfCourse']);
     Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
-});
+
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
     Route::patch('/user/{student}', [StudentController::class, 'update']);
 });
