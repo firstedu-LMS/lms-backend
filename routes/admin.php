@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\BatchController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\Admin\VideoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -32,8 +33,6 @@ Route::post('applications/add-instructor', [ApplicationController::class, 'addIn
 Route::post('images', [ImageController::class, 'store']);
 Route::post('files', [FileController::class, 'store']);
 Route::post('videos', [VideoController::class, 'store']);
-
-Route::apiResource('assignments', AssignmentController::class);
 Route::apiResource('applications', ApplicationController::class);
 Route::apiResource('batches', BatchController::class)->except(['index']);
 Route::apiResource('courses', CourseController::class);
@@ -43,4 +42,11 @@ Route::apiResource('instructors', InstructorController::class);
 Route::apiResource('weeks', WeekController::class)->except(['index']);
 Route::apiResource('lessons', LessonController::class)->except(['index']);
 Route::apiResource('questions', QuestionController::class)->except(['index']);
+Route::get('questions/all/{lesson}', [QuestionController::class, 'index']);
+Route::apiResource('assignments', AssignmentController::class);
+Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
+Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
+Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
+Route::apiResource('submissions', SubmissionController::class);
+Route::post('student-assignment-scores', [SubmissionController::class, 'studentAssignmentScore']);
 Route::apiResource('enrollments', EnrollmentController::class);

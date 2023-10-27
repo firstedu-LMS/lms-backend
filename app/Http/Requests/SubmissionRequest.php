@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class FileRequest extends FormRequest
+class SubmissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +24,15 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // $this->file('file') ? 'file' : 'assignment' => [
-            //                                                     'required',
-            //                                                     File::types(['pdf'])
-            //                                                 ],
+            "assignment_id" => "required",
+            "submission_file_id" => "required"
         ];
     }
-
     protected function failedValidation(Validator $validator)
     {
         throw new ValidationException($validator, response()->json([
             "errors" => $validator->errors(),
-            "message" => "Validation Error"
+            "messages" => "Validation Errors",
         ], config('http_status_code.unprocessable_content')));
     }
 }
