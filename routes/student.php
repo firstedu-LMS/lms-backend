@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student\StudentController;
 
 
-// Route::middleware('auth:sanctum')->group(function () {
+ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', [StudentController::class, 'profile']);
     Route::get('/course-per-students/{student_id}', [StudentController::class, 'course_per_students']);
@@ -21,4 +21,4 @@ use App\Http\Controllers\Student\StudentController;
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
 
     Route::patch('/user/{student}', [StudentController::class, 'update']);
-// });
+});
