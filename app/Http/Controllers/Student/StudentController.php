@@ -94,7 +94,7 @@ class StudentController extends BaseController
         $data = $coursePerStudents->map(function ($coursePerStudents) {
             $courseCompletion = CourseCompletion::where('student_id', $coursePerStudents->student_id)->where('course_id', $coursePerStudents->course_id)->first();
             $percentage = ($courseCompletion->week_completion_count / $courseCompletion->week_count) * 100;
-            $coursePerStudents['percentage'] = (int) substr((int)$percentage, 0, 2);
+            $coursePerStudents['percentage'] = (int) substr((int)$percentage, 0, 3);
             return $coursePerStudents;
         });
         return $this->success($data, 'All data that the student has enrolled');
