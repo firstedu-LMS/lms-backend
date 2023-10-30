@@ -24,13 +24,13 @@ class QuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lesson_id' => $this->lesson_id,
-            'student_id' => $this->student_id,
-            'week_id' => $this->week_id,
-            'course_id' => $this->course_id,
-            'batch_id' => $this->batch_id,
-            'answers' => $this->answers,
-            'trueAnswers' =>  $this->trueAnswers
+            'lesson_id' => 'required',
+            'student_id' => 'required',
+            'week_id' => 'required',
+            'course_id' => 'required',
+            'batch_id' => 'required',
+            'answers' => 'required',
+            'trueAnswers' =>  'required'
         ];
     }
     protected function failedValidation(Validator $validator)
