@@ -16,8 +16,9 @@ class QuestionController extends BaseController
         }
         return $this->success($question,'questions of lesson',config('http_status_code.ok'));
    }
-//    public function submission() {
-//         return $this->success($question,'questions of lesson',config('http_status_code.ok'));
-//    }
+   
+   public function submission(Request $request) {
+        return $this->success($request->all(),'submission',config('http_status_code.ok'));
+   }
 
 }
