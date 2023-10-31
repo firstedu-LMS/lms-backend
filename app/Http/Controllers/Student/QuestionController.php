@@ -15,10 +15,15 @@ class QuestionController extends BaseController
 {
    public function getLessonQuestions($lesson_id){
         $question = Question::where('lesson_id',$lesson_id)->get();
+        $questionSubmission = QuestionSubmission::where('lesson_id',$lesson_id)->first();
         if ($question->count() == 0 ) {
             return $this->error([], 'there is no questions', config('http_status_code.not_found'));
         }
-        return $this->success($question,'questions of lesson',config('http_status_code.ok'));
+        if ($questionSubmission->count() != 0 ) {
+            return $this->success(['question'=>$question,'score'=>$questionSubmission->score],'questions of lesson',config('http_status_code.ok'));
+        }else{
+            return $this->success($question,'questions of lesson',config('http_status_code.ok'));
+        }
    }
 
    public function submission(QuestionRequest $request) {
