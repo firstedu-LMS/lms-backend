@@ -21,4 +21,6 @@ use App\Http\Controllers\Student\StudentController;
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
 
     Route::patch('/user/{student}', [StudentController::class, 'update']);
+    Route::get('/assignments' , [AssignmentSubmissionController::class, 'index']);
+    Route::get('/assignments/{id}' , [AssignmentSubmissionController::class, 'show']);
 });
