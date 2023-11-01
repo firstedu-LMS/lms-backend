@@ -21,7 +21,7 @@ class QuestionController extends BaseController
         return $this->success($question,'questions of lesson',config('http_status_code.ok'));
    }
 
-   public function submission(QuestionRequest $request) {
+   public function submission(Request $request) {
           $data = $request->except('answers','trueAnswers','week_id','batch_id','course_id');
           $answers = $request->answers;
           $trueAnswers = $request->trueAnswers;
