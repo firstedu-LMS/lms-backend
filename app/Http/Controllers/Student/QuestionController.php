@@ -20,7 +20,7 @@ class QuestionController extends BaseController
             return $this->error([], 'there is no questions', config('http_status_code.not_found'));
         }
         if ($questionSubmission->count() != 0 ) {
-            return $this->success(['question'=>$question,'score'=>$questionSubmission->score],'questions of lesson',config('http_status_code.ok'));
+            return $this->success(['question'=>$question,'score'=>$questionSubmission->score ?? ''],'questions of lesson',config('http_status_code.ok'));
         }else{
             return $this->success($question,'questions of lesson',config('http_status_code.ok'));
         }
