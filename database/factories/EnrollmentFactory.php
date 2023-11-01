@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-
-class CategoryFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Enrollment>
+ */
+class EnrollmentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -15,7 +18,8 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name()
+            'course_id' => Arr::random([1,2,3]),
+            'student_id' => Arr::random([1,2,3]),
         ];
     }
 }

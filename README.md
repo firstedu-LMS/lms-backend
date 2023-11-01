@@ -1,6 +1,19 @@
-<h1>composer install</h1>
-<h1>run "php artsian migrate:fresh"</h1>
-<h1>Run "php artisan app:create-roles" to create roles</h1>
+Project Preparation Step
+------------------------
+1. run - composer install
+2. run - php artisan migrate:fresh
+3. run - php artisan db:seed
+4. run - composer dump-autoload
 
-<h1>To Backup Data</h1>
-<h2>php artisan backup modelName</h2>
+Avaliable Commands In Project
+-----------------------------
+
+To Backup Data
+--------------
+php artisan backup modelName
+
+
+
+
+
+

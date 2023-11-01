@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class WeekFactory extends Factory
      */
     public function definition(): array
     {
+        static $number= 1;
         return [
-            //
+            "course_id" =>fake()->numberBetween(1,3),
+            "batch_id" => fake()->numberBetween(1,3),
+            "week_number" => "week-".$number++,
         ];
     }
 }

@@ -4,33 +4,22 @@ namespace App\Http\Controllers\Client;
 
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
+use App\Models\CourseCompletion;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\client\EnrollmentRequest;
 
-class EnrollmentController extends Controller
+class EnrollmentController extends BaseController
 {
-    public function store(Request $request)
+    public function store(EnrollmentRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'course_id' => 'required',
-            'student_id' => 'required'
-        ]);
-        
-        if($validator->fails()) {
-            return $this->error($validator->errors(),"Validation failed",config('http_status_code.unprocessable_content'));
+        $existEnrollmentForCurrentStudent = Enrollment::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
+        $isStudentinAttendingThisCourse = CourseCompletion::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
+        if ($existEnrollmentForCurrentStudent || $isStudentinAttendingThisCourse) {
+            return $this->error(["message" => "Student already enrolled this course."], [], config('http_status_code.bad_request'));
         }
-
-        $existEnrollmentForCurrentStudent = Enrollment::where('student_id',$request->student_id)->first();
-
-        if ($existEnrollmentForCurrentStudent) {
-            return response()->json([
-                "data" => [],
-                "message" => "This student has already entrolled this course!"
-            ],400);
-        }
-
-        $enrollment =new Enrollment($request->all());
-        $enrollment->save();
-        return $this->success($enrollment,"successfully created",config('http_status_code.created'));
+        $enrollment = Enrollment::create($request->validated());
+        return $this->success($enrollment, "successfully created", config('http_status_code.created'));
     }
 }

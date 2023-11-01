@@ -1,0 +1,530 @@
+[
+    {
+        "path": "admin/applications",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "email": "example@email.com",
+                "career": "some_career_value",
+                "cv_id": "some_cv_id_value",
+                "cv": "some_cv_content",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value"
+            },
+            "message": "All applications",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/applications",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "email": "example@email.com",
+            "cv_id": "some_cv_id_value",
+            "career": "some_career_value"
+        },
+        "response": {
+            "status": 201,
+            "data": {
+                "id": "some_id_value",
+                "email": "example@email.com",
+                "career": "some_career_value",
+                "cv_id": "some_cv_id_value",
+                "cv": "some_cv_content",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value"
+            },
+            "message": "Create application",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/applications/${id}",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 204,
+            "data": {},
+            "message": "Create application",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/applications/add-instructor",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "name": "some_name_value",
+            "email": "example@email.com",
+            "password": "instructor_password",
+            "cv_id": "some_cv_id_value"
+        },
+        "response": {
+            "status": 201,
+            "data": {},
+            "message": "Create application",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/applications/add-instructor",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "name": "some_name_value",
+            "email": "example@email.com",
+            "password": "instructor_password",
+            "cv_id": "some_cv_id_value"
+        },
+        "response": {
+            "status": 201,
+            "data": {},
+            "message": "Create application",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/assignments",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 201,
+            "data": {
+                "id": "some_id_value",
+                "title": "some_title_value",
+                "course": "some_course_value",
+                "batch": "some_batch_value",
+                "test_data": "test_data",
+                "test_time": "test_time",
+                "agenda": "agenda",
+                "file": "assignment PDF file",
+                "created_at": "creation_date_value"
+            },
+            "message": "all assignments",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/assignments",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "title": "some_title_value",
+            "course_id": "course_id",
+            "batch_id": "batch_id",
+            "test_date": "test_data",
+            "test_time": "test_time",
+            "agenda": "agenda",
+            "file_id": "file_id"
+        },
+        "response": {
+            "status": 201,
+            "data": {
+                "title": "some_title_value",
+                "course_id": "course_id",
+                "batch_id": "batch_id",
+                "test_date": "test_data",
+                "test_time": "test_time",
+                "agenda": "agenda",
+                "file_id": "file_id"
+            },
+            "message": "Create assignment",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/assignments/${id}",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "title": "some_title_value",
+                "course": "some_course_value",
+                "batch": "some_batch_value",
+                "test_data": "test_data",
+                "test_time": "test_time",
+                "agenda": "agenda",
+                "file": "assignment PDF file",
+                "created_at": "creation_date_value"
+            },
+            "message": "Detail of assignment",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/assignments/${id}",
+        "method": "PATCH",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "title": "some_title_value",
+            "course_id": "course_id",
+            "batch_id": "batch_id",
+            "test_date": "test_data",
+            "test_time": "test_time",
+            "agenda": "agenda",
+            "file_id": "file_id"
+        },
+        "response": {
+            "status": 200,
+            "data": {
+                "title": "some_title_value",
+                "course_id": "course_id",
+                "batch_id": "batch_id",
+                "test_date": "test_data",
+                "test_time": "test_time",
+                "agenda": "agenda",
+                "file_id": "file_id"
+            },
+            "message": "updated assignment",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/assignments/${id}",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 204,
+            "data": {},
+            "message": "delete the assignment",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/batches",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "course_id": "some_course_id",
+                "instructor_id": "some_instructor_id",
+                "start_date": "start_date",
+                "end_date": "end_date",
+                "status": "status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value",
+                "deleted_at": "deleted_at",
+                "instructor": "instructor",
+                "course": "course"
+            },
+            "message": "All batches",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/batches",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "course_id": "course_id",
+            "instructor_id": "instructor_id",
+            "start_date": "start_date",
+            "end_date": "end_date",
+            "start_time": "start_time",
+            "end_time": "end_time",
+            "status": "status"
+        },
+        "response": {
+            "status": 201,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "course_id": "some_course_id",
+                "instructor_id": "some_instructor_id",
+                "start_date": "start_date",
+                "end_date": "end_date",
+                "status": "status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value",
+                "deleted_at": "deleted_at",
+                "instructor": "instructor",
+                "course": "course"
+            },
+            "message": "Create Batch",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/batches/${id}",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "course_id": "some_course_id",
+                "instructor_id": "some_instructor_id",
+                "start_date": "start_date",
+                "end_date": "end_date",
+                "status": "status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value",
+                "deleted_at": "deleted_at",
+                "instructor": "instructor",
+                "course": "course"
+            },
+            "message": "Detail of Batch",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/batches/${id}",
+        "method": "PATCH",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "course_id": "course_id",
+            "instructor_id": "instructor_id",
+            "start_date": "start_date",
+            "end_date": "end_date",
+            "start_time": "start_time",
+            "end_time": "end_time",
+            "status": "status"
+        },
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "course_id": "some_course_id",
+                "instructor_id": "some_instructor_id",
+                "start_date": "start_date",
+                "end_date": "end_date",
+                "status": "status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value",
+                "deleted_at": "deleted_at",
+                "instructor": "instructor",
+                "course": "course"
+            },
+            "message": "Update Batch",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/batches/${id}",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 204,
+            "data": {},
+            "message": "Delete Batch",
+            "errors": []
+        }
+    }
+    {
+        "path": "admin/careers/",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "vacancy": "some_vacancy",
+                "age": "some_age",
+                "job_description": "job_description",
+                "job_requirement": "job_requirement",
+                "position": "position",
+                "salary": "salary",
+                "deadline": "deadline",
+                "salary_period": "salary_period",
+                "employmetnt_status": "employmetnt_status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value",
+            },
+            "message": "All careers",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/careers/",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "name": "name",
+            "vacancy": "some_vacancy",
+            "age": "age",
+            "job_description": "job_description",
+            "job_requirement": "job_requirement",
+            "deadline": "deadline",
+            "position": "position",
+            "salary": "salary",
+            "salary_period": "salary_period",
+            "employment_status": "employment_status"
+        },
+        "response": {
+            "status": 201,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "vacancy": "some_vacancy",
+                "age": "some_age",
+                "job_description": "job_description",
+                "job_requirement": "job_requirement",
+                "position": "position",
+                "salary": "salary",
+                "deadline": "deadline",
+                "salary_period": "salary_period",
+                "employmetnt_status": "employmetnt_status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value"
+            },
+            "message": "Create Batch",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/careers/${id}",
+        "method": "PATCH",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "vacancy": "some_vacancy",
+                "age": "some_age",
+                "job_description": "job_description",
+                "job_requirement": "job_requirement",
+                "position": "position",
+                "salary": "salary",
+                "deadline": "deadline",
+                "salary_period": "salary_period",
+                "employmetnt_status": "employmetnt_status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value"
+            },
+            "message": "Detail of Career",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/careers/${id}",
+        "method": "PATCH",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {
+            "name": "name",
+            "vacancy": "some_vacancy",
+            "age": "age",
+            "job_description": "job_description",
+            "job_requirement": "job_requirement",
+            "deadline": "deadline",
+            "position": "position",
+            "salary": "salary",
+            "salary_period": "salary_period",
+            "employment_status": "employment_status"
+        },
+        "response": {
+            "status": 200,
+            "data": {
+                "id": "some_id_value",
+                "name": "some_name",
+                "vacancy": "some_vacancy",
+                "age": "some_age",
+                "job_description": "job_description",
+                "job_requirement": "job_requirement",
+                "position": "position",
+                "salary": "salary",
+                "deadline": "deadline",
+                "salary_period": "salary_period",
+                "employmetnt_status": "employmetnt_status",
+                "created_at": "creation_date_value",
+                "updated_at": "last_update_date_value"
+            },
+            "message": "Update Career",
+            "errors": []
+        }
+    },
+    {
+        "path": "admin/careers/${id}",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json"
+        },
+        "request": {},
+        "response": {
+            "status": 204,
+            "data": {},
+            "message": "Delete Career",
+            "errors": []
+        }
+    }
+]

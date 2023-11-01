@@ -28,7 +28,7 @@ class AssignmentRequest extends FormRequest
             "course_id" => "required",
             "batch_id" => "required",
             "test_date" => "required",
-            "test_time" => "required",
+            "test_time" => "required|date_format:H:i",
             "agenda" => "required",
             "file_id" => "required"
         ];

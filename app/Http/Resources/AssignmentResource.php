@@ -14,6 +14,16 @@ class AssignmentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "title" => $this->title,
+            "course" => $this->course->name,
+            "batch" => $this->batch->name,
+            "test_date" => $this->test_date,
+            "test_time" => $this->test_time,
+            "agenda" => $this->agenda,
+            "file" => $this->file->file,
+            "created_at" => $this->created_at
+        ];
     }
 }

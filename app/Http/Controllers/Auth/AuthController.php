@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class AuthController extends BaseController
         $student = Student::select('student_id')
             ->orderByDesc('student_id')
             ->value('student_id');
-            $studentIdOnly = substr($student, 2);
+        $studentIdOnly = substr($student, 2);
         if ($studentIdOnly) {
             $studentId = str_pad((int)$studentIdOnly + 1, 4, "0", STR_PAD_LEFT);
         } else {
@@ -65,10 +66,10 @@ class AuthController extends BaseController
                     "token" => $token
                 ], 'login');
             } else {
-                return $this->error([], "Wrong Password !", config('http_status_code.forbidden'));
+                return $this->error(["password" => "Wrong Password !"], "", config('http_status_code.forbidden'));
             }
         } else {
-            return $this->error([], "There is no user with this email !", config('http_status_code.not_found'));
+            return $this->error(["email" => "There is no user with this email !"], "", config('http_status_code.forbidden'));
         }
     }
 

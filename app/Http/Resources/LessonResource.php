@@ -17,6 +17,7 @@ class LessonResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'locked' => $this->locked ?? false,
             'description' => $this->description,
             'video_id' => $this->video_id,
             'week_id' => $this->week_id,

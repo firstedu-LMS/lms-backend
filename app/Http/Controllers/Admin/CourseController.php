@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\CourseCreated;
-use App\Events\CourseDeleteResignCache;
-use App\Http\Controllers\BaseController;
+use Exception;
+use App\Models\Course;
+use Illuminate\Http\Request;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
-use App\Models\Course;
-use App\Models\CourseCompletion;
-use App\Models\Student;
-use CheckToDeleteService;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
+use App\Events\CourseDeleteResignCache;
+use App\Http\Controllers\BaseController;
+use App\Services\Client\CourseDeletionSerivce;
 
 class CourseController extends BaseController
 {
@@ -32,15 +27,9 @@ class CourseController extends BaseController
      */
     public function store(CourseRequest $request)
     {
-        $course = new Course();
-        $course->name =  $request->name;
-        $course->description =  $request->description ;
-        $course->fee =  $request->fee;
-        $course->age = $request->age;
-        $course->status =   $request->status ;
-        $course->image_id = $request->image_id;
-        $course->available = json_decode($request->available);
-        $course->save();
+        $data = $request->validated();
+        $data['available'] = json_decode($request->available);
+        $course = Course::create($data);
         return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
     }
 
@@ -73,37 +62,30 @@ class CourseController extends BaseController
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
-        $course->name =  $request->name;
-        $course->description =  $request->description ;
-        $course->fee =  $request->fee;
-        $course->age = $request->age;
-        $course->status =   $request->status ;
-        $course->image_id = $request->image_id;
-        $course->available = json_decode($request->available);
-        $course->update();
+        $data = $request->validated();
+        $data['available'] = json_decode($request->available);
+        $course->update($data);
         return $this->success(new CourseResource($course), config('http_status_code.ok'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, CourseDeletionSerivce $courseDeletionService)
     {
         $course = Course::where('id', $id)->first();
-    
+
         if (!$course) {
             return $this->error([], "course not found", config('http_status_code.not_found'));
         }
 
-        $isCourseHasAttendedStudent = CourseCompletion::where('course_id',$id)->count();
-
-        if ($isCourseHasAttendedStudent) {
-            return $this->error([], "There are students who are attending this course", config('http_status_code.not_found'));
+        try {
+            //logic for deleting the course are implemented in the service
+            $courseDeletionService->deleteCourse($course);
+            event(new CourseDeleteResignCache());
+            return $this->success([], 'deleted', config('http_status_code.no_content'));
+        } catch (Exception $e) {
+            return $this->error([], $e->getMessage(), config('http_status_code.unprocessable_content'));
         }
-
-        $course->delete();
-        event(new CourseDeleteResignCache());
-
-        return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 }

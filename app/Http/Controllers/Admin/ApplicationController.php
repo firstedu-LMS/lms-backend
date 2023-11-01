@@ -12,6 +12,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\ApplicationRequest;
 use App\Http\Requests\InstructorRequest;
 use App\Http\Resources\ApplicationResource;
+use App\Utils\FormatJsonForResponseService\Admin\ApplicationJson;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,19 +20,16 @@ class ApplicationController extends BaseController
 {
     public function index()
     {
-        return $this->success(ApplicationResource::collection(Application::with('cv')->get()), 'All applications');
+       $data = ApplicationResource::collection(Application::with('cv')->get());
+       return $this->success($data,"Application datas");
     }
 
     public function store(ApplicationRequest $request)
     {
-        $application = new Application();
-        $application->career = $request->career;
-        $application->email = $request->email;
-        $application->cv_id = $request->cv_id;
-        $application->save();
+        $application = Application::create($request->validated());
         return $this->success(new ApplicationResource($application), 'Created', config('http_status_code.created'));
     }
-
+    
     public function destroy(string $id)
     {
         $application = Application::where('id', $id)->first();
