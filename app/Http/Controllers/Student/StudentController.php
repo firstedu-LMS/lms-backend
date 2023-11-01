@@ -79,8 +79,8 @@ class StudentController extends BaseController
             $completion = CourseCompletion::where('student_id', $student_id)->where('course_id', $course_id)->first();
             $count = $completion->week_completion_count;
             $weeks = Week::where('course_id', $course_id)->where('batch_id', $batch_id)->get();
-            for ($i = 0; $i <= $count; $i++) {
-                $weeks[$i]['locked'] = true;
+            for ($i = $count + 1; $i <= $completion->week_count; $i++) {
+                $lessons[$i]['locked'] = true;
             }
             return $this->success(WeekResource::collection($weeks), 'all weeks');
         } else {
