@@ -50,7 +50,9 @@ class StudentController extends BaseController
     public function weekCompletion($request, $lesson)
     {
         $weekCompletion = WeekCompletion::where('student_id', $request->student_id)->where('course_id', $lesson->course_id)->where('batch_id', $lesson->batch_id)->where('week_id', $lesson->week_id)->first();
-        $weekCompletion->lesson_completion_count++;
+        if ($weekCompletion->week_count > $weekCompletion->lesson_completion_count) {
+            $weekCompletion->lesson_completion_count++;
+        }
         if ($weekCompletion->lesson_completion_count == $weekCompletion->lesson_count) {
             $weekCompletion->status = true;
             $this->courseCompletion($request, $lesson);
