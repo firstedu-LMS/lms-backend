@@ -109,9 +109,19 @@ class StudentController extends BaseController
             $completion = WeekCompletion::where('student_id', $student_id)->where('course_id', $course_id)->where('week_id', $week_id)->first();
             $count = $completion->lesson_completion_count;
             $lessons = Lesson::where('course_id', $course_id)->where('batch_id', $batch_id)->where('week_id', $week_id)->get();
-            for ($i = 0; $i <= $count; $i++) {
-                $lessons[$i]['locked'] = true;
+            if ($count && $count !== 0) {
+                // Adjust the loop count to handle cases where the user has completed some lessons.
+                // For instance, if the user completed one lesson (count = 1), subtracting 1 from the loop count prevents errors.
+                // Example: If lesson count = 3 and lesson completion count = 3, without adjustment, the loop would run three times,
+                // potentially causing issues. Adjusting the count to 2 ensures only the correct number of lessons are processed.
+                $loopCount = ($completion->lesson_count == $completion->lesson_completion_count) ? $count - 1  : $count ;
+                for ($i = 0; $i <= $loopCount; $i++) {
+                    $lessons[$i]['locked'] = true;
+                }
+            } else {
+                $lessons[0]['locked'] = true;
             }
+            
             return $this->success(LessonResource::collection($lessons), 'all weeks');
         }
     }

@@ -44,16 +44,16 @@ class EnrollmentController extends BaseController
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
     
-    public function createlessonCompletionRelatedToWeeks($request, $weeks)
-    {
-        $weekData = $request->only(['student_id', 'course_id', 'batch_id']);
-        foreach ($weeks as $week) {
-            $lessonCount = Lesson::where('week_id', $week->id)->count();
-            $weekData['lesson_count'] = $lessonCount;
-            $weekData['week_id'] = $week->id;
-            WeekCompletion::create($weekData);
-        }
+public function createlessonCompletionRelatedToWeeks($request, $weeks)
+{
+    $weekData = $request->only(['student_id', 'course_id', 'batch_id']);
+    foreach ($weeks as $week) {
+        $lessonCount = Lesson::where('week_id', $week->id)->count();
+        $weekData['lesson_count'] = $lessonCount;
+        $weekData['week_id'] = $week->id;
+        WeekCompletion::create($weekData);
     }
+}
 
     public function  deleteOldEnrollment($request)
     {
