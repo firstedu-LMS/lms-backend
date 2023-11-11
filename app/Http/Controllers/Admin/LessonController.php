@@ -8,6 +8,7 @@ use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Models\Week;
 use App\Http\Requests\LessonRequest;
+use App\Models\WeekCompletion;
 use Illuminate\Http\Request;
 
 class LessonController extends BaseController
@@ -30,6 +31,7 @@ class LessonController extends BaseController
     public function store(LessonRequest $request)
     {
         $lesson = Lesson::create($request->validated());
+        WeekCompletion::where('week_id', $request->week_id)->increment('lesson_count');
         return $this->success(new LessonResource($lesson), 'Created', config('http_status_code.created'));
     }
 

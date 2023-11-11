@@ -14,7 +14,7 @@ use App\Http\Controllers\Student\StudentController;
     Route::get('/course-per-students/{student_id}', [StudentController::class, 'course_per_students']);
     Route::get('/get-lessons-of-week/{student_id}/{course_id}/{batch_id}/{week_id}', [StudentController::class, 'studentGetlessonsOfWeek']);
     Route::get('/get-weeks-of-course/{student_id}/{course_id}/{batch_id}', [StudentController::class, 'studentGetweeksOfCourse']);
-    Route::get('/question/{lesson_id}',[QuestionController::class,'getLessonQuestions']);
+    Route::get('/question/{student_id}/{lesson_id}',[QuestionController::class,'getLessonQuestions']);
 
     Route::post('/question/submissions',[QuestionController::class,'submission']);
     Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
