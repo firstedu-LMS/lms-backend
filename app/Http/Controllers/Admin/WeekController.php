@@ -41,9 +41,7 @@ public function store(WeekRequest $request)
     $weekNumber = $this->createWeekNumber($request->batch_id);
     $validatedData['week_number'] = $weekNumber;
     $week = Week::create($validatedData);
-    
     CourseCompletion::where('course_id', $request->course_id)->increment('week_count');
-    
     $weekResource = new WeekResource($week);
     return $this->success($weekResource, 'Created', config('http_status_code.created'));
 }
@@ -60,12 +58,9 @@ public function store(WeekRequest $request)
     public function destroy(Week $week)
     {
         $week->delete();
-        
+
         $courseCompletion = CourseCompletion::where('course_id',$week->course_id)->first();
-        if ($courseCompletion->week_count != 0) {
-            $courseCompletion->week_count--;
-            $courseCompletion->update();
-        }
+            $courseCompletion->decrement('week_count');
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
 }

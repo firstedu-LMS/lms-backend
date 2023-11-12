@@ -74,6 +74,7 @@ class LessonController extends BaseController
     public function destroy(string $id)
     {
         $lesson = Lesson::where('id', $id)->first();
+        WeekCompletion::where('week_id', $lesson->week_id)->decrement('lesson_count');
         $lesson->delete();
         return $this->success([], 'deleted', config('http_status_code.no_content'));
     }
