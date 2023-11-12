@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +17,7 @@ class StudentSeeder extends Seeder
     public function run(): void
     {
         for ($i=1; $i < 11; $i++) { 
-           $userData = DB::table('users')->insertGetId([
+           $userDataId = DB::table('users')->insertGetId([
                 "name" => "Student".$i,
                 "email" => "student".$i."@gmail.com",
                 "image_id" => 2,
@@ -24,8 +25,10 @@ class StudentSeeder extends Seeder
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now()
             ]);
+            $userData = User::find($userDataId);
+            $userData->assignRole('student');
             DB::table('students')->insert([
-                "user_id" => $userData,
+                "user_id" => $userDataId,
                 "student_id" => "S-".sprintf("%04d", $i)
             ]);
         }

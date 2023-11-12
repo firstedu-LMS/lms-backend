@@ -24,23 +24,23 @@ class WeekSeeder extends Seeder
                 "updated_at" => Carbon::now()
             ]);
             DB::table('weeks')->insert([
-                "course_id" => 2,
-                "batch_id" => 1,
-                "week_number" => "week-" .$number++,
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
-            ]);
-            DB::table('weeks')->insert([
-                "course_id" => 2,
-                "batch_id" => 2,
-                "week_number" => "week-" .$number++,
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
-            ]);
-            DB::table('weeks')->insert([
                 "course_id" => 1,
                 "batch_id" => 2,
-                "week_number" => "week-" .$number++,
+                "week_number" => "week-" .$number,
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now()
+            ]);
+            DB::table('weeks')->insert([
+                "course_id" => 2,
+                "batch_id" => 3,
+                "week_number" => "week-" .$number-2,
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now()
+            ]);
+            DB::table('weeks')->insert([
+                "course_id" => 2,
+                "batch_id" => 4,
+                "week_number" => "week-" .$number-2,
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now()
             ]);
