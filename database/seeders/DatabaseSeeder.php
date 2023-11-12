@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CourseSeeder::class,
             CareerSeeder::class,
+            BatchSeeder::class,
+            WeekSeeder::class,
+            StudentSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
