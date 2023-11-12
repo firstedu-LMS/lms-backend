@@ -121,7 +121,7 @@ class StudentController extends BaseController
             } else {
                 $lessons[0]['locked'] = true;
             }
-            
+
             return $this->success(LessonResource::collection($lessons), 'all weeks');
         }
     }

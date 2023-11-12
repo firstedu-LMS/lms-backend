@@ -11,7 +11,7 @@ class CoursePerStudent extends Model
     protected $guarded = [];
     public function batch()
     {
-        return $this->belongsTo(Batch::class,'course_id');
+        return $this->belongsTo(Batch::class,'batch_id');
     }
     public function student()
     {
