@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            AdminSeeder::class
+            AdminSeeder::class,
+            CourseSeeder::class,
+            CareerSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
