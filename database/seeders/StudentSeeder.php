@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class StudentSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class StudentSeeder extends Seeder
                 "name" => "Student".$i,
                 "email" => "student".$i."@gmail.com",
                 "image_id" => 2,
-                "password" => "internet",
+                "password" => Hash::make("internet"),
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now()
             ]);
