@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FileController;
 use App\Http\Controllers\Student\AssignmentSubmissionController;
 use App\Http\Controllers\Student\QuestionController;
 use App\Models\User;
@@ -17,10 +18,11 @@ use App\Http\Controllers\Student\StudentController;
     Route::get('/question/{student_id}/{lesson_id}',[QuestionController::class,'getLessonQuestions']);
 
     Route::post('/question/submissions',[QuestionController::class,'submission']);
-    Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
 
     Route::patch('/user/{student}', [StudentController::class, 'update']);
     Route::get('/assignment/{course_id}/{batch_id}' , [AssignmentSubmissionController::class, 'index']);
     Route::get('/assignments/{id}' , [AssignmentSubmissionController::class, 'show']);
+    Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
+    Route::post('/assignment/submission-file' , [FileController::class , 'store']);
 });

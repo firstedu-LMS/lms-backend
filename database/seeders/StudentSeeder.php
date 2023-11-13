@@ -29,7 +29,9 @@ class StudentSeeder extends Seeder
             $userData->assignRole('student');
             DB::table('students')->insert([
                 "user_id" => $userDataId,
-                "student_id" => "S-".sprintf("%04d", $i)
+                "student_id" => "S-".sprintf("%04d", $i),
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now()
             ]);
         }
     }
