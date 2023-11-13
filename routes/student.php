@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\FileController;
-use App\Http\Controllers\Student\AssignmentSubmissionController;
-use App\Http\Controllers\Student\QuestionController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\FileController;
 use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Student\QuestionController;
+use App\Http\Controllers\Student\AssignmentController;
+use App\Http\Controllers\Student\AssignmentSubmissionController;
 
 
  Route::middleware('auth:sanctum')->group(function () {
@@ -25,4 +26,5 @@ use App\Http\Controllers\Student\StudentController;
     Route::get('/assignments/{id}' , [AssignmentSubmissionController::class, 'show']);
     Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
     Route::post('/assignment/submission-file' , [FileController::class , 'store']);
+    Route::get('/{course_id}/assignments', [AssignmentController::class,'index']);
 });
