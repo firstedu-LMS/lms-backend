@@ -14,12 +14,13 @@ class BatchSeeder extends Seeder
      */
     public function run(): void
     {
-        for($i =1 ; $i <=10 ; $i++) {
-            for($c = 1; $c <=2 ; $c++) {
+        for($i =1 ; $i <=20 ; $i++) {
+            $instructor_id = $course_id = ($i <= 10) ? 1 : 2;
+            $batchid =($i <= 10) ? $i : ($i -10);
                 DB::table('batches')->insert([
-                    'name' => 'Batch-' .$i++,
-                    "course_id" => $c,
-                    "instructor_id" => $c,
+                    'name' => 'Batch-' .$batchid,
+                    "course_id" => $course_id,
+                    "instructor_id" => $instructor_id,
                     "start_date" => Carbon::now()->toDateString(),
                     "end_date" => Carbon::now()->addDay(30)->toDateString(),
                     "start_time" => Carbon::now()->toTimeString(),
@@ -28,7 +29,6 @@ class BatchSeeder extends Seeder
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now()
                 ]);
-            }
         }
     }
 }

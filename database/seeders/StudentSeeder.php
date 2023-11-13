@@ -16,7 +16,7 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i=1; $i < 11; $i++) { 
+        for ($i=1; $i < 11; $i++) {
            $userDataId = DB::table('users')->insertGetId([
                 "name" => "Student".$i,
                 "email" => "student".$i."@gmail.com",
@@ -29,7 +29,9 @@ class StudentSeeder extends Seeder
             $userData->assignRole('student');
             DB::table('students')->insert([
                 "user_id" => $userDataId,
-                "student_id" => "S-".sprintf("%04d", $i)
+                "student_id" => "S-".sprintf("%04d", $i),
+                "created_at" => Carbon::now(),
+                "updated_at" => Carbon::now()
             ]);
         }
     }
