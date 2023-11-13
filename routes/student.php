@@ -19,6 +19,8 @@ use App\Http\Controllers\Student\StudentController;
     Route::post('/question/submissions',[QuestionController::class,'submission']);
     Route::post('/submissions', [AssignmentSubmissionController::class, 'submission']);
     Route::post('/lesson-completions', [StudentController::class, 'lessonCompletion']);
-    Route::post('/get-lessons-of-week', [StudentController::class, 'studentGetlessonsOfWeek']);
-    Route::post('/get-weeks-of-course', [StudentController::class, 'studentGetweeksOfCourse']);
+
+    Route::patch('/user/{student}', [StudentController::class, 'update']);
+    Route::get('/assignment/{course_id}/{batch_id}' , [AssignmentSubmissionController::class, 'index']);
+    Route::get('/assignments/{id}' , [AssignmentSubmissionController::class, 'show']);
 });
