@@ -16,7 +16,7 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i=1; $i < 11; $i++) { 
+        for ($i=1; $i < 11; $i++) {
            $userDataId = DB::table('users')->insertGetId([
                 "name" => "Student".$i,
                 "email" => "student".$i."@gmail.com",
