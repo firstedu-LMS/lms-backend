@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Career;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class CareerSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('careers')->insert([
+        Career::insert([
             [
                 'name' => 'Software Developer',
                 'vacancy' => 5,
