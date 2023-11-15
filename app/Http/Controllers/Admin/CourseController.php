@@ -21,16 +21,27 @@ class CourseController extends BaseController
         return $this->success(CourseResource::collection(Course::with('image')->get()), 'All courses');
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(CourseRequest $request)
     {
+        return $this->saveCourse($request);
+    }
+    public function saveCourse($request,$id = null)
+    {
         $data = $request->validated();
-        $data['available'] = json_decode($request->available);
+        if($id) {
+            $course = Course::where('id', $id)->first();
+            if (!$course) {
+                return $this->error([], "course not found", config('http_status_code.not_found'));
+            }
+            $course->update($data);
+            return $this->success(new CourseResource($course), config('http_status_code.ok'));
+        }else {
         $course = Course::create($data);
         return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
+        }
     }
 
     /**
@@ -44,28 +55,12 @@ class CourseController extends BaseController
         }
         return $this->success(new CourseResource($course), 'Details of course');
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(CourseRequest $request, string $id)
     {
-        $course = Course::where('id', $id)->first();
-        if (!$course) {
-            return $this->error([], "course not found", config('http_status_code.not_found'));
-        }
-        $data = $request->validated();
-        $data['available'] = json_decode($request->available);
-        $course->update($data);
-        return $this->success(new CourseResource($course), config('http_status_code.ok'));
+        return $this->saveCourse($request,$id);
     }
 
     /**
