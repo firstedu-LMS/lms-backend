@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                         ],
                         [
                             'name' => 'MKT',
-                            'email' => 'mkt@admin',
+                            'email' => 'mkt@gmail.com',
                             'image_id' => 1,
                             'password' => Hash::make('internet'),
                             "created_at" => Carbon::now(),
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                         ],
                         [
                             'name' => 'Vadsha',
-                            'email' => 'vadsha@admin',
+                            'email' => 'vadsha@gmail.com',
                             'image_id' => 1,
                             'password' => Hash::make('internet'),
                             "created_at" => Carbon::now(),
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
                         ],
                         [
                             'name' => 'Nage Nage',
-                            'email' => 'nagenage@admin',
+                            'email' => 'nagenage@gmail.com',
                             'image_id' => 1,
                             'password' => Hash::make('internet'),
                             "created_at" => Carbon::now(),
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
                         ],
                         [
                             'name' => 'Han Htun',
-                            'email' => 'hanhtun@admin',
+                            'email' => 'hanhtun@gmail.com',
                             'image_id' => 1,
                             'password' => Hash::make('internet'),
                             "created_at" => Carbon::now(),
