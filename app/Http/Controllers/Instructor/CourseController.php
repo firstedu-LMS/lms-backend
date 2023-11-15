@@ -18,7 +18,7 @@ class CourseController extends BaseController
     }
     public function index()
     {
-        $data = Batch::where('instructor_id',$this->instructor()->id)->get();
+        $data = Batch::where('instructor_id',$this->instructor()->id)->with('course.image')->get();
         return $this->success(BatchResource::collection($data),"instructor courses");
     }
 }
