@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             BatchSeeder::class,
             WeekSeeder::class,
             StudentSeeder::class,
+            AssignmentScoreSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

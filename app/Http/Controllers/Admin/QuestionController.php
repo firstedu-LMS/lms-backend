@@ -17,8 +17,22 @@ class QuestionController extends BaseController
 
     public function store(QuestionRequest $request)
     {
-        $question = Question::create($request->validated());
-        return $this->success(new QuestionResource($question), 'Created', config('http_status_code.created'));
+        return $this->saveQuestion($request);
+    }
+    public function saveQuestion($request,$id = null)
+    {
+        $data = $request->validated();
+        if($id) {
+            $question = Question::where('id', $id)->first();
+            if (!$question) {
+                return $this->error([], 'there is no question', config('http_status_code.not_found'));
+            }
+            $question->update($data);
+            return $this->success(new QuestionResource($question), 'Updated question', config('http_status_code.ok'));
+        }else {
+            $question = Question::create($data);
+            return $this->success(new QuestionResource($question), 'Created', config('http_status_code.created'));
+        }
     }
     public function show($id)
     {
@@ -35,11 +49,6 @@ class QuestionController extends BaseController
     }
     public function update(QuestionRequest $request, $id)
     {
-        $question = Question::where('id', $id)->first();
-        if (!$question) {
-            return $this->error([], 'there is no question', config('http_status_code.not_found'));
-        }
-        $question->update($request->validated());
-        return $this->success(new QuestionResource($question), 'Updated question', config('http_status_code.ok'));
+        return $this->saveQuestion($request,$id);
     }
 }

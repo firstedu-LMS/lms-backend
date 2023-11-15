@@ -15,40 +15,23 @@ class WeekSeeder extends Seeder
      */
     public function run(): void
     {
-        $number = 1;
-        for($week = 0 ; $week <= 5 ; $week++){
-            Week::insert([
-                [
-                    "course_id" => 1,
-                    "batch_id" => 1,
-                    "week_number" => "week-" .$number++,
+
+        for($week = 1 ; $week <= 30 ; $week++){
+            $course_id = $week <= 15 ? 1 : 2;
+            if ($week <= 15) {
+                $batch_id = ceil($week / 5);
+            } else {
+                $batch_id = ceil(($week - 15) / 5) + 10;
+            }
+            $week_number = $week <= 5 ? $week : ($week - 1) % 5 + 1;
+                DB::table('weeks')->insert([
+                    "course_id" => $course_id,
+                    "batch_id" => $batch_id,
+                    "week_number" => "week-" .$week_number,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now()
-                ],
-                [
-                    "course_id" => 1,
-                    "batch_id" => 2,
-                    "week_number" => "week-" .$number++,
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
-                ],
-                [
-                    "course_id" => 2,
-                    "batch_id" => 1,
-                    "week_number" => "week-" .$number++,
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
-                ],
-                [
-                    "course_id" => 2,
-                    "batch_id" => 2,
-                    "week_number" => "week-" .$number++,
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
-                ],
-               
-            ]);
+                ]);
+            }
+
         }
-       
-    }
 }
