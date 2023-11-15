@@ -18,6 +18,6 @@ class AssignmentController extends BaseController
     public function index($course_id)
     {
         $assignmentScore = AssignmentScore::where('course_id',$course_id)->where('student_id',$this->student()->id)->with(['course','student','assignment','student.user'])->get();
-        return $assignmentScore;
+        return $this->success($assignmentScore , [] , config('http_status_code.ok') );
     }
 }
