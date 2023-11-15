@@ -19,8 +19,22 @@ class AssignmentController extends BaseController
 
     public function store(AssignmentRequest $request)
     {
-        $assignment =  Assignment::create($request->validated());
-        return $this->success(new AssignmentResource($assignment),'created',config('http_status_code.created'));
+        return $this->saveAssignment($request);
+    }
+    public function saveAssignment($request,$id = null)
+    {
+        $data = $request->validated();
+        if($id) {
+            $assignment = Assignment::where('id',$id)->first();
+            if (!$assignment) {
+                return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
+            }
+            $assignment->update($data);
+            return $this->success(new Assignment([$assignment]), 'Updated assignment',config('http_status_code.ok'));
+            }else {
+            $assignment =  Assignment::create($data);
+            return $this->success(new AssignmentResource($assignment),'created',config('http_status_code.created'));
+        }
     }
 
     public function show($id)
@@ -29,19 +43,13 @@ class AssignmentController extends BaseController
         if(!$assignment) {
             return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
         }
-            
+
         return $this->success(new AssignmentResource($assignment),"Detail of Assignment");
     }
-    
+
     public function update(AssignmentRequest $request,$id)
     {
-        $assignment = Assignment::where('id',$id)->first();
-        if (!$assignment) {
-            return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
-        }
-        $data = $request->validated();
-        $assignment->update($data);
-        return $this->success(new Assignment([$assignment]), 'Updated assignment',config('http_status_code.ok'));
+        return $this->saveAssignment($request,$id);
     }
 
     public function destroy(Assignment $assignment)

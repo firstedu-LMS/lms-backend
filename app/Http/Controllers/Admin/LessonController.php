@@ -30,11 +30,25 @@ class LessonController extends BaseController
      */
     public function store(LessonRequest $request)
     {
-        $lesson = Lesson::create($request->validated());
-        WeekCompletion::where('week_id', $request->week_id)->increment('lesson_count');
-        return $this->success(new LessonResource($lesson), 'Created', config('http_status_code.created'));
+        return $this->saveLesson($request);
     }
 
+    public function saveLesson($request,$id = null)
+    {
+        $data = $request->validated();
+        if($id) {
+            $lesson = Lesson::where('id', $id)->first();
+            if (!$lesson) {
+                return $this->error([], "lesson not found", config('http_status_code.not_found'));
+            }
+            $lesson->update($data);
+            return $this->success(new LessonResource($lesson), 'lesson show');
+        }else {
+            $lesson = Lesson::create($data);
+            WeekCompletion::where('week_id', $request->week_id)->increment('lesson_count');
+            return $this->success(new LessonResource($lesson), 'Created', config('http_status_code.created'));
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -48,24 +62,11 @@ class LessonController extends BaseController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(LessonRequest $request, string $id)
     {
-        $lesson = Lesson::where('id', $id)->first();
-        if (!$lesson) {
-            return $this->error([], "lesson not found", config('http_status_code.not_found'));
-        }
-        $lesson->update($request->validated());
-        return $this->success(new LessonResource($lesson), 'lesson show');
+        return $this->saveLesson($request,$id);
     }
 
     /**

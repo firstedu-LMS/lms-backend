@@ -26,8 +26,21 @@ class CareerController extends BaseController
      */
     public function store(CareerRequest $request)
     {
-        $career =  Career::create($request->validated());
-        return $this->success(new CareerResource($career),'created',config('http_status_code.created'));
+    }
+    public function saveCareer($request, $id = null)
+    {
+        $data = $request->validated();
+        if($id) {
+            $career = Career::where('id',$id)->first();
+            if(!$career) {
+                return $this->error([],"career not found",config('http_status_code.not_found'));
+            }
+            $career->update($data);
+            return $this->success(new CareerResource($career),'updated');
+        }else {
+            $career =  Career::create($data);
+            return $this->success(new CareerResource($career),'created',config('http_status_code.created'));
+        }
     }
 
     /**
@@ -43,24 +56,11 @@ class CareerController extends BaseController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit( $id)
-    {
-       //     
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(CareerRequest $request,  $id)
     {
-        $career = Career::where('id',$id)->first();
-        if(!$career) {
-            return $this->error([],"career not found",config('http_status_code.not_found'));
-        }
-        $career->update($request->validated());
-        return $this->success(new CareerResource($career),'updated');
+        return $this->saveCareer($request,$id);
     }
 
     /**
