@@ -14,11 +14,6 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::insert([
-            'name' => 'admin',
-            'email'=> 'admin@gmail.com',
-            'password' => Hash::make('internet')
-        ]);
         $admin = User::where('email','admin@gmail.com')->first();
         $admin->assignRole('admin');
     }

@@ -4,10 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class StudentSeeder extends Seeder
 {
@@ -16,8 +17,10 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
+
         for ($i=1; $i < 11; $i++) {
            $userDataId = DB::table('users')->insertGetId([
+
                 "name" => "Student".$i,
                 "email" => "student".$i."@gmail.com",
                 "image_id" => 2,

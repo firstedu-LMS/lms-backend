@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Week;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,6 +15,7 @@ class WeekSeeder extends Seeder
      */
     public function run(): void
     {
+
         for($week = 1 ; $week <= 30 ; $week++){
             $course_id = $week <= 15 ? 1 : 2;
             if ($week <= 15) {
@@ -30,5 +32,6 @@ class WeekSeeder extends Seeder
                     "updated_at" => Carbon::now()
                 ]);
             }
+
         }
 }

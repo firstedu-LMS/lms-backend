@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('courses')->insert([
+        Course::insert([
             [
                 "name" => "English",
                 "description" => "English language learning will allow you to communicate effectively with people from all over the world, making travelling a lot easier and helping you to learn more about different cultures. The importance of English language can be seen in almost every aspect of our lives.",
