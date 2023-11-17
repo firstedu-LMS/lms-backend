@@ -15,7 +15,7 @@ class InstructorController extends BaseController
 {
     public function instructor()
     {
-        return Instructor::where('user_id',Auth::id())->with(['cv','user'])->first();
+        return Instructor::where('user_id',Auth::id())->with(['cv','user','user.image'])->first();
     }
     public function profile() {
         $instructor = $this->instructor();
@@ -26,7 +26,7 @@ class InstructorController extends BaseController
         $finishedCourse = 1; //default value due to unknown logic
         return $this->success([
            'instructor' => [
-            'name' => $instructor->instructor_id,
+            'instructor_id' => $instructor->instructor_id,
             'phone' => $instructor->phone,
             'address' => $instructor->address,
             'created_at' => $instructor->created_at->format('d-m-Y')
