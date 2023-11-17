@@ -12,7 +12,12 @@ use Illuminate\Http\Request;
 
 class InstructorController extends BaseController
 {
-    public function profile(Instructor $instructor) {   
+    public function instructor()
+    {
+        return Instructor::where('user_id',Auth::id())->first();
+    }
+    public function profile() {
+        $instructor = $this->instructor();
         $currentCourse = Batch::where([
             'instructor_id' => $instructor->id,
             'status' => 1
