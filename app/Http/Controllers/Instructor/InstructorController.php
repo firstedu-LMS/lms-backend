@@ -15,7 +15,7 @@ class InstructorController extends BaseController
 {
     public function instructor()
     {
-        return Instructor::where('user_id',Auth::id())->with(['cv.cv','user'])->first();
+        return Instructor::where('user_id',Auth::id())->with(['cv','user'])->first();
     }
     public function profile() {
         $instructor = $this->instructor();
