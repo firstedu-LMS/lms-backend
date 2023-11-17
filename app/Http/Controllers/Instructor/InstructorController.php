@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Instructor;
 
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Batch;
 use App\Models\Course;
-use App\Models\CourseCompletion;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
+use App\Models\CourseCompletion;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BaseController;
 
 class InstructorController extends BaseController
 {
     public function instructor()
     {
-        return Instructor::where('user_id',Auth::id())->first();
+        return Instructor::where('user_id',Auth::id())->with(['cv.cv','user'])->first();
     }
     public function profile() {
         $instructor = $this->instructor();
@@ -24,7 +25,7 @@ class InstructorController extends BaseController
         ])->pluck('course_id')->unique()->count();
         $finishedCourse = 1; //default value due to unknown logic
         return $this->success([
-           'instructor' => $instructor->with(['cv','user'])->first(),
+           'instructor' => $instructor,
            'currentCourse' => $currentCourse,
            'finishedCourse' => $finishedCourse
         ],'Instructor Profile');
