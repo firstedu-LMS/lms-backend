@@ -37,6 +37,13 @@ class InstructorController extends BaseController
            'finishedCourse' => $finishedCourse
         ],'Instructor Profile');
     }
+    public function updateName(Request $request)
+    {
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->update();
+        return $this->success($user->name,"updated name");
+    }
     public function update(Request $request)
     {
         $instructor = Instructor::where('id', $this->instructor()->id)->first();
