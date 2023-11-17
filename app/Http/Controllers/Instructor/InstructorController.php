@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Models\Batch;
+use App\Models\Image;
 use App\Models\Course;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
 use App\Models\CourseCompletion;
+use function App\Helper\storeFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
@@ -43,6 +45,20 @@ class InstructorController extends BaseController
         $user->name = $request->name;
         $user->update();
         return $this->success($user->name,"updated name");
+    }
+    public function updateImage(Request $request)
+    {
+        $unlinkImage = Image::where('id',Auth::user()->image_id)->first();
+        unlink(storage_path("app/".$unlinkImage->image));
+        $unlinkImage->delete();
+        $file = storeFile($request->file('image'),'user_image');
+        $image =  Image::create([
+            'image'=> $file
+        ]);
+        $user = Auth::user();
+        $user->image_id = $image->id;
+        $user->update();
+        return $this->success($image,"updated image");
     }
     public function update(Request $request)
     {
