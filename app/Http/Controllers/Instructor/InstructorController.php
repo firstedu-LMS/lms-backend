@@ -37,4 +37,16 @@ class InstructorController extends BaseController
            'finishedCourse' => $finishedCourse
         ],'Instructor Profile');
     }
+    public function update(Request $request)
+    {
+        $instructor = Instructor::where('id', $this->instructor()->id)->first();
+        foreach ($request->all() as $key => $value) {
+            $instructor->$key = $value;
+        }
+        $instructor->update();
+        return $this->success([
+            'phone' => $instructor->phone,
+            'address' => $instructor->address
+        ], "Instructor info updated");
+    }
 }
