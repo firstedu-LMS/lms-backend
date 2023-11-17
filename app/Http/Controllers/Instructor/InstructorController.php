@@ -25,7 +25,14 @@ class InstructorController extends BaseController
         ])->pluck('course_id')->unique()->count();
         $finishedCourse = 1; //default value due to unknown logic
         return $this->success([
-           'instructor' => $instructor,
+           'instructor' => [
+            'name' => $instructor->instructor_id,
+            'phone' => $instructor->phone,
+            'address' => $instructor->address,
+            'created_at' => $instructor->created_at->format('d-m-Y')
+        ],
+            'cv' => $instructor->cv,
+            'user' => $instructor->user,
            'currentCourse' => $currentCourse,
            'finishedCourse' => $finishedCourse
         ],'Instructor Profile');
