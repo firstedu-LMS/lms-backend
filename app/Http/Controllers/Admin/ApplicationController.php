@@ -29,7 +29,7 @@ class ApplicationController extends BaseController
         $application = Application::create($request->validated());
         return $this->success(new ApplicationResource($application), 'Created', config('http_status_code.created'));
     }
-    
+
     public function destroy(string $id)
     {
         $application = Application::where('id', $id)->first();
@@ -67,12 +67,12 @@ class ApplicationController extends BaseController
         $user->email = $request->email;
         $user->password = Hash::make($request->password) ;
         $user->save();
+        $user->assignRole('instructor');
         $instructor = new Instructor();
         $instructor->instructor_id = $this->createInstructorId();
         $instructor->user_id = $user->id;
         $instructor->cv_id = $request->cv_id;
         $instructor->save();
-        //Mail::to($user->email)->send(new InformInstructorMail($request->email, $request->password));
         $this->removedApplication($user->email);
         return $this->success($instructor, 'Created', config('http_status_code.created'));
     }
