@@ -12,5 +12,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('profile-update', [InstructorController::class, 'update']);
     Route::patch('profile-name-update', [InstructorController::class, 'updateName']);
     Route::post('profile-image-update', [InstructorController::class, 'updateImage']);
+    Route::post('change-password', [InstructorController::class, 'changePassword']);
 });
 ?>
