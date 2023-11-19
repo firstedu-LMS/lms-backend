@@ -15,17 +15,25 @@ use App\Http\Controllers\BaseController;
 
 class InstructorController extends BaseController
 {
+
     public function instructor()
     {
         return Instructor::where('user_id',Auth::id())->with(['cv','user','user.image'])->first();
     }
+  
     public function profile() {
         $instructor = $this->instructor();
+
         $currentCourse = Batch::where([
             'instructor_id' => $instructor->id,
             'status' => 1
         ])->pluck('course_id')->unique()->count();
-        $finishedCourse = 1; //default value due to unknown logic
+      
+        $finishedCourse = Batch::where([
+            'instructor_id' => $instructor->id,
+            'status' => 0
+        ])->count();
+      
         return $this->success([
            'instructor' => [
             'instructor_id' => $instructor->instructor_id,
@@ -39,6 +47,7 @@ class InstructorController extends BaseController
            'finishedCourse' => $finishedCourse
         ],'Instructor Profile');
     }
+  
     public function updateName(Request $request)
     {
         $user = Auth::user();
@@ -46,6 +55,7 @@ class InstructorController extends BaseController
         $user->update();
         return $this->success($user->name,"updated name");
     }
+  
     public function updateImage(Request $request)
     {
         $unlinkImage = Image::where('id',Auth::user()->image_id)->first();
@@ -60,6 +70,7 @@ class InstructorController extends BaseController
         $user->update();
         return $this->success($image,"updated image");
     }
+  
     public function update(Request $request)
     {
         $instructor = Instructor::where('id', $this->instructor()->id)->first();
