@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use week;
 use App\Models\Week;
 use App\Models\Batch;
 use App\Models\Lesson;
