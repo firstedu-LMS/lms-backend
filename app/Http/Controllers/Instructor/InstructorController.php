@@ -12,12 +12,15 @@ use Illuminate\Http\Request;
 
 class InstructorController extends BaseController
 {
-    public function profile(Instructor $instructor) {   
+    public function profile(Instructor $instructor) {
         $currentCourse = Batch::where([
             'instructor_id' => $instructor->id,
             'status' => 1
         ])->pluck('course_id')->unique()->count();
-        $finishedCourse = 1; //default value due to unknown logic
+        $finishedCourse = Batch::where([
+            'instructor_id' => $instructor->id,
+            'status' => 0
+        ])->count();
         return $this->success([
            'instructor' => $instructor->with(['cv','user'])->first(),
            'currentCourse' => $currentCourse,
