@@ -15,8 +15,8 @@ class EnrollmentController extends BaseController
     public function store(EnrollmentRequest $request)
     {
         $existEnrollmentForCurrentStudent = Enrollment::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
-        $isStudentinAttendingThisCourse = CourseCompletion::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
-        if ($existEnrollmentForCurrentStudent || $isStudentinAttendingThisCourse) {
+        $isStudentAttendingThisCourse = CourseCompletion::where('course_id', $request->course_id)->where('student_id', $request->student_id)->first();
+        if ($existEnrollmentForCurrentStudent || $isStudentAttendingThisCourse) {
             return $this->error(["message" => "Student already enrolled this course."], [], config('http_status_code.bad_request'));
         }
         $enrollment = Enrollment::create($request->validated());

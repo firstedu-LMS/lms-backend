@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Batch;
+use week;
 use App\Models\Week;
+use App\Models\Batch;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
+use App\Models\WeekCompletion;
+use App\Models\CourseCompletion;
 use App\Http\Requests\WeekRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WeekResource;
 use App\Http\Controllers\BaseController;
-use App\Models\CourseCompletion;
 
 class WeekController extends BaseController
 {
@@ -34,17 +37,36 @@ class WeekController extends BaseController
         return 'week-' . $weekName;
     }
 
+    public function createWeekCompletion($batch_id,$course_id,$week_id)
+    {
 
-public function store(WeekRequest $request)
-{
-    $validatedData = $request->validated();
-    $weekNumber = $this->createWeekNumber($request->batch_id);
-    $validatedData['week_number'] = $weekNumber;
-    $week = Week::create($validatedData);
-    CourseCompletion::where('course_id', $request->course_id)->increment('week_count');
-    $weekResource = new WeekResource($week);
-    return $this->success($weekResource, 'Created', config('http_status_code.created'));
-}
+        $getTheStudentIdOfTheEnrolledCourse = WeekCompletion::where([
+            'batch_id' => $batch_id,
+            'course_id' => $course_id,
+        ])->get()->pluck('student_id');
+
+        $weekData = ['batch_id'=> $batch_id,'course_id'=> $course_id];
+
+        foreach ($getTheStudentIdOfTheEnrolledCourse as $id) {
+            $lessonCount = Lesson::where('week_id', $week_id)->count();
+            $weekData['lesson_count'] = 0;
+            $weekData['week_id'] = $week_id;
+            $weekData['student_id'] = $id;
+            WeekCompletion::create($weekData);
+        }
+    }
+
+    public function store(WeekRequest $request)
+    {
+        $validatedData = $request->validated();
+        $weekNumber = $this->createWeekNumber($request->batch_id);
+        $validatedData['week_number'] = $weekNumber;
+        $week = Week::create($validatedData);
+        CourseCompletion::where('course_id', $request->course_id)->increment('week_count');
+        $this->createWeekCompletion($request->batch_id,$request->course_id,$week->id);
+        $weekResource = new WeekResource($week);
+        return $this->success($weekResource, 'Created', config('http_status_code.created'));
+    }
 
     public function show($id)
     {
