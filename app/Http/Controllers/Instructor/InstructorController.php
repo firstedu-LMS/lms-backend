@@ -25,7 +25,6 @@ class InstructorController extends BaseController
 
     public function profile()
     {
-
         $instructor = $this->instructor();
 
         $currentCourse = Batch::where([
