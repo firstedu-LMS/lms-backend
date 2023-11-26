@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\LessonController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\WeekController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +17,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('profile-image-update',  'updateImage');
             Route::post('change-password',  'changePassword');
         });
+
         Route::controller(LessonController::class)->group(function(){
+            Route::patch('lessons/{lesson_id}','update');
+            Route::delete('lessons/{lesson_id}','destroy');
+            Route::get('lessons/{lesson_id}','show');
             Route::post('lessons','store');
-            Route::get('lessons/{week_id}','index');
+            Route::get('week/lessons/{week_id}','getInstructorLesson');
         });
+
+        Route::resource('questions', QuestionController::class)->except('index');
+        Route::get('questions/{lesson_id}', [QuestionController::class, 'index']);
+
         Route::controller(WeekController::class)->group(function(){
             Route::get('courses/{batch_id}/weeks', 'index');
             Route::post('courses/{batch_id}/weeks' , 'store');
