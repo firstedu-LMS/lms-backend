@@ -52,7 +52,7 @@ class BatchController extends BaseController
                 $batch->delete();
             }
             return $this->success(new BatchResource($batch), 'updated');
-            }else {
+        }else {
             $batch = Batch::create($data);
             return $this->success(new BatchResource($batch), 'created', config('http_status_code.created'));
         }
