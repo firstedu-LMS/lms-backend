@@ -19,7 +19,7 @@ class LessonController extends BaseController
     public function index($week_id)
     {
         $week = Week::where('id', $week_id)->first();
-        $lessons = Lesson::where('week_id', $week->id)->with(['video','week','course','batch'])->get();
+        $lessons = Lesson::where('week_id', $week->id)->get();
         return $this->success(LessonResource::collection($lessons), 'all lessons');
     }
 
