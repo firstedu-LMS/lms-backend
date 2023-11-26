@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::resource('questions', QuestionController::class)->except('index');
-        Route::get('questions/{lesson_id}', [QuestionController::class, 'index']);
+        Route::get('questions/all/{lesson_id}', [QuestionController::class, 'index']);
 
         Route::controller(WeekController::class)->group(function(){
             Route::get('courses/{batch_id}/weeks', 'index');
