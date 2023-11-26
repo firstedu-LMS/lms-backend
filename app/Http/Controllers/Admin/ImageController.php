@@ -9,7 +9,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\ImageRequest;
 use Illuminate\Support\Facades\Validator;
 
-use function App\Helper\storeFile;
+
 
 class ImageController extends BaseController
 {

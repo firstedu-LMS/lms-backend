@@ -8,7 +8,7 @@ use App\Http\Requests\CvFormRequest;
 use App\Http\Resources\CvFormResource;
 use App\Http\Controllers\BaseController;
 
-use function App\Helper\storeFile;
+
 
 class CvFormController extends BaseController
 {
