@@ -31,7 +31,7 @@ class AssignmentController extends BaseController
             }
             $assignment->update($data);
             return $this->success(new Assignment([$assignment]), 'Updated assignment',config('http_status_code.ok'));
-            }else {
+        }else {
             $assignment =  Assignment::create($data);
             return $this->success(new AssignmentResource($assignment),'created',config('http_status_code.created'));
         }
@@ -43,7 +43,6 @@ class AssignmentController extends BaseController
         if(!$assignment) {
             return $this->error([], 'there is no assignment', config('http_status_code.not_found'));
         }
-
         return $this->success(new AssignmentResource($assignment),"Detail of Assignment");
     }
 
