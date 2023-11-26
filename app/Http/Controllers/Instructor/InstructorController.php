@@ -39,11 +39,11 @@ class InstructorController extends BaseController
 
         return $this->success([
            'instructor' => [
-            'instructor_id' => $instructor->instructor_id,
-            'phone' => $instructor->phone,
-            'address' => $instructor->address,
-            'created_at' => $instructor->created_at->format('d-m-Y')
-        ],
+                'instructor_id' => $instructor->instructor_id,
+                'phone' => $instructor->phone,
+                'address' => $instructor->address,
+                'created_at' => $instructor->created_at->format('d-m-Y')
+            ],
             'cv' => $instructor->cv,
             'user' => $instructor->user,
            'currentCourse' => $currentCourse,
@@ -95,5 +95,21 @@ class InstructorController extends BaseController
             return $this->success([],'successfully changed password');
         } 
         return $this->error([],'Wrong Password!',400);
+    }
+
+    public function getInstructorCourses(){
+        $data = Batch::where('instructor_id',$this->instructor()->id)->with('course.image')->get();
+        $courses = [];
+        for ($i=0; $i < count($data); $i++) { 
+            $courses[$i] = [
+                "course_id" => $data[$i]->course_id,
+                "course_name" => $data[$i]->course->name,
+                "image" => $data[$i]->course->image->image,
+                "batch_id" => $data[$i]->id,
+                "batch_name" => $data[$i]->name,
+                "instructor_id" => $data[$i]->instructor_id
+            ];
+        }
+        return $this->success($courses , "courses");
     }
 }
