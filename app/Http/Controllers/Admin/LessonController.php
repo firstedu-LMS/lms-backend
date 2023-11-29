@@ -27,7 +27,11 @@ class LessonController extends BaseController
 
     public function getInstructorLesson($week_id){
         $week = Week::where('id', $week_id)->first();
-        $lessons = Lesson::where('week_id', $week->id)->get();
+        $lessons = Lesson::where('week_id', $week->id)->with(['course' => function($query) {
+            $query->select('id' , 'name');
+        }])->with(['week' => function($query) {
+            $query->select('id' , 'week_number' , 'batch_id');
+        }])->get();
         return $this->success(InstructorLessonResource::collection($lessons), 'all lessons');
     }
 

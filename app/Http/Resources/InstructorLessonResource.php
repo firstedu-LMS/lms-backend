@@ -17,6 +17,8 @@ class InstructorLessonResource extends JsonResource
         return [
             'id'  => $this->id,
             'name'=> $this->name,
+            'course' => $this->whenLoaded('course'),
+            'week' => $this->whenLoaded('week'),
             'created_at' => $this->created_at->format("d-m-y"),
         ];
     }
