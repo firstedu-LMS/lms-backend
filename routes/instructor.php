@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\WeekController;
+use App\Http\Controllers\Admin\VideoController;
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Instructor\InstructorController;
