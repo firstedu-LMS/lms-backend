@@ -22,12 +22,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('create-roles', function() {
+Artisan::command('app:create-roles', function() {
     Role::create(['name' => 'admin']);
     Role::create(['name' => 'instructor']);
     Role::create(['name' => 'student']);
 });
-Artisan::command('create-admin', function() {
+Artisan::command('app:create-admin', function() {
     $admin = new User();
     $admin->name = 'admin';
     $admin->email = 'admin@gmail.com';
