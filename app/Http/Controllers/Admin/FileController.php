@@ -8,7 +8,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\FileRequest;
 use Illuminate\Support\Facades\Validator;
 
-use function App\Helper\storeFile;
+
 
 class FileController extends BaseController
 {

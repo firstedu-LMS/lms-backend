@@ -8,6 +8,7 @@ use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Models\Week;
 use App\Http\Requests\LessonRequest;
+use App\Http\Resources\InstructorLessonResource;
 use App\Models\WeekCompletion;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,19 @@ class LessonController extends BaseController
     public function index($week_id)
     {
         $week = Week::where('id', $week_id)->first();
-        $lessons = Lesson::where('week_id', $week->id)->with(['video','week','course','batch'])->get();
+        $lessons = Lesson::where('week_id', $week->id)->get();
         return $this->success(LessonResource::collection($lessons), 'all lessons');
+    }
+
+
+    public function getInstructorLesson($week_id){
+        $week = Week::where('id', $week_id)->first();
+        $lessons = Lesson::where('week_id', $week->id)->with(['course' => function($query) {
+            $query->select('id' , 'name');
+        }])->with(['week' => function($query) {
+            $query->select('id' , 'week_number' , 'batch_id');
+        }])->get();
+        return $this->success(InstructorLessonResource::collection($lessons), 'all lessons');
     }
 
 
@@ -54,7 +66,7 @@ class LessonController extends BaseController
      */
     public function show(string $id)
     {
-        $lesson =  Lesson::where('id', $id)->first();
+        $lesson =  Lesson::where('id', $id)->with(['week','course','video','batch'])->first();
         if (!$lesson) {
             return $this->error([], "lesson not found", config('http_status_code.not_found'));
         }

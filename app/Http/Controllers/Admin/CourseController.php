@@ -28,19 +28,19 @@ class CourseController extends BaseController
     {
         return $this->saveCourse($request);
     }
-    public function saveCourse($request,$id = null)
+    public function saveCourse($request, $id = null)
     {
         $data = $request->validated();
-        if($id) {
+        if ($id) {
             $course = Course::where('id', $id)->first();
             if (!$course) {
                 return $this->error([], "course not found", config('http_status_code.not_found'));
             }
             $course->update($data);
             return $this->success(new CourseResource($course), config('http_status_code.ok'));
-        }else {
-        $course = Course::create($data);
-        return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
+        } else {
+            $course = Course::create($data);
+            return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
         }
     }
 
@@ -60,7 +60,7 @@ class CourseController extends BaseController
      */
     public function update(CourseRequest $request, string $id)
     {
-        return $this->saveCourse($request,$id);
+        return $this->saveCourse($request, $id);
     }
 
     /**
