@@ -28,8 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('week/lessons/{week_id}','getInstructorLesson');
         });
 
-        Route::resource('questions', QuestionController::class)->except('index');
         Route::get('questions/all/{lesson_id}', [QuestionController::class, 'index']);
+        Route::apiResource('questions', QuestionController::class)->except('index');
         Route::post('videos', [VideoController::class, 'store']);
     
         Route::controller(WeekController::class)->group(function(){
@@ -38,4 +38,4 @@ Route::middleware('auth:sanctum')->group(function () {
         });
       
     });
-?>
+
