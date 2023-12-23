@@ -24,11 +24,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return User::where('id', $user->id)->with(['roles', 'image'])->first();
 });
 
+Route::apiResource('applications', ApplicationController::class);
+Route::apiResource('batches', BatchController::class)->except(['index']);
+Route::apiResource('courses', CourseController::class);
+Route::apiResource('careers', CareerController::class);
+Route::apiResource('cv-forms', CvFormController::class);
+Route::apiResource('instructors', InstructorController::class);
+Route::apiResource('weeks', WeekController::class)->except(['index']);
+Route::apiResource('lessons', LessonController::class)->except(['index']);
+Route::apiResource('admin-questions', QuestionController::class)->except(['index','names']);
+Route::apiResource('assignments', AssignmentController::class);
+Route::apiResource('submissions', SubmissionController::class);
+Route::apiResource('enrollments', EnrollmentController::class);
+
 Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
 Route::get('questions/all/{lesson}', [QuestionController::class, 'index']);
 Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
 Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
-Route::get('questions/all/{lesson}', [QuestionController::class, 'index']);
 Route::get('weeks/all/{batch_id}', [WeekController::class, 'index']);
 Route::get('batches/all/{course_id}', [BatchController::class, 'index']);
 Route::get('lessons/all/{week_id}', [LessonController::class, 'index']);
@@ -39,15 +51,4 @@ Route::post('files', [FileController::class, 'store']);
 Route::post('videos', [VideoController::class, 'store']);
 Route::post('student-assignment-scores', [SubmissionController::class, 'studentAssignmentScore']);
 
-Route::apiResource('applications', ApplicationController::class);
-Route::apiResource('batches', BatchController::class)->except(['index']);
-Route::apiResource('courses', CourseController::class);
-Route::apiResource('careers', CareerController::class);
-Route::apiResource('cv-forms', CvFormController::class);
-Route::apiResource('instructors', InstructorController::class);
-Route::apiResource('weeks', WeekController::class)->except(['index']);
-Route::apiResource('lessons', LessonController::class)->except(['index']);
-Route::apiResource('questions', QuestionController::class)->except(['index']);
-Route::apiResource('assignments', AssignmentController::class);
-Route::apiResource('submissions', SubmissionController::class);
-Route::apiResource('enrollments', EnrollmentController::class);
+
