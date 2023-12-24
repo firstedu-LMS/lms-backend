@@ -6,8 +6,6 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\AssignmentRequest;
 use App\Http\Resources\AssignmentResource;
 use App\Models\Assignment;
-use App\Utils\FormatJsonForResponseService\Admin\AssignmentJson;
-use Illuminate\Http\Request;
 
 class AssignmentController extends BaseController
 {
