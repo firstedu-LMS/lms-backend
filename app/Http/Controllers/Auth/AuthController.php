@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Student;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Hash;
@@ -43,6 +44,7 @@ class AuthController extends BaseController
             $student = new Student();
             $student->student_id = $this->createStudentId();
             $student->user_id = $user->id;
+            $student->slug = Str::slug($student->student_id."-".$user->name);
             $student->save();
         }
         $user = User::where('id', $user->id)->with('image')->first();

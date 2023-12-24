@@ -24,6 +24,7 @@ class ProfileJson  implements JsonResponseInterface
         return  [
             'id' => $this->student->id,
             'name' => $this->user->name,
+            'slug' => $this->student->slug,
             'student_id' => $this->student->student_id,
             'email' => $this->user->email,
             'phone' => $this->student->phone,

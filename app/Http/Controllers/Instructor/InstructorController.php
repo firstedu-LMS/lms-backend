@@ -89,14 +89,14 @@ class InstructorController extends BaseController
             $user->password = Hash::make($request->new_password);
             $user->update();
             return $this->success([],'successfully changed password');
-        } 
+        }
         return $this->error([],'Wrong Password!',400);
     }
 
     public function getInstructorCourses(){
         $data = Batch::where('instructor_id',$this->instructor()->id)->with('course.image')->get();
         $courses = [];
-        for ($i=0; $i < count($data); $i++) { 
+        for ($i=0; $i < count($data); $i++) {
             $courses[$i] = [
                 "course_id" => $data[$i]->course_id,
                 "course_name" => $data[$i]->course->name,
