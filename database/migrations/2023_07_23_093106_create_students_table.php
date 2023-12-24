@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('education')->nullable();
             $table->string('date_of_birth')->nullable();
             $table->string('address')->nullable();
+            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
         });
