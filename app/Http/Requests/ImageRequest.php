@@ -13,7 +13,7 @@ class ImageRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      */
 
-   
+
     public function authorize(): bool
     {
         return true;
@@ -27,7 +27,7 @@ class ImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            $this->file('course_image') ? 'course_image' : 'user_image' => ['required',File::types(['png','jpeg','jpg'])],
+            $this->file('course_image') ? 'course_image' : 'user_image' => ['required'],
         ];
     }
 
