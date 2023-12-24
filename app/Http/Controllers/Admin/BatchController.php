@@ -34,10 +34,28 @@ class BatchController extends BaseController
 
     public function store(BatchRequest $request)
     {
+        return $this->saveBatch($request);
+    }
+    public function saveBatch($request,$id = null)
+    {
         $data =   $request->validated();
         $data['name'] = $this->createBatchName($request->course_id);
-        $batch = Batch::create($data);
-        return $this->success(new BatchResource($batch), 'created', config('http_status_code.created'));
+        if($id) {
+            $batch = Batch::withTrashed()->where('id', $id)->first();
+            if (!$batch) {
+                return $this->error([], "batch not found", config('http_status_code.not_found'));
+            }
+            $batch->update($data);
+            if ($batch->status == true || $batch->status == 1) {
+                $batch->restore();
+            } else {
+                $batch->delete();
+            }
+            return $this->success(new BatchResource($batch), 'updated');
+        }else {
+            $batch = Batch::create($data);
+            return $this->success(new BatchResource($batch), 'created', config('http_status_code.created'));
+        }
     }
 
     public function show($id)
@@ -54,18 +72,7 @@ class BatchController extends BaseController
 
     public function update(BatchRequest $request, $id)
     {
-        $batch = Batch::withTrashed()->where('id', $id)->first();
-        if (!$batch) {
-            return $this->error([], "batch not found", config('http_status_code.not_found'));
-        }
-        $data = $request->validated();
-        $batch->update($data);
-        if ($batch->status == true || $batch->status == 1) {
-            $batch->restore();
-        } else {
-            $batch->delete();
-        }
-        return $this->success(new BatchResource($batch), 'updated');
+        return $this->saveBatch($request,$id);
     }
 
     public function destroy($id, BatchDeletionService $batchDeletionService)

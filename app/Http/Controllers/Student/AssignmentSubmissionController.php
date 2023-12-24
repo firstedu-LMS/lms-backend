@@ -21,28 +21,28 @@ class AssignmentSubmissionController extends BaseController
     {
         $yangon_time = Carbon::now('Asia/Yangon');
         $data = Assignment::where('course_id' , $course_id)->where('batch_id' , $batch_id)->get();
-        $assignments = [];  
+        $assignments = [];
         foreach ($data as $d) {
                 if (strtotime($d->test_date." ".$d->test_time) <= strtotime($yangon_time->format('Y-m-d H:i:s'))) {
                     $d->over_test_date = true;
                 } else {
                     $d->over_test_date = false;
-                }   
+                }
                 $asi = AssignmentScore::where('assignment_id' , $d->id)->where('student_id' , $this->student()->id)->first();
                 if ($asi) {
                     $d->finish = true;
                 } else {
                     $d->finish = false;
                 }
-    
+
                 $assignments[] = $d;
             }
         return $this->success($assignments , 'Assignments For Student' , config('http_status_code.ok'));
     }
-    
+
     public function show($id)
     {
-        $data = Assignment::where('id' , $id)->first();
+        $data = Assignment::where('id' , $id)->with('file')->first();
         return $this->success($data , '' , config('http_status_code.ok'));
     }
 

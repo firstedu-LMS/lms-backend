@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Carbon\Carbon;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +22,16 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('create-roles', function() {
+Artisan::command('app:create-roles', function() {
     Role::create(['name' => 'admin']);
     Role::create(['name' => 'instructor']);
     Role::create(['name' => 'student']);
+});
+Artisan::command('app:create-admin', function() {
+    $admin = new User();
+    $admin->name = 'admin';
+    $admin->email = 'admin@gmail.com';
+    $admin->password = Hash::make('internet');
+    $admin->save();
+    $admin->assignRole('admin');
 });

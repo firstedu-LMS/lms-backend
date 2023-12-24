@@ -8,6 +8,7 @@ use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use App\Models\Week;
 use App\Http\Requests\LessonRequest;
+use App\Http\Resources\InstructorLessonResource;
 use App\Models\WeekCompletion;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,19 @@ class LessonController extends BaseController
     public function index($week_id)
     {
         $week = Week::where('id', $week_id)->first();
-        $lessons = Lesson::where('week_id', $week->id)->with(['video','week','course','batch'])->get();
+        $lessons = Lesson::where('week_id', $week->id)->get();
         return $this->success(LessonResource::collection($lessons), 'all lessons');
+    }
+
+
+    public function getInstructorLesson($week_id){
+        $week = Week::where('id', $week_id)->first();
+        $lessons = Lesson::where('week_id', $week->id)->with(['course' => function($query) {
+            $query->select('id' , 'name');
+        }])->with(['week' => function($query) {
+            $query->select('id' , 'week_number' , 'batch_id');
+        }])->get();
+        return $this->success(InstructorLessonResource::collection($lessons), 'all lessons');
     }
 
 
@@ -30,17 +42,31 @@ class LessonController extends BaseController
      */
     public function store(LessonRequest $request)
     {
-        $lesson = Lesson::create($request->validated());
-        WeekCompletion::where('week_id', $request->week_id)->increment('lesson_count');
-        return $this->success(new LessonResource($lesson), 'Created', config('http_status_code.created'));
+        return $this->saveLesson($request);
     }
 
+    public function saveLesson($request,$id = null)
+    {
+        $data = $request->validated();
+        if($id) {
+            $lesson = Lesson::where('id', $id)->first();
+            if (!$lesson) {
+                return $this->error([], "lesson not found", config('http_status_code.not_found'));
+            }
+            $lesson->update($data);
+            return $this->success(new LessonResource($lesson), 'lesson show');
+        }else {
+            $lesson = Lesson::create($data);
+            WeekCompletion::where('week_id', $request->week_id)->increment('lesson_count');
+            return $this->success(new LessonResource($lesson), 'Created', config('http_status_code.created'));
+        }
+    }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $lesson =  Lesson::where('id', $id)->first();
+        $lesson =  Lesson::where('id', $id)->with(['week','course','video','batch'])->first();
         if (!$lesson) {
             return $this->error([], "lesson not found", config('http_status_code.not_found'));
         }
@@ -48,24 +74,11 @@ class LessonController extends BaseController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(LessonRequest $request, string $id)
     {
-        $lesson = Lesson::where('id', $id)->first();
-        if (!$lesson) {
-            return $this->error([], "lesson not found", config('http_status_code.not_found'));
-        }
-        $lesson->update($request->validated());
-        return $this->success(new LessonResource($lesson), 'lesson show');
+        return $this->saveLesson($request,$id);
     }
 
     /**
