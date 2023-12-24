@@ -7,10 +7,9 @@ function storeFile($file, $folderName){
     return $fileStore;
 }
 
-
-function storeBase64File($base64String,$fileName,$folderName) {
+function storeBase64File($base64String,$folderName) {
     $file = base64_decode($base64String);
-    $uniqueFileName = time() . "_" . $fileName;
-    $fileStore = Storage::disk('local')->put($folderName.'/'. $uniqueFileName, $file);
+    $uniqueFileName = time();
+    Storage::disk('local')->put($folderName.'/'. $uniqueFileName, $file);
     return $folderName . '/' . $uniqueFileName;
 }
