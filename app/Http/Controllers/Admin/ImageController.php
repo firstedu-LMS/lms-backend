@@ -14,16 +14,16 @@ use Illuminate\Support\Facades\Validator;
 class ImageController extends BaseController
 {
     public function store(ImageRequest $request) {
-        if ($request->file('course_image')) {
+        if ($request->course_image) {
             return $this->success($this->handleImageStorage('course_image',$request),'image stored');
         }
-        if ($request->file('user_image')) {
+        if ($request->user_image) {
             return $this->success($this->handleImageStorage('user_image',$request),'image stored');
         }
     }
 
     protected function handleImageStorage (string $imageIdentifier,$request){
-        $file = storeFile($request->file($imageIdentifier),$imageIdentifier);
+        $file =  storeBase64File($request->$imageIdentifier,$imageIdentifier);
         $image =  Image::create([
             'image'=> $file
         ]);
