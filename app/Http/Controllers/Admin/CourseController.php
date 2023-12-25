@@ -10,6 +10,7 @@ use App\Http\Resources\CourseResource;
 use App\Events\CourseDeleteResignCache;
 use App\Http\Controllers\BaseController;
 use App\Services\Client\CourseDeletionSerivce;
+use App\Http\Controllers\Admin\ImageController;
 
 class CourseController extends BaseController
 {
@@ -39,6 +40,8 @@ class CourseController extends BaseController
             $course->update($data);
             return $this->success(new CourseResource($course), config('http_status_code.ok'));
         } else {
+            $imageController = new ImageController();
+            $data["image_id"] = $imageController->handleImageStorage($data["image"],"course_image");
             $course = Course::create($data);
             return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
         }
