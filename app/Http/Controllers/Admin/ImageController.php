@@ -22,11 +22,11 @@ class ImageController extends BaseController
         }
     }
 
-    protected function handleImageStorage (string $imageIdentifier,$request){
-        $file =  storeBase64File($request->$imageIdentifier,$request->name,$imageIdentifier);
+    public function handleImageStorage ($imageIdentifier,$folder){
+        $file =  storeBase64File($imageIdentifier,$folder);
         $image =  Image::create([
             'image'=> $file
         ]);
-        return $image;
+        return $image->id;
     }
 }

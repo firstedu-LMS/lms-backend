@@ -30,7 +30,7 @@ class CourseRequest extends FormRequest
            "age" => "required",
            "status" => "required","min:4",
            "available" => "required",
-           "image_id" => "required"
+           "image" => "required"
         ];
     }
     public function messages(): array
