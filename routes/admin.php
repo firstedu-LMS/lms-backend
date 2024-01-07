@@ -50,5 +50,5 @@ Route::post('images', [ImageController::class, 'store']);
 Route::post('files', [FileController::class, 'store']);
 Route::post('videos', [VideoController::class, 'store']);
 Route::post('student-assignment-scores', [SubmissionController::class, 'studentAssignmentScore']);
-
+Route::post('careers/multi-delete',[CareerController::class,'multiDelete']);
 
