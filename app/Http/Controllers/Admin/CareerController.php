@@ -74,8 +74,8 @@ class CareerController extends BaseController
     }
 
 
-    public function multiDelete($idArray){
-        Career::destroy($idArray);
+    public function multiDelete(Request $request){
+        Career::destroy($request->idArray);
         return $this->success([],'deleted',config('http_status_code.no_content'));
     }
 }
