@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 function storeFile($file, $folderName){
     $filename = time() . "_" . $file->getclientoriginalname();
     $fileStore = $file->storeas($folderName, $filename);
