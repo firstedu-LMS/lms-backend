@@ -9,23 +9,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
-    use HasFactory,LogModelService;
+    use HasFactory;
 
     protected $fillable = [
-            'name',
-            'description',
-            'image_id',
-            'age',
-            'fee',
-            'age',
-            'status',
-            'available'
-    ];
-
-    protected $dispatchesEvent =
-    [
-        'created' => CourseCreated::class
-
+        'name',
+        'description',
+        'image_id',
+        'age',
+        'fee',
+        'age',
+        'status',
+        'available'
     ];
 
     /**
