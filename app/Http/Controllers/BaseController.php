@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class BaseController extends Controller
 {
 
-    protected function success($data, $message, $code = 200)
+    protected function success($data, $message = null, $code = 200)
     {
         return $this->ApiResponse(
             $data,
