@@ -27,6 +27,8 @@ class CareerController extends BaseController
     public function store(CareerRequest $request)
     {
 
+        return $this->saveCareer($request);
+
     }
 
     public function saveCareer($request, $id = null)
@@ -76,8 +78,7 @@ class CareerController extends BaseController
 
 
     public function multiDelete(Request $request){
-        logger($request->all());
-        //Career::destroy($request->idArray);
+        Career::destroy($request->idArray);
         return $this->success([],'deleted',config('http_status_code.no_content'));
     }
 }
