@@ -75,9 +75,7 @@ class CourseController extends BaseController
         }
 
         try {
-            //logic for deleting the course are implemented in the service
             $courseDeletionService->deleteCourse($course);
-            event(new CourseDeleteResignCache());
             return $this->success([], 'deleted', config('http_status_code.no_content'));
         } catch (Exception $e) {
             return $this->error([], $e->getMessage(), config('http_status_code.unprocessable_content'));
