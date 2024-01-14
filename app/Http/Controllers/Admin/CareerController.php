@@ -26,8 +26,11 @@ class CareerController extends BaseController
      */
     public function store(CareerRequest $request)
     {
+
         return $this->saveCareer($request);
+
     }
+
     public function saveCareer($request, $id = null)
     {
         $data = $request->validated();
