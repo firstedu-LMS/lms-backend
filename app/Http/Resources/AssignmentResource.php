@@ -22,7 +22,7 @@ class AssignmentResource extends JsonResource
             "test_date" => $this->test_date,
             "test_time" => $this->test_time,
             "agenda" => $this->agenda,
-            "file" => $this->file->file,
+            "file" => env('APP_URL').$this->file->file,
             "created_at" => $this->created_at
         ];
     }

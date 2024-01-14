@@ -28,7 +28,9 @@ class BatchResource extends JsonResource
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'instructor' => $this->instructor,
-            'course' => $this->course,
+            'course' => $this->whenLoaded('course',function(){
+                return new CourseResource($this->course);
+            }),
         ];
     }
 }
