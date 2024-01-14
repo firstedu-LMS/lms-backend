@@ -24,7 +24,7 @@ class CourseResource extends JsonResource
             'available' => $this->available,
             'created_at' => $this->created_at->format('d-m-y'),
             'updated_at' => $this->updated_at->format('d-m-y'),
-            'image' => env('APP_URL').$this->image,
+            'image' => $this->image,
             'image_id' => $this->image_id
         ];
     }

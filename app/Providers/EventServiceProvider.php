@@ -24,15 +24,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        CourseCreated::class => [
-            CourseCacheListener::class,
-        ],
-        CareerCreated::class => [
-            CareerCacheListener::class,
-        ],
-        CourseDeleteResignCache::class => [
-            CourseDeleteResignCacheListener::class
-        ]
     ];
 
     /**

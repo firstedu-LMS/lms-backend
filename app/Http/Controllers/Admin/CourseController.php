@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Exception;
 use App\Models\Course;
-use Illuminate\Http\Request;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
-use App\Events\CourseDeleteResignCache;
 use App\Http\Controllers\BaseController;
 use App\Services\Client\CourseDeletionSerivce;
 use App\Http\Controllers\Admin\ImageController;
@@ -29,6 +27,7 @@ class CourseController extends BaseController
     {
         return $this->saveCourse($request);
     }
+
     public function saveCourse($request, $id = null)
     {
         $data = $request->validated();

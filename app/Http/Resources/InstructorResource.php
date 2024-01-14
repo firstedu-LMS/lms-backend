@@ -22,9 +22,7 @@ class InstructorResource extends JsonResource
             'cv_id' => $this->cv_id,
             'phone' => $this->phone,
             'address' => $this->address,
-            'cv' => $this->whenLoaded('cv',function(){
-                return new CvFormResource($this->cv);
-            }),
+            'cv' => $this->whenLoaded('cv'),
             'created_at' => $this->created_at->format('j-m-Y'),
             'updated_at' => $this->updated_at->format('j-m-Y'),
         ];
