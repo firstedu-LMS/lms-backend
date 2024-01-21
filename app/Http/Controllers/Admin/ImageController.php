@@ -22,8 +22,8 @@ class ImageController extends BaseController
         }
     }
 
-    public function handleImageStorage ($imageIdentifier,$folder){
-        $file =  storeBase64File($imageIdentifier,$folder);
+    public function handleImageStorage ($base64String,$folder){
+        $file =  storeBase64File($base64String,$folder);
         $image =  Image::create([
             'image'=> $file
         ]);
