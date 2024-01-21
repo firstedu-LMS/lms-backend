@@ -16,7 +16,7 @@ class CvFormResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cv' => env('APP_URL').$this->cv,
+            'cv' => $this->cv,
             'updated_at' => $this->updated_at->format('d-m-y'),
         ];
     }

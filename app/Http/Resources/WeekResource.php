@@ -18,9 +18,7 @@ class WeekResource extends JsonResource
             'id' => $this->id,
             'course_id' => $this->course_id,
             'batch_id' => $this->batch_id,
-            'course' => $this->whenLoaded('course',function(){
-                return new CourseResource($this->course);
-            }),
+            'course' => $this->whenLoaded('course'),
             'batch' => $this->whenLoaded('batch'),
             'week_number' => $this->week_number,
             'locked' => $this->locked ?? false,

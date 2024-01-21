@@ -14,6 +14,7 @@ class CourseController extends BaseController
 {
     public function index()
     {
+        $course = Course::all();
         return $this->success(CourseResource::collection($course), 'latest courses');
     }
 
