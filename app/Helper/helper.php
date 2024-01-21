@@ -9,9 +9,11 @@ function storeFile($file, $folderName){
 }
 
 function storeBase64File($base64String,$folderName) {
-    $base64 = preg_replace('/^data:image\/.*?;base64,/', '', $base64String);
-    $file = base64_decode($base64);
-    $uniqueFileName = time().'_'.Str::random(10).'.png';
+    $array = explode(";",$base64String,2);
+    $extension = explode('/',$array[0],2)[1];
+    $file = explode(',',$array[1])[1];
+    $file = base64_decode($file);
+    $uniqueFileName = time().'_'.Str::random(10).'.'.$extension;
     Storage::disk('local')->put($folderName.'/'. $uniqueFileName, $file);
     return $folderName . '/' . $uniqueFileName;
 }

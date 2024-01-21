@@ -40,7 +40,6 @@ class CourseController extends BaseController
             return $this->success(new CourseResource($course), config('http_status_code.ok'));
         } else {
             $imageController = new ImageController();
-            logger($data['image']);
             $data["image_id"] = $imageController->handleImageStorage($data["image"],"course_image");
             $course = Course::create($data);
             return $this->success(new CourseResource($course), 'Created', config('http_status_code.created'));
